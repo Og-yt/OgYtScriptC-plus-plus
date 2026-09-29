@@ -1,0 +1,29 @@
+.top-container {
+    background-color: #2d2d2d;
+    border-bottom: 1px solid #555;
+    color: white;
+}
+
+.left-container {
+    background-color: #333;
+    border-right: 1px solid #555;
+    color: #ccc;
+}
+
+.bottom-container {
+    background-color: #007acc;
+    color: white;
+}
+
+.text-box-container {
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+textview text {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+
+    font-family: monospace;
+}

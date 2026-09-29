@@ -1,0 +1,11 @@
+#ifndef _PROCESSOR_IDLE_TIMES_HPP
+#define _PROCESSOR_IDLE_TIMES_HPP
+
+typedef struct
+{
+    UINT64 StartTime;
+    UINT64 EndTime;
+    ULONG Reserved[4];
+} PROCESSOR_IDLE_TIMES, *PPROCESSOR_IDLE_TIMES;
+
+#endif // _PROCESSOR_IDLE_TIMES_HPP

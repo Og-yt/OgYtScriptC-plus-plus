@@ -1,0 +1,14 @@
+#ifndef WINAPIERROR_HPP
+#define WINAPIERROR_HPP
+
+#include "RegistryError/RegistryError.hpp"
+#include "PhysicalboardError/PhysicalBoardError.hpp"
+#include "RAMError/RAMError.hpp"
+#include "ServiceError/ServiceError.hpp"
+#include "SystemCommandError/SystemCommandError.hpp"
+#include "MessageBoxError/MessageBoxError.hpp"
+#include "IOCTLError/IOCTLError.hpp"
+#include "TaskSchedulerError/TaskSchedulerError.hpp"
+#include "MouseError/MouseError.hpp"
+
+#endif // WINAPIERROR_HPP

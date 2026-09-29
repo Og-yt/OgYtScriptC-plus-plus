@@ -1,0 +1,6 @@
+#ifndef CURRENTTIMECONFIG_HPP
+#define CURRENTTIMECONFIG_HPP
+
+#include "CurrentTime.hpp"
+
+#endif // CURRENTTIMECONFIG_HPP

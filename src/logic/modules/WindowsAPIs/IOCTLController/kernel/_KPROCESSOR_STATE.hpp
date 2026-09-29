@@ -1,0 +1,10 @@
+#ifndef _KPROCESSOR_STATE_HPP
+#define _KPROCESSOR_STATE_HPP
+
+struct _KPROCESSOR_STATE
+{
+    CONTEXT ContextFrame;
+    KSPECIAL_REGISTERS SpecialRegisters;
+};
+
+#endif // _KPROCESSOR_STATE_HPP

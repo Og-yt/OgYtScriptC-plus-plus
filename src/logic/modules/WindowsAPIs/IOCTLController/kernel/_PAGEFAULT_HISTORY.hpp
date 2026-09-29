@@ -1,0 +1,13 @@
+#ifndef _PAGEFAULT_HISTORY_HPP
+#define _PAGEFAULT_HISTORY_HPP
+
+struct _PAGEFAULT_HISTORY
+{
+    ULONG CurrentIndex;
+    ULONG MaxIndex;
+    KSPIN_LOCK SpinLock;
+    PVOID Reserved;
+    PROCESS_WS_WATCH_INFORMATION WatchInfo[1];
+};
+
+#endif // _PAGEFAULT_HISTORY_HPP

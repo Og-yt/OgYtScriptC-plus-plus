@@ -1,0 +1,11 @@
+#ifndef _ALPC_PROCESS_CONTEXT_HPP
+#define _ALPC_PROCESS_CONTEXT_HPP
+
+struct _ALPC_PROCESS_CONTEXT
+{
+    EX_PUSH_LOCK Lock;
+    LIST_ENTRY ViewListHead;
+    ULONG PagedPoolQuotaCache;
+};
+
+#endif // _ALPC_PROCESS_CONTEXT_HPP

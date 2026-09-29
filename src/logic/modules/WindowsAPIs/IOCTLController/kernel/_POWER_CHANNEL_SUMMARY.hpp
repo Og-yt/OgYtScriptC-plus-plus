@@ -1,0 +1,12 @@
+#ifndef _POWER_CHANNEL_SUMMARY_HPP
+#define _POWER_CHANNEL_SUMMARY_HPP
+
+struct _POWER_CHANNEL_SUMMARY
+{
+    ULONG Signature;
+    ULONG TotalCount;
+    ULONG D0Count;
+    LIST_ENTRY NotifyList;
+};
+
+#endif // _POWER_CHANNEL_SUMMARY_HPP

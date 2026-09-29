@@ -1,0 +1,10 @@
+#ifndef _KSPIN_LOCK_QUEUE_HPP
+#define _KSPIN_LOCK_QUEUE_HPP
+
+struct _KSPIN_LOCK_QUEUE
+{
+    PKSPIN_LOCK_QUEUE Next;
+    ULONG *Lock;
+};
+
+#endif // _KSPIN_LOCK_QUEUE_HPP

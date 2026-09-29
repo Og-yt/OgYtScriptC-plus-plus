@@ -1,0 +1,16 @@
+#ifndef _DRIVER_EXTENSION_HPP
+#define _DRIVER_EXTENSION_HPP
+
+typedef struct _DRIVER_OBJECT DRIVER_OBJECT, *PDRIVER_OBJECT;
+
+typedef struct _DRIVER_EXTENSION
+{
+    PDRIVER_OBJECT DriverObject;
+    LONG *AddDevice;
+    ULONG Count;
+    UNICODE_STRING ServiceKeyName;
+    PIO_CLIENT_EXTENSION ClientDriverExtension;
+    PFS_FILTER_CALLBACKS FsFilterCallbacks;
+} DRIVER_EXTENSION, *PDRIVER_EXTENSION;
+
+#endif // _DRIVER_EXTENSION_HPP

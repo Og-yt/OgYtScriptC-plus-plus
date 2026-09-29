@@ -1,0 +1,6 @@
+#ifndef MEMORYINTEGERCONFIG_HPP
+#define MEMORYINTEGERCONFIG_HPP
+
+#include "GetMemoryUsageInfoInteger.hpp"
+
+#endif // MEMORYINTEGERCONFIG_HPP

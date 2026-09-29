@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <!-- Gtk 4.0 を使用する -->
+    <requires lib="gtk" version="4.0"/>
+
+    <!-- メインウィンドウ -->
+    <object class="GtkApplicationWindow" id="main_window">
+        <property name="title">MyLang</property>
+        <property name="default_width">800</property>
+        <property name="default_height">600</property>
+        
+        <!-- windowの子要素として、垂直方向の box を配置 -->
+        <child>
+            <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                
+                <!-- 1. 上部のツールバーエリア -->
+                <child>
+                    <object class="GtkBox" id="top_box">
+                        <property name="height-request">40</property>
+                        <style>
+                            <class name="top-container"/>
+                        </style>
+                        <child>
+                            <object class="GtkButton" id="run_button">
+                                <property name="label">Run Code</property>
+                                <property name="margin-start">20</property>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+
+                <!-- 2. メインコンテンツ <main></main> -->
+                <child>
+                    <object class="GtkPaned">
+                        <property name="orientation">horizontal</property>
+                        <property name="vexpand">true</property>
+                        <property name="position">200</property>
+
+                        <!-- 2a. 左側のペイン -->
+                        <property name="start-child">
+                            <object class="GtkLabel">
+                                <property name="label">Project Tree</property>
+                            </object>
+                        </property>
+
+                        <!-- 2b. 右側のペイン <article></article> -->
+                        <property name="end-child">
+                            <object class="GtkScrolledWindow">
+                                <property name="hscrollbar-policy">automatic</property>
+                                <property name="vscrollbar-policy">automatic</property>
+                                <property name="child">
+                                    <object class="GtkTextView" id="txtbox">
+                                        <property name="monospace">true</property>
+                                    </object>
+                                </property>
+                            </object>
+                        </property>
+                    </object>
+                </child>
+
+                <!-- 3. 下部 コンソールエリア -->
+                <child>
+                    <object class="GtkBox" id="bottom_box">
+                        <property name="height-request">40</property>
+                        <style>
+                            <class name="bottom-container"/>
+                        </style>
+                        <child>
+                            <object class="GtkLabel" id="console_output">
+                                <property name="label">Console: Ready</property>
+                                <property name="margin-start">20</property>
+                                <property name="halign">start</property>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+            </object>
+        </child>
+    </object>
+</interface>

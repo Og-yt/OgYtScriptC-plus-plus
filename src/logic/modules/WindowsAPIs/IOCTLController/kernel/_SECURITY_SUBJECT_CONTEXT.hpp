@@ -1,0 +1,12 @@
+#ifndef _SECURITY_SUBJECT_CONTEXT_HPP
+#define _SECURITY_SUBJECT_CONTEXT_HPP
+
+struct _SECURITY_SUBJECT_CONTEXT
+{
+    PVOID ClientToken;
+    SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
+    PVOID PrimaryToken;
+    PVOID ProcessAuditId;
+};
+
+#endif // _SECURITY_SUBJECT_CONTEXT_HPP

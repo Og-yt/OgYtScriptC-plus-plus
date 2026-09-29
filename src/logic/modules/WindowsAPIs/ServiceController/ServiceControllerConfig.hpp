@@ -1,0 +1,6 @@
+#ifndef SERVICECONTROLLERCONFIG_HPP
+#define SERVICECONTROLLERCONFIG_HPP
+
+#include "GetServiceInformation.hpp"
+
+#endif // SERVICECONTROLLERCONFIG_HPP

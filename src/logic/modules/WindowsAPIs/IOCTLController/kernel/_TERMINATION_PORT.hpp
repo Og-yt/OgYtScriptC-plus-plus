@@ -1,0 +1,10 @@
+#ifndef _TERMINATION_PORT_HPP
+#define _TERMINATION_PORT_HPP
+
+struct _TERMINATION_PORT
+{
+    PTERMINATION_PORT Next;
+    PVOID Port;
+};
+
+#endif // _TERMINATION_PORT_HPP

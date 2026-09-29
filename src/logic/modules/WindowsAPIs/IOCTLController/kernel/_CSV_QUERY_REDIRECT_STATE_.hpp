@@ -1,0 +1,13 @@
+#ifndef _CSV_QUERY_REDIRECT_STATE__HPP
+#define _CSV_QUERY_REDIRECT_STATE__HPP
+
+#include <windows.h>
+
+typedef struct _CSV_QUERY_REDIRECT_STATE
+{
+    LONG64  MdsNodeId;
+    DWORD DsmNodeId;
+    BOOLEAN IsRedirected;
+} CSV_QUERY_REDIRECT_STATE, *PCSV_QUERY_REDIRECT_STATE;
+
+#endif //_CSV_QUERY_REDIRECT_STATE__HPP
