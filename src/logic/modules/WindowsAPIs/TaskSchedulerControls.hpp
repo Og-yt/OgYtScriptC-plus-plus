@@ -27,6 +27,11 @@ namespace TaskSchedulerControl
      *
      * @param 第1引数 target_path
      * @param 第2引数 target_task_path タスクスケジューラ内の対象パス
+     * @param 第3引数 
+     * @param 第4引数
+     * @param 第5引数
+     * @param 第6引数
+     * @param 第7引数
      */
     inline bool handle_new_task_imported(const std::string &line,
                                          int line_num,
@@ -40,7 +45,7 @@ namespace TaskSchedulerControl
             return false;
         }
 
-        static const std::regex new_task_imported_re("NewTaskImport\\(\\s*([a-zA-Z][a-zA-Z0-9_]*)\\,\\s*([a-zA-Z][a-zA-Z0-9_]*)\\);");
+        static const std::regex new_task_imported_re("NewTaskImport\\(\\s*([a-zA-Z][a-zA-Z0-9_]*)\\,\\s*([a-zA-Z][a-zA-Z0-9_]*)\\,\\s*([a-zA-Z][a-zA-Z0-9_]*)\\,\\s*([a-zA-Z][a-zA-Z0-9_]*)\\,\\s*([a-zA-Z][a-zA-Z0-9_]*)\\,\\s*([a-zA-Z][a-zA-Z0-9_]*)\\,\\s*([a-zA-Z][a-zA-Z0-9_]*)\\,\\s*([a-zA-Z][a-zA-Z0-9_]*)\\);");
         std::smatch match;
 
         if (std::regex_search(line, match, new_task_imported_re))

@@ -60,7 +60,7 @@ namespace TaskSchedulerError
                                                                         BUFFER buffer,
                                                                         WERROR err_code)
         {
-            result_text += ErrorLogic::build_msg(line_num, "NewTaskImportError iActionCollectError: " + std::to_string(err_code) +'\n');
+            result_text += ErrorLogic::build_msg(line_num, "NewTaskImportError iActionCollectError: " + std::to_string(err_code) + '\n');
             ErrorLogic::highlight_line(buffer, line_num);
 
             return false;
@@ -76,6 +76,26 @@ namespace TaskSchedulerError
 
             return false;
         }
+    }
+
+    inline bool handle_task_create_code_out_of_range(LINE line_num,
+                                                     MESSAGE result_text,
+                                                     BUFFER buffer)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "NewTaskImportError TaskCreationCode out of range.");
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
+    inline bool handle_task_code_out_of_range(LINE line_num,
+                                              MESSAGE result_text,
+                                              BUFFER buffer)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "NewTaskImportError TasLogonCode out of range.");
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
     }
 
     inline bool handle_task_scheduler_error_invalid_argument(LINE line_num,
