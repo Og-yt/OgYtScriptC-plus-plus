@@ -7,5 +7,6 @@
 #include "RegisterClassObjectCode.hpp"
 #include "ConcurrencyModelCode.hpp"
 #include "TaskActionTypeCode.hpp"
+#include "iActionCollectCode.hpp"
 
 #endif // TASKCONFIG_HPP

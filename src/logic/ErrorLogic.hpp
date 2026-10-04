@@ -9,6 +9,7 @@ typedef std::string &MESSAGE;
 typedef Glib::RefPtr<Gtk::TextBuffer> BUFFER;
 
 typedef unsigned long WERROR;
+typedef WERROR WSERROR;
 
 /* windows */
 typedef const std::string &FWINMEM;
@@ -17,6 +18,7 @@ typedef const std::string &FWINPYS;
 typedef const std::string &FWINSERV;
 typedef const std::string &FWINFSCTLFLTKEL;
 typedef const std::string &FWINMMC;
+typedef const std::string &FWINSECU;
 
 /* Array */
 typedef const std::string &FARRAY;

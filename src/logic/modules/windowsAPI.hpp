@@ -17,5 +17,7 @@
 #include "WindowsAPIs/System.hpp"                // コマンドプロンプト
 #include "WindowsAPIs/IOControls.hpp"            // 特殊な操作
 #include "WindowsAPIs/MouseControls.hpp"         // カーソルコントロール
+#include "WindowsAPIs/TaskSchedulerControls.hpp" // タスクスケジューラサービスの使用
+#include "WindowsAPIs/Security.hpp"              // セキュリティ操作
 
 #endif // WINDOWSAPI_HPP

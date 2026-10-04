@@ -10,5 +10,6 @@
 #include "IOCTLError/IOCTLError.hpp"
 #include "TaskSchedulerError/TaskSchedulerError.hpp"
 #include "MouseError/MouseError.hpp"
+#include "SecurityError/SecurityError.hpp"
 
 #endif // WINAPIERROR_HPP

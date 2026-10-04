@@ -14,6 +14,9 @@
 #include "../../../ErrorLogic.hpp"
 #include "../../../ErrorMessages/Messages.hpp"
 
+/* エラーハンドリング処理 */
+#include "TaskSchdErr/TaskSchedulerErrorHandling.hpp"
+
 inline bool handle_new_task_import_controller(std::smatch match,
                                               LINE line_num,
                                               MESSAGE result_text,
@@ -31,6 +34,7 @@ inline bool handle_new_task_import_controller(std::smatch match,
     TASK_TRIGGER_TYPE2 trigger_type2;
     CLSCTX register_class_object_v;
     COINIT concurrency_mode_v;
+    TASK_ACTION_TYPE task_action_type_v;
 
     if (!ToTaskTriggerType2(task_trigger_type2, trigger_type2, line_num, result_text, buffer))
     {
@@ -45,6 +49,10 @@ inline bool handle_new_task_import_controller(std::smatch match,
         return false;
     }
     if (!ConcurrencyModel(concurrency_mode, concurrency_mode_v, line_num, result_text, buffer))
+    {
+        return false;
+    }
+    if (!TaskActionTypeCode(task_action_type, task_action_type_v, line_num, result_text, buffer))
     {
         return false;
     }
@@ -79,12 +87,17 @@ inline bool handle_new_task_import_controller(std::smatch match,
                           _variant_t(),
                           _variant_t());
 
-    if (FAILED(hr))
+    if (FAILED(hr) || hr == S_OK)
     {
         service->Release();
         CoUninitialize();
 
         return 1;
+    }
+    else
+    {
+        TaskSchdErrHand::handle_i_task_service_error(hr, line_num, result_text, buffer);
+        return false;
     }
 
     /* Get root folder */
@@ -145,7 +158,7 @@ inline bool handle_new_task_import_controller(std::smatch match,
     if (SUCCEEDED(hr))
     {
         IAction *action = nullptr;
-        hr = actions->Create(TASK_ACTION_EXEC, &action);
+        hr = actions->Create(task_action_type_v, &action);
 
         if (SUCCEEDED(hr))
         {
