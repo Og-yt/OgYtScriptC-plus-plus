@@ -4,6 +4,8 @@
 #include <gtkmm.h>
 #include <string>
 
+#include <exception>
+
 typedef int LINE;
 typedef std::string &MESSAGE;
 typedef Glib::RefPtr<Gtk::TextBuffer> BUFFER;
@@ -20,10 +22,18 @@ typedef const std::string &FWINFSCTLFLTKEL;
 typedef const std::string &FWINMMC;
 typedef const std::string &FWINSECU;
 
+/* ハードウェア制御 */
+typedef const std::string &FWINHW;
+
 /* Array */
 typedef const std::string &FARRAY;
 typedef const std::string &TYPENAME;
 typedef const std::string &ARRVAR;
+
+/* 例外処理 */
+typedef const std::invalid_argument &EX_IA;
+typedef const std::out_of_range &EX_OOR;
+typedef const std::exception &EX_E;
 
 namespace ErrorLogic
 {

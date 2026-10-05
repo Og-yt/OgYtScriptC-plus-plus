@@ -86,6 +86,7 @@ namespace SecurityControl
                 {
                     LPCWSTR target_path = string_to_lpwstr(match[1].str());
 
+                    handle_get_security_descriptor_owner_sub_func(match, target_path, line_num, result_text, buffer);
                     std::wstring msg = L"Retrieving owner details for: ";
                     msg += target_path;
                     msg += L"\n";
@@ -127,6 +128,11 @@ namespace SecurityControl
 
             SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "GetSecurityDescriptorOwner");
             return false;
+        }
+
+        inline bool h()
+        {
+            //
         }
     }
 }

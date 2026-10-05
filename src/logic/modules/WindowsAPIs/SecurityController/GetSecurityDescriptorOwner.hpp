@@ -75,7 +75,8 @@ inline bool handle_get_security_descriptor_owner_sub_func(std::smatch match,
     }
     else
     {
-        //
+        SecurityError::Get::handle_convert_sid_to_string_sid_w_failed_with_error(line_num, result_text, buffer, err_code);
+        return false;
     }
 
     WCHAR accountName[256];

@@ -73,6 +73,19 @@ namespace SecurityError
             return false;
         }
 
+        inline bool handle_convert_sid_to_string_sid_w_failed_with_error(LINE line_num,
+                                                                         MESSAGE result_text,
+                                                                         BUFFER buffer,
+                                                                         WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "ConvertSidToStringSidW failed with error code: " + std::to_string(err_code) + "\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        // ConvertSidToStringSidW failed with error code:
+
         inline bool handle_look_up_account_sid_w_failed_with_error(LINE line_num,
                                                                    MESSAGE result_text,
                                                                    BUFFER buffer,

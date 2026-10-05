@@ -13,6 +13,11 @@
 
 namespace HardWareControls
 {
+    /**
+     * 
+     * @brief PCのメモリ情報を取得する関数
+     * 
+     */
     inline bool handle_get_memory_information(const std::string &line,
                                               int line_num,
                                               std::string &result_text,
@@ -25,7 +30,7 @@ namespace HardWareControls
             return false;
         }
 
-        static const std::regex hw_get_memory_info_re("HWGetMemoryInfo();");
+        static const std::regex hw_get_memory_info_re("HWGetMemoryInfo\\(\\);");
         std::smatch match;
 
         if (std::regex_search(line, match, hw_get_memory_info_re))
@@ -43,18 +48,31 @@ namespace HardWareControls
                 }
                 else
                 {
-                    result_text += ErrorLogic::build_msg(line_num, "Failed to get memory information.");
-                    ErrorLogic::highlight_line(buffer, line_num);
+                    HardwareError::handle_hard_ware_error_get_memory_info_failed(line_num, result_text, buffer);
                     return false;
                 }
             }
+            catch (const std::invalid_argument &ia)
+            {
+                HardwareError::handle_hard_ware_error_invalid_argument_what(line_num, result_text, buffer, ia);
+                return false;
+            }
             catch (const std::exception &e)
             {
-                //
+                HardwareError::handle_hard_ware_error_exception_what(line_num, result_text, buffer, "HWGetMemoryInfo", e);
+                return false;
             }
         }
+
+        HardwareError::handle_hard_ware_error_call_error(line_num, result_text, buffer, "HWGetMemoryInfo");
+        return false;
     }
 
+    /**
+     * 
+     * @brief CPUコアの情報を取得する関数
+     * 
+     */
     inline bool handle_CPU_core_information(const std::string &line,
                                             int line_num,
                                             std::string &result_text,
@@ -67,7 +85,7 @@ namespace HardWareControls
             return false;
         }
 
-        static const std::regex hw_get_cpu_core_info_re("HWGetCPUCoreInfo();");
+        static const std::regex hw_get_cpu_core_info_re("HWGetCPUCoreInfo\\(\\);");
         std::smatch match;
 
         if (std::regex_search(line, match, hw_get_cpu_core_info_re))
@@ -80,16 +98,19 @@ namespace HardWareControls
                 result_text += "Number of processors: " + std::to_string(si.dwNumberOfProcessors) + "\n";
                 return true;
             }
+            catch (const std::invalid_argument &ia)
+            {
+                HardwareError::handle_hard_ware_error_invalid_argument_what(line_num, result_text, buffer, ia);
+                return false;
+            }
             catch (const std::exception &e)
             {
-                result_text += ErrorLogic::build_msg(line_num, "An exception occurred while getting CPU information: " + std::string(e.what()));
-                ErrorLogic::highlight_line(buffer, line_num);
+                HardwareError::detail::handle_hard_ware_error_detail_exception(line_num, result_text, buffer, e);
                 return false;
             }
         }
 
-        result_text += ErrorLogic::build_msg(line_num, "Invalid 'HWGetCPUCoreInfo' call. Expected 'HWGetCPUCoreInfo();'");
-        ErrorLogic::highlight_line(buffer, line_num);
+        HardwareError::handle_hard_ware_error_call_error(line_num, result_text, buffer, "HWGetCPUCoreInfo");
         return false;
     }
 }
