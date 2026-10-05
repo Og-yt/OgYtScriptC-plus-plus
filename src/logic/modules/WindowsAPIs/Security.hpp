@@ -65,6 +65,11 @@ namespace SecurityControl
             return false;
         }
 
+        /**
+         * 
+         * @brief
+         * 
+         */
         inline bool handle_get_security_descriptor_owner(const std::string &line,
                                                          int line_num,
                                                          std::string &result_text,
@@ -130,9 +135,43 @@ namespace SecurityControl
             return false;
         }
 
-        inline bool h()
+        /**
+         * 
+         * @biref
+         * 
+         */
+        inline bool handle_get_security_descriptor_control(const std::string &line,
+                                                           int line_num,
+                                                           std::string &result_text,
+                                                           Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                           bool is_imported)
         {
-            //
+            if (!is_imported)
+            {
+                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "GetSecurityDescriptorControl()");
+                return false;
+            }
+
+            static const std::regex get_security_descriptor_control_re("GetSecurityDescriptorControl\\(\\s*([a-zA-Z][a-zA-Z0-9_]*)\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, get_security_descriptor_control_re))
+            {
+                try
+                {
+                    //
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    //
+                }
+                catch (const std::exception &e)
+                {
+                    //
+                }
+            }
+
+            return false;
         }
     }
 }
