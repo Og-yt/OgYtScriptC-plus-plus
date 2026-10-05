@@ -96,7 +96,7 @@ inline bool handle_get_security_descriptor_owner_sub_func(std::smatch match,
     }
     else
     {
-        //
+        SecurityError::Get::handle_look_up_account_sid_w_failed_with_error(line_num, result_text, buffer, err_code);
     }
 
     if (pSD != nullptr)

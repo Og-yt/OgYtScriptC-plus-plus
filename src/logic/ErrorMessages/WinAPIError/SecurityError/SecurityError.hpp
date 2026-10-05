@@ -73,6 +73,17 @@ namespace SecurityError
             return false;
         }
 
+        inline bool handle_look_up_account_sid_w_failed_with_error(LINE line_num,
+                                                                   MESSAGE result_text,
+                                                                   BUFFER buffer,
+                                                                   WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "LookupAccountSidW failed with error code: " + std::to_string(err_code) + "\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
         inline bool handle_se_object_type_out_of_range(LINE line_num,
                                                        MESSAGE result_text,
                                                        BUFFER buffer)
