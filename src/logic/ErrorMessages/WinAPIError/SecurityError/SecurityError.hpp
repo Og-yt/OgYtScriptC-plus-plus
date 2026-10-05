@@ -84,8 +84,6 @@ namespace SecurityError
             return false;
         }
 
-        // ConvertSidToStringSidW failed with error code:
-
         inline bool handle_look_up_account_sid_w_failed_with_error(LINE line_num,
                                                                    MESSAGE result_text,
                                                                    BUFFER buffer,
@@ -97,11 +95,109 @@ namespace SecurityError
             return false;
         }
 
+        inline bool handle_get_kernel_object_security_failed_to_size_buffer_error(LINE line_num,
+                                                                                  MESSAGE result_text,
+                                                                                  BUFFER buffer,
+                                                                                  WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "GetKernelObjectSecurity failed to size buffer. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_failed_to_allocate_memory_error(LINE line_num,
+                                                           MESSAGE result_text,
+                                                           BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "Failed to allocate memory for Security Descriptor.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_get_security_descriptor_control_failed_error(LINE line_num,
+                                                                        MESSAGE result_text,
+                                                                        BUFFER buffer,
+                                                                        WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "GetSecurityDescriptorControl failed. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_get_kernel_object_security_failed_error(LINE line_num,
+                                                                   MESSAGE result_text,
+                                                                   BUFFER buffer,
+                                                                   WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "GetkernelObjectSecurity failed. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
         inline bool handle_se_object_type_out_of_range(LINE line_num,
                                                        MESSAGE result_text,
                                                        BUFFER buffer)
         {
             result_text += ErrorLogic::build_msg(line_num, "GetSecurityDescriptorError SeObjectType out of range.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_get_security_descriptor_dacl_failed_to_convert_sid_error(LINE line_num,
+                                                                                    MESSAGE result_text,
+                                                                                    BUFFER buffer,
+                                                                                    WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "Failed to convert SID. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_get_security_descriptor_dacl_failed_error(LINE line_num,
+                                                                     MESSAGE result_text,
+                                                                     BUFFER buffer,
+                                                                     WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "GetSecurityDescriptorDacl failed. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_get_kernel_object_security_sizing_failed_error(LINE line_num,
+                                                                          MESSAGE result_text,
+                                                                          BUFFER buffer,
+                                                                          WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "GetKernelObjectSecurity sizing failed. Error:" + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_heap_allocation_failed(LINE line_num,
+                                                  MESSAGE result_text,
+                                                  BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "HeapAlloc failed.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_get_security_descriptor_dacl_failed_to_get_ace_at_index_error(int i,
+                                                                                         LINE line_num,
+                                                                                         MESSAGE result_text,
+                                                                                         BUFFER buffer,
+                                                                                         WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "     Failed to get ACE at index " + i + '. Error: ' + std::to_string(err_code) + '\n');
             ErrorLogic::highlight_line(buffer, line_num);
 
             return false;

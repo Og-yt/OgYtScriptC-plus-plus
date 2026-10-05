@@ -137,7 +137,7 @@ namespace SecurityControl
 
         /**
          * 
-         * @biref
+         * @biref セキュリティ記述子コントロールとリビジョン情報を取得する関数
          * 
          */
         inline bool handle_get_security_descriptor_control(const std::string &line,
@@ -152,25 +152,70 @@ namespace SecurityControl
                 return false;
             }
 
-            static const std::regex get_security_descriptor_control_re("GetSecurityDescriptorControl\\(\\s*([a-zA-Z][a-zA-Z0-9_]*)\\);");
+            static const std::regex get_security_descriptor_control_re("GetSecurityDescriptorControl\\(\\);");
             std::smatch match;
 
             if (std::regex_search(line, match, get_security_descriptor_control_re))
             {
                 try
                 {
-                    //
+                    return handle_get_security_descriptor_control_sub_func(line_num, result_text, buffer);
                 }
                 catch (const std::invalid_argument &ia)
                 {
-                    //
+                    SecurityError::handle_security_controller_error_invalid_argument(line_num, result_text, buffer);
+                    return false;
                 }
                 catch (const std::exception &e)
                 {
-                    //
+                    SecurityError::handle_security_controller_error_exception(line_num, result_text, buffer, "GetSecurityDescriptorControl");
+                    return false;
                 }
             }
 
+            SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "GetSecurityDescriptorControl");
+            return false;
+        }
+
+        /**
+         * 
+         * @brief指定されたセキュリティ記述子の随意アクセス制御リスト (DACL) へのポインターを取得する関数。
+         * 
+         */
+        inline bool handle_get_security_descriptor_dacl(const std::string &line,
+                                                        int line_num,
+                                                        std::string &result_text,
+                                                        Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                        bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "GetSecurityDescriptorDacl()");
+                return false;
+            }
+
+            static const std::regex get_security_descriptor_dacl_re("GetSecurityDescriptorDacl\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, get_security_descriptor_dacl_re))
+            {
+                try
+                {
+                    return handle_get_security_descriptor_dacl_sub_func(line_num, result_text, buffer);
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    SecurityError::handle_security_controller_error_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (const std::exception &e)
+                {
+                    SecurityError::handle_security_controller_error_exception(line_num, result_text, buffer, "GetSecurityDescriptorDacl");
+                    return false;
+                }
+            }
+
+            SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "GetSecurityDescriptorDacl");
             return false;
         }
     }
