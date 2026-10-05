@@ -12,6 +12,7 @@ typedef Glib::RefPtr<Gtk::TextBuffer> BUFFER;
 
 typedef unsigned long WERROR;
 typedef WERROR WSERROR;
+typedef WERROR HWERROR;
 
 /* windows */
 typedef const std::string &FWINMEM;

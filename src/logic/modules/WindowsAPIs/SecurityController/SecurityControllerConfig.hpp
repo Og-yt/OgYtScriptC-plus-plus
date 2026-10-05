@@ -6,5 +6,6 @@
 #include "GetSecurityDescriptorOwner.hpp"
 #include "GetSecurityDescriptorControl.hpp"
 #include "GetSecurityDescriptorDacl.hpp"
+#include "GetSecurityDescriptorGroup.hpp"
 
 #endif // SECURITYCONTROLLERCONFIG_HPP

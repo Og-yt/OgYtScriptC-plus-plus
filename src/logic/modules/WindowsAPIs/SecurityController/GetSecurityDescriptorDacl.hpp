@@ -41,7 +41,7 @@ inline bool handle_get_security_descriptor_dacl_sub_func(LINE line_num,
                                  dwSizeNeeded,
                                  &dwSizeNeeded))
     {
-        //
+        SecurityError::Get::handle_get_kernel_object_security_failed_error(line_num, result_text, buffer, err_code);
         HeapFree(GetProcessHeap(), 0, pSD);
 
         return 1;

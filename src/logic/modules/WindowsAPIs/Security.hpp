@@ -179,7 +179,7 @@ namespace SecurityControl
 
         /**
          * 
-         * @brief指定されたセキュリティ記述子の随意アクセス制御リスト (DACL) へのポインターを取得する関数。
+         * @brief 指定されたセキュリティ記述子の随意アクセス制御リスト(DACL)へのポインターを取得する関数。
          * 
          */
         inline bool handle_get_security_descriptor_dacl(const std::string &line,
@@ -216,6 +216,40 @@ namespace SecurityControl
             }
 
             SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "GetSecurityDescriptorDacl");
+            return false;
+        }
+
+        inline bool handle_get_security_descriptor_group(const std::string &line,
+                                                         int line_num,
+                                                         std::string &result_text,
+                                                         Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                         bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "GetSecurityDescriptorGroup()");
+                return false;
+            }
+
+            static const std::regex get_security_descriptor_group_re("GetSecurityDescriptorGroup\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, get_security_descriptor_group_re))
+            {
+                try
+                {
+                    return handle_get_security_descriptor_group_sub_func(line_num, result_text, buffer);
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    //
+                }
+                catch (const std::exception &e)
+                {
+                    //
+                }
+            }
+
             return false;
         }
     }

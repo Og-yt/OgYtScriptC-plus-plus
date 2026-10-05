@@ -202,6 +202,49 @@ namespace SecurityError
 
             return false;
         }
+
+        inline bool handle_display_group_sid_info_primary_sid_is_null(LINE line_num,
+                                                                      MESSAGE result_text,
+                                                                      BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "Primary Group SID is NULL.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_convert_sid_to_string_sid_a_failed_error(LINE line_num,
+                                                                    MESSAGE result_text,
+                                                                    BUFFER buffer,
+                                                                    WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "ConcertSidToStringSidA failed. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_look_up_account_sid_a_failed_error(LINE line_num,
+                                                              MESSAGE result_text,
+                                                              BUFFER buffer,
+                                                              WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "LookupAccountSidA failed (SID may not map to a local account). Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_get_security_descriptor_group_failed_error(LINE line_num,
+                                                                      MESSAGE result_text,
+                                                                      BUFFER buffer,
+                                                                      WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "GetSecurityDescriptorGroup failed. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
     }
 
     inline bool handle_security_controller_error_invalid_argument(LINE line_num,
