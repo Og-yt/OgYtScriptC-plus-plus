@@ -317,18 +317,21 @@ namespace SecurityControl
             {
                 try
                 {
-                    //
+                    return handle_get_security_descriptor_rm_control_sub_func(line_num, result_text, buffer);
                 }
                 catch (const std::invalid_argument &ia)
                 {
-                    //
+                    SecurityError::handle_security_controller_error_invalid_argument(line_num, result_text, buffer);
+                    return false;
                 }
                 catch (const std::exception &e)
                 {
-                    //
+                    SecurityError::handle_security_controller_error_exception(line_num, result_text, buffer, "GetSecurityDescriptorRMControl");
+                    return false;
                 }
             }
 
+            SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "GetSecurityDescriptorRMControl");
             return false;
         }
     }

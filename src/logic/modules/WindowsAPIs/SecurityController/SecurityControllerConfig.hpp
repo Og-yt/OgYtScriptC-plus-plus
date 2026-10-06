@@ -8,5 +8,6 @@
 #include "GetSecurityDescriptorDacl.hpp"
 #include "GetSecurityDescriptorGroup.hpp"
 #include "GetSecurityDescriptorLength.hpp"
+#include "GetSecurityDescriptorRMControl.hpp"
 
 #endif // SECURITYCONTROLLERCONFIG_HPP

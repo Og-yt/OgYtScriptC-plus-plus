@@ -256,6 +256,28 @@ namespace SecurityError
 
             return false;
         }
+
+        inline bool handle_initialize_security_descriptor_fafiled_error(LINE line_num,
+                                                                        MESSAGE result_text,
+                                                                        BUFFER buffer,
+                                                                        WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "InitializeSecurityDescriptor failed. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_get_security_descriptor_rm_control_failed_error(LINE line_num,
+                                                                           MESSAGE result_text,
+                                                                           BUFFER buffer,
+                                                                           WSSTATUS status)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "SetSecurityDescriptorRMControl failed. Error status: " + status + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
     }
 
     inline bool handle_security_controller_error_invalid_argument(LINE line_num,
