@@ -11,8 +11,8 @@ struct _DRIVER_OBJECT
     ULONG DriverSize;
     PVOID DriverSection;
     PDRIVER_EXTENSION DriverExtension;
-    UNICODE_STRING DriverName;
-    PUNICODE_STRING HardwareDataBase;
+    KERNEL_UNICODE_STRING DriverName;
+    PKERNEL_UNICODE_STRING HardwareDataBase;
     PFAST_IO_DISPATCH FastIoDispatch;
     LONG *DriverInit;
     PVOID DriverStartIo;

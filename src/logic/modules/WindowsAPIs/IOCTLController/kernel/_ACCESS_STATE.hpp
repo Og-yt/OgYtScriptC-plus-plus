@@ -17,8 +17,8 @@ struct _ACCESS_STATE
     PVOID AuxData;
     BYTE Privileges[44];
     UCHAR AuditPrivileges;
-    UNICODE_STRING ObjectName;
-    UNICODE_STRING ObjectTypeName;
+    KERNEL_UNICODE_STRING ObjectName;
+    KERNEL_UNICODE_STRING ObjectTypeName;
 };
 
 #endif // _ACCESS_STATE_HPP

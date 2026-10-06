@@ -3,7 +3,7 @@ export PKG_CONFIG_PATH := C:\msys64\mingw64\lib\pkgconfig;C:\msys64\mingw64\shar
 
 CXX = g++
 CXXFLAGS = -Wall -Wextra -O2 -std=c++17 -Iinclude $(shell pkg-config --cflags gtkmm-4.0)
-LIBS = $(shell pkg-config --libs gtkmm-4.0) -lpdh -lopengl32 -lglu32 -lm -lpsapi
+LIBS = $(shell pkg-config --libs gtkmm-4.0) -loleaut32 -lpdh -lopengl32 -lglu32 -lm -lpsapi
 
 # 実行ファイル名
 TARGET = MyLang.exe

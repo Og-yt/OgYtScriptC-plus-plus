@@ -74,7 +74,7 @@ struct _PEB
     ULARGE_INTEGER AppCompatFlagsUser;
     PVOID pShimData;
     PVOID AppCompatInfo;
-    UNICODE_STRING CSDVersion;
+    KERNEL_UNICODE_STRING CSDVersion;
     _ACTIVATION_CONTEXT_DATA *ActivationContextData;
     _ASSEMBLY_STORAGE_MAP *ProcessAssemblyStorageMap;
     _ACTIVATION_CONTEXT_DATA *SystemDefaultActivationContextData;

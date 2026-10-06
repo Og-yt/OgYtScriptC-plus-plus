@@ -13,9 +13,9 @@ struct _RTL_USER_PROCESS_PARAMETERS
     PVOID StandardOutput;
     PVOID StandardError;
     CURDIR CurrentDirectory;
-    UNICODE_STRING DllPath;
-    UNICODE_STRING ImagePathName;
-    UNICODE_STRING CommandLine;
+    KERNEL_UNICODE_STRING DllPath;
+    KERNEL_UNICODE_STRING ImagePathName;
+    KERNEL_UNICODE_STRING CommandLine;
     PVOID Environment;
     ULONG StartingX;
     ULONG StartingY;
@@ -26,10 +26,10 @@ struct _RTL_USER_PROCESS_PARAMETERS
     ULONG FillAttribute;
     ULONG WindowFlags;
     ULONG ShowWindowFlags;
-    UNICODE_STRING WindowTitle;
-    UNICODE_STRING DesktopInfo;
-    UNICODE_STRING ShellInfo;
-    UNICODE_STRING RuntimeData;
+    KERNEL_UNICODE_STRING WindowTitle;
+    KERNEL_UNICODE_STRING DesktopInfo;
+    KERNEL_UNICODE_STRING ShellInfo;
+    KERNEL_UNICODE_STRING RuntimeData;
     RTL_DRIVE_LETTER_CURDIR CurrentDirectores[32];
     ULONG EnvironmentSize;
 };

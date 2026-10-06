@@ -27,7 +27,7 @@ inline bool handle_print_sid_owner(PSID pSid,
         SecurityError::Get::handle_get_security_descriptor_dacl_failed_to_convert_sid_error(line_num, result_text, buffer, err_code);
     }
 
-    return;
+    return 0;
 }
 
 #endif // PRINTSIDOWNER_HPP

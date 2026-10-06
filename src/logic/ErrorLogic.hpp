@@ -14,8 +14,6 @@ typedef unsigned long WERROR;
 typedef WERROR WSERROR;
 typedef WERROR HWERROR;
 
-typedef DWORD WSSTATUS;
-
 /* windows */
 typedef const std::string &FWINMEM;
 typedef const std::string &FWINREG;

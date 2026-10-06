@@ -6,7 +6,6 @@ struct _RTL_DRIVE_LETTER_CURDIR
     WORD Flags;
     WORD Length;
     ULONG TimeStamp;
-    STRING DpsPath;
 };
 
 #endif // _PTL_DRIVE_LITTER_CURDIR_HPP

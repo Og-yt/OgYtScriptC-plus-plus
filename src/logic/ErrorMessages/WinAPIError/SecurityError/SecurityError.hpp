@@ -271,7 +271,7 @@ namespace SecurityError
         inline bool handle_get_security_descriptor_rm_control_failed_error(LINE line_num,
                                                                            MESSAGE result_text,
                                                                            BUFFER buffer,
-                                                                           WSSTATUS status)
+                                                                           DWORD status)
         {
             result_text += ErrorLogic::build_msg(line_num, "SetSecurityDescriptorRMControl failed. Error status: " + status + '\n');
             ErrorLogic::highlight_line(buffer, line_num);

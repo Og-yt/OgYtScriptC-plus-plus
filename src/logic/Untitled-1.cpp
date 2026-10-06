@@ -1,85 +1,83 @@
 #include <windows.h>
 #include <ntsecapi.h>
+#include <sddl.h>
 #include <iostream>
-#include <iomanip>
-
-// Helper function to print a GUID structure in standard string format
-void PrintGuid(const GUID* pGuid)
-{
-    if (pGuid == NULL) return;
-
-    std::cout << "{"
-              << std::hex << std::setfill('0')
-              << std::setw(8) << pGuid->Data1 << "-"
-              << std::setw(4) << pGuid->Data2 << "-"
-              << std::setw(4) << pGuid->Data3 << "-";
-
-    for (int i = 0; i < 2; ++i) {
-        std::cout << std::setw(2) << static_cast<unsigned int>(pGuid->Data4[i]);
-    }
-    std::cout << "-";
-    for (int i = 2; i < 8; ++i) {
-        std::cout << std::setw(2) << static_cast<unsigned int>(pGuid->Data4[i]);
-    }
-    std::cout << "}" << std::dec << std::endl;
-}
 
 int main()
 {
-    GUID* pAuditCategoriesArray = NULL;
-    ULONG countReturned = 0;
+    PPOLICY_AUDIT_SID_ARRAY pppAuditSidArray = NULL;
 
-    // Call AuditEnumerateCategories to retrieve all audit categories
-    BOOLEAN result = AuditEnumerateCategories(
-        &pAuditCategoriesArray,
-        &countReturned
-    );
+    // Retrieve array of SIDs with per-user audit policies defined
+    BOOLEAN result = AuditEnumeratePerUserPolicy(&pppAuditSidArray);
 
-    // Check for function success
     if (!result)
     {
         DWORD dwError = GetLastError();
-        std::cout << "AuditEnumerateCategories failed with error code: " 
+        std::cout << "AuditEnumeratePerUserPolicy failed with error code: " 
                   << dwError << std::endl;
-        
+
         if (dwError == ERROR_ACCESS_DENIED) {
             std::cout << "Note: Ensure you are running this program as Administrator." << std::endl;
         }
         return 1;
     }
 
-    std::cout << "Successfully retrieved " << countReturned << " audit categories:\n" << std::endl;
+    // pppAuditSidArray is a pointer to a POLICY_AUDIT_SID_ARRAY structure
+    ULONG userCount = pppAuditSidArray->UsersCount;
 
-    // Iterate through the dynamically allocated array of GUIDs
-    for (ULONG i = 0; i < countReturned; ++i)
+    if (userCount == 0)
     {
-        GUID categoryGuid = pAuditCategoriesArray[i];
-        LPSTR pCategoryName = NULL;
+        std::cout << "No per-user audit policies are currently set on this system." << std::endl;
+    }
+    else
+    {
+        std::cout << "Found " << userCount << " user account(s) with custom audit policies:\n" << std::endl;
 
-        std::cout << "Category [" << i + 1 << "]: ";
-        PrintGuid(&categoryGuid);
-
-        // Optional: Look up the display name for each category GUID
-        if (AuditLookupCategoryName(&categoryGuid, &pCategoryName))
+        for (ULONG i = 0; i < userCount; ++i)
         {
-            std::cout << "  Name: " << pCategoryName << std::endl;
+            PSID pSid = pppAuditSidArray->pSidArray[i];
 
-            // Free the memory allocated by AuditLookupCategoryName
-            AuditFree(pCategoryName);
-        }
-        else
-        {
-            std::cout << "  Name: <Unable to retrieve name>" << std::endl;
-        }
+            // Option 1: Convert the SID to a readable String SID (e.g., S-1-5-21-...)
+            LPSTR pSidString = NULL;
+            if (ConvertSidToStringSidA(pSid, &pSidString))
+            {
+                std::cout << "User [" << i + 1 << "]\n";
+                std::cout << "  SID String: " << pSidString << std::endl;
+                LocalFree(pSidString);
+            }
 
-        std::cout << "----------------------------------------------------" << std::endl;
+            // Option 2: Resolve the SID to an actual Account/Domain Name
+            char nameBuffer[256];
+            char domainBuffer[256];
+            DWORD nameSize = sizeof(nameBuffer);
+            DWORD domainSize = sizeof(domainBuffer);
+            SID_NAME_USE sidType;
+
+            if (LookupAccountSidA(
+                NULL,           // Local system
+                pSid,           // Target SID
+                nameBuffer, 
+                &nameSize, 
+                domainBuffer, 
+                &domainSize, 
+                &sidType))
+            {
+                std::cout << "  Account Name: " << domainBuffer << "\\" << nameBuffer << std::endl;
+            }
+            else
+            {
+                std::cout << "  Account Name: <Unable to resolve account name>" << std::endl;
+            }
+
+            std::cout << "----------------------------------------------------" << std::endl;
+        }
     }
 
-    // MANDATORY: Free the memory allocated by AuditEnumerateCategories
-    if (pAuditCategoriesArray != NULL)
+    // MANDATORY: Free the memory allocated by AuditEnumeratePerUserPolicy
+    if (pppAuditSidArray != NULL)
     {
-        AuditFree(pAuditCategoriesArray);
-        pAuditCategoriesArray = NULL;
+        AuditFree(pppAuditSidArray);
+        pppAuditSidArray = NULL;
     }
 
     return 0;

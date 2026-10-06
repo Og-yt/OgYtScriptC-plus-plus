@@ -3,7 +3,7 @@
 
 struct _CURDIR
 {
-    UNICODE_STRING DpsPath;
+    KERNEL_UNICODE_STRING DpsPath;
     PVOID Handle;
 };
 

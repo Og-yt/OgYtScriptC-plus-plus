@@ -42,7 +42,7 @@ inline bool handle_get_security_descriptor_sub_func(std::smatch match,
     if (dwResult != ERROR_SUCCESS)
     {
         SecurityError::Get::handle_get_security_descriptor_failed_error(line_num, result_text, buffer, dwResult);
-        return;
+        return 0;
     }
 
     SECURITY_DESCRIPTOR_CONTROL sdControl = 0;

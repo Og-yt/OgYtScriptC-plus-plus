@@ -16,7 +16,7 @@ inline bool handle_display_goup_sid_info(PSID pGroupSid,
     if (pGroupSid == NULL)
     {
         SecurityError::Get::handle_display_group_sid_info_primary_sid_is_null(line_num, result_text, buffer);
-        return;
+        return 0;
     }
 
     // 1. Convert binary SID to human-readable string format

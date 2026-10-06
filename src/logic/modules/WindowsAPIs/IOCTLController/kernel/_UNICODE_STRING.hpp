@@ -3,11 +3,11 @@
 
 #include "IOCTLKernel.hpp"
 
-typedef struct _UNICODE_STRING
+typedef struct _KERNEL_UNICODE_STRING
 {
     WORD Length;
     WORD MaximumLength;
     WORD *Buffer;
-} UNICODE_STRING, *PUNICODE_STRING;
+} KERNEL_UNICODE_STRING, *PKERNEL_UNICODE_STRING;
 
 #endif // _UNICODE_STRING_HPP

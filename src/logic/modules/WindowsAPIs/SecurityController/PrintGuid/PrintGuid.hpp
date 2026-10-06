@@ -12,7 +12,7 @@ inline bool handle_security_print_guid(const GUID *pGuid,
 {
     if (pGuid == NULL)
     {
-        return;
+        return 0;
     }
 
     std::ostringstream oss;

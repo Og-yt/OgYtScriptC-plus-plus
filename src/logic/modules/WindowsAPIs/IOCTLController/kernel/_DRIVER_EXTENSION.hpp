@@ -8,7 +8,7 @@ typedef struct _DRIVER_EXTENSION
     PDRIVER_OBJECT DriverObject;
     LONG *AddDevice;
     ULONG Count;
-    UNICODE_STRING ServiceKeyName;
+    KERNEL_UNICODE_STRING ServiceKeyName;
     PIO_CLIENT_EXTENSION ClientDriverExtension;
     PFS_FILTER_CALLBACKS FsFilterCallbacks;
 } DRIVER_EXTENSION, *PDRIVER_EXTENSION;

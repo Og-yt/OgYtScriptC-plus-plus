@@ -22,7 +22,7 @@ struct _FILE_OBJECT
     UCHAR SharedWrite;
     UCHAR SharedDelete;
     ULONG Flags;
-    UNICODE_STRING FileName;
+    KERNEL_UNICODE_STRING FileName;
     LARGE_INTEGER CurrentByteOffset;
     ULONG Waiters;
     ULONG Busy;
