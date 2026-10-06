@@ -10,4 +10,6 @@
 #include "GetSecurityDescriptorLength.hpp"
 #include "GetSecurityDescriptorRMControl.hpp"
 
+#include "AuditEnumerateCategories.hpp"
+
 #endif // SECURITYCONTROLLERCONFIG_HPP

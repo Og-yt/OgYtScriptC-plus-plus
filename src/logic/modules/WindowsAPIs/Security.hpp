@@ -18,9 +18,9 @@ namespace SecurityControl
     namespace Get
     {
         /**
-         * 
+         *
          * @brief セキュリティ記述子を取得する関数
-         * 
+         *
          * @param 第1引数 targetPath
          * @param 第2引数 objectType
          */
@@ -44,7 +44,7 @@ namespace SecurityControl
                 try
                 {
                     LPCWSTR target_path = string_to_lpwstr(match[1].str());
-                    
+
                     handle_get_security_descriptor_sub_func(match, target_path, line_num, result_text, buffer);
                     delete[] target_path;
                     return false;
@@ -66,9 +66,9 @@ namespace SecurityControl
         }
 
         /**
-         * 
+         *
          * @brief
-         * 
+         *
          */
         inline bool handle_get_security_descriptor_owner(const std::string &line,
                                                          int line_num,
@@ -95,7 +95,7 @@ namespace SecurityControl
                     std::wstring msg = L"Retrieving owner details for: ";
                     msg += target_path;
                     msg += L"\n";
-                    
+
                     int size = WideCharToMultiByte(CP_UTF8,
                                                    0,
                                                    msg.c_str(),
@@ -136,9 +136,9 @@ namespace SecurityControl
         }
 
         /**
-         * 
+         *
          * @biref セキュリティ記述子コントロールとリビジョン情報を取得する関数
-         * 
+         *
          */
         inline bool handle_get_security_descriptor_control(const std::string &line,
                                                            int line_num,
@@ -178,9 +178,9 @@ namespace SecurityControl
         }
 
         /**
-         * 
+         *
          * @brief 指定されたセキュリティ記述子の随意アクセス制御リスト(DACL)へのポインターを取得する関数。
-         * 
+         *
          */
         inline bool handle_get_security_descriptor_dacl(const std::string &line,
                                                         int line_num,
@@ -257,9 +257,9 @@ namespace SecurityControl
         }
 
         /**
-         * 
+         *
          * @brief 構造的に有効なセキュリティ記述子をバイト単位で返す関数
-         * 
+         *
          */
         inline bool handle_get_security_descriptor_length(const std::string &line,
                                                           int line_num,
@@ -332,6 +332,50 @@ namespace SecurityControl
             }
 
             SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "GetSecurityDescriptorRMControl");
+            return false;
+        }
+    }
+    namespace Audit
+    {
+        /**
+         * 
+         * @brief 使用可能な監視ポリシーを列挙する関数
+         * 
+         */
+        inline bool handle_audit_enumerate_categories(const std::string &line,
+                                                      int line_num,
+                                                      std::string &result_text,
+                                                      Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                      bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "AuditEnumerateCategories()");
+                return false;
+            }
+
+            static const std::regex audit_enumerate_categories_re("AuditEnumerateCategories\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, audit_enumerate_categories_re))
+            {
+                try
+                {
+                    return handle_audit_enumerate_categories_sub_func(line_num, result_text, buffer);
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    SecurityError::handle_security_controller_error_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (const std::exception &e)
+                {
+                    SecurityError::handle_security_controller_error_exception(line_num, result_text, buffer, "AuditEnumerateCategories");
+                    return false;
+                }
+            }
+
+            SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "AuditEnumerateCategories");
             return false;
         }
     }

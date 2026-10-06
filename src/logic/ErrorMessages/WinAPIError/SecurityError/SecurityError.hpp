@@ -278,6 +278,42 @@ namespace SecurityError
 
             return false;
         }
+
+        inline bool handle_audit_enumerate_categories_failed_with_error(LINE line_num,
+                                                                        MESSAGE result_text,
+                                                                        BUFFER buffer,
+                                                                        WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "AuditEnumerateCategories failed with error code: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        /* 忠告のためハイライトはつけない */
+        inline bool handle_note_set_administorator(LINE line_num,
+                                                   MESSAGE result_text,
+                                                   BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "Note: Ensure you are running this program as Administrator.\n");
+
+            return false;
+        }
+
+        inline bool handle_security_unable_to_retrieve_name(LINE line_num,
+                                                            MESSAGE result_text,
+                                                            BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "  Name: <unable to retrieve name>\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+    }
+
+    namespace Audit
+    {
+        //
     }
 
     inline bool handle_security_controller_error_invalid_argument(LINE line_num,
