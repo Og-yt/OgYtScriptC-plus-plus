@@ -242,14 +242,59 @@ namespace SecurityControl
                 }
                 catch (const std::invalid_argument &ia)
                 {
-                    //
+                    SecurityError::handle_security_controller_error_invalid_argument(line_num, result_text, buffer);
+                    return false;
                 }
                 catch (const std::exception &e)
                 {
-                    //
+                    SecurityError::handle_security_controller_error_exception(line_num, result_text, buffer, "GetSecurityDescriptorGroup");
+                    return false;
                 }
             }
 
+            SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "GetSecurityDescriptorGroup");
+            return false;
+        }
+
+        /**
+         * 
+         * @brief 構造的に有効なセキュリティ記述子をバイト単位で返す関数
+         * 
+         */
+        inline bool handle_get_security_descriptor_length(const std::string &line,
+                                                          int line_num,
+                                                          std::string &result_text,
+                                                          Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                          bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "GetSecurityDescriptorLength()");
+                return false;
+            }
+
+            static const std::regex get_security_descriptor_length_re("GetSecurityDescriptorLength\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, get_security_descriptor_length_re))
+            {
+                try
+                {
+                    return handle_get_security_descriptor_length_sub_func(line_num, result_text, buffer);
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    SecurityError::handle_security_controller_error_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (const std::exception &e)
+                {
+                    SecurityError::handle_security_controller_error_exception(line_num, result_text, buffer, "GetSecurityDescriptorLength");
+                    return false;
+                }
+            }
+
+            SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "GetSecurityDescriptorLength");
             return false;
         }
     }
