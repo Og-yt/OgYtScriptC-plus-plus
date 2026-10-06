@@ -6,7 +6,7 @@
 	"image": "mcr.microsoft.com/devcontainers/base:alpine3.23",
 	"features": {
 		"ghcr.io/siri404/devcontainer-ai-features/gemini-cli:1": {},
-		"ghcr.io/devcontainer-config/features/dot-config:4": {},
+		"ghcr.io/devcontainer-config/features/dot-config:5": {},
 		"ghcr.io/marblejenka/devcontainer-feature/gemini-cli:0": {}
 	},
 	"customizations": {
