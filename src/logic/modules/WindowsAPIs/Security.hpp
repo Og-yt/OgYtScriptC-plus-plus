@@ -297,6 +297,40 @@ namespace SecurityControl
             SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "GetSecurityDescriptorLength");
             return false;
         }
+
+        inline bool handle_get_security_descriptor_rm_control(const std::string &line,
+                                                              int line_num,
+                                                              std::string &result_text,
+                                                              Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                              bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "GetSecurityDescriptorRMControl()");
+                return false;
+            }
+
+            static const std::regex get_security_descriptor_rm_control_re("GetSecurityDescriptorRMControl\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, get_security_descriptor_rm_control_re))
+            {
+                try
+                {
+                    //
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    //
+                }
+                catch (const std::exception &e)
+                {
+                    //
+                }
+            }
+
+            return false;
+        }
     }
 }
 
