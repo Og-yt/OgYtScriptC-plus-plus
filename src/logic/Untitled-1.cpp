@@ -35,7 +35,7 @@ int main()
 
         for (ULONG i = 0; i < userCount; ++i)
         {
-            PSID pSid = pppAuditSidArray->pSidArray[i];
+            PSID pSid = pppAuditSidArray->UserSidArray[i];
 
             // Option 1: Convert the SID to a readable String SID (e.g., S-1-5-21-...)
             LPSTR pSidString = NULL;

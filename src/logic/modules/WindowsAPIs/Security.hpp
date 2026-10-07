@@ -378,6 +378,40 @@ namespace SecurityControl
             SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "AuditEnumerateCategories");
             return false;
         }
+
+        inline bool handle_audit_enumerate_per_user_policy(const std::string &line,
+                                                           int line_num,
+                                                           std::string &result_text,
+                                                           Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                           bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "AuditEnueratePerUserPolicy()");
+                return false;
+            }
+
+            static const std::regex audit_enumerate_per_user_policy_re("AuditEnumeratePerUserPolicy\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, audit_enumerate_per_user_policy_re))
+            {
+                try
+                {
+                    //
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    //
+                }
+                catch (const std::exception &e)
+                {
+                    //
+                }
+            }
+
+            return false;
+        }
     }
 }
 
