@@ -343,6 +343,9 @@ namespace SecurityError
 
             return false;
         }
+
+        inline bool handle_failed_to_lookup_GUID_error(LINE line_num)
+        {}
     }
 
     inline bool handle_security_controller_error_invalid_argument(LINE line_num,

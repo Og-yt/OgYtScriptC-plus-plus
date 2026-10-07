@@ -379,6 +379,11 @@ namespace SecurityControl
             return false;
         }
 
+        /**
+         * 
+         * @brief ユーザーごとの監査ポリシーが指定されているユーザーを列挙する関数
+         * 
+         */
         inline bool handle_audit_enumerate_per_user_policy(const std::string &line,
                                                            int line_num,
                                                            std::string &result_text,
@@ -413,6 +418,47 @@ namespace SecurityControl
             }
 
             SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "AuditEnumeratePerUserPolicy");
+            return false;
+        }
+
+        /**
+         * 
+         * @brief 使用可能な監査ポリシーサブカテゴリを列挙する関数
+         * 
+         * AuditLookupCategoryGuidFromCategoryId
+         * 
+         */
+        inline bool handle_audit_lookup_category_guid_from_categoryid(const std::string &line,
+                                                      int line_num,
+                                                      std::string &result_text,
+                                                      Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                      bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "AuditLookupCategoryGuidFromCategoryId()");
+                return false;
+            }
+
+            static const std::regex audit_lookup_category_guid_from_categoryid_re("AuditLookupCategoryGuidFromCategoryId\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, audit_lookup_category_guid_from_categoryid_re))
+            {
+                try
+                {
+                    //
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    //
+                }
+                catch (const std::exception &e)
+                {
+                    //
+                }
+            }
+
             return false;
         }
     }
