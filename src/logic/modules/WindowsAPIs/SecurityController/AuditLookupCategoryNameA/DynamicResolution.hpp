@@ -3,7 +3,7 @@
 
 #include <windows.h>
 #include <ntsecapi.h>
-#include <ostream>
+#include <sstream>
 #include "../../../../ErrorLogic.hpp"
 #include "../../../../ErrorMessages/Messages.hpp"
 
@@ -15,15 +15,16 @@ inline bool handle_method_2_dynamic_resolution(LINE line_num,
                                                BUFFER buffer)
 {
     std::stringstream oss;
-    DWORD err_code = GetLastError();
+
 
     oss << "--- Dynamic Module Loading (Explicit DLL Import) ---\n";
 
     HMODULE hAdvApi32 = LoadLibraryA("advapi32.dll");
     if (hAdvApi32 == NULL)
     {
-        handle_security_print_last_error_detail(line_num, result_text, buffer, "LoadLibraryA(\"advapi32.dll\")", std::to_string(err_code));
-        return 1;
+        DWORD err_code = GetLastError();
+        handle_security_print_last_error_detail(line_num, result_text, buffer, "LoadLibraryA(\"advapi32.dll\")", err_code);
+        return false;
     }
 
     PFN_AuditLookupCategoryNameA pfnAuditLookupCategoryNameA = (PFN_AuditLookupCategoryNameA)GetProcAddress(hAdvApi32, "AuditLookupCategoryNameA");
@@ -31,14 +32,42 @@ inline bool handle_method_2_dynamic_resolution(LINE line_num,
 
     if (pfnAuditLookupCategoryNameA == NULL || pfnAuditFree == NULL)
     {
-        //
+        SecurityError::Audit::handle_failed_to_resolve_function_error(line_num, result_text, buffer);
         FreeLibrary(hAdvApi32);
-        return 1;
+        return false;
     }
 
     oss << "Successfully resolved function pointers from advapi32.dll.\n";
 
-    GUID targetGuid = AuditCategorySystem;
+    GUID targetGuid = {};
+    if (!AuditLookupCategoryGuidFromCategoryId(AuditCategorySystem, &targetGuid))
+    {
+        DWORD err_code = GetLastError();
+        handle_security_print_last_error_detail(
+            line_num, result_text, buffer,
+            "AuditLookupCategoryGuidFromCategoryId", err_code);
+        FreeLibrary(hAdvApi32);
+        return false;
+    }
+
+    PSTR pDynamicCategoryName = nullptr;
+
+    BOOL dynamicResult = pfnAuditLookupCategoryNameA(&targetGuid, &pDynamicCategoryName);
+    if (dynamicResult && pDynamicCategoryName != nullptr)
+    {
+        oss << "  Dynamic Lookup Output: \"" << pDynamicCategoryName << "\"\n";
+        pfnAuditFree(pDynamicCategoryName);
+        pDynamicCategoryName = nullptr;
+    }
+    else
+    {
+        DWORD err_code = GetLastError();
+        handle_security_print_last_error_detail(line_num, result_text, buffer, "pfnAuditLookupCategoryNameA", err_code);
+    }
+
+    FreeLibrary(hAdvApi32);
+    result_text += oss.str();
+    return dynamicResult != FALSE;
 }
 
 #endif // DYNAMICRESOLUTION_HPP

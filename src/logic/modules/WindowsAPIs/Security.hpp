@@ -524,7 +524,7 @@ namespace SecurityControl
             {
                 try
                 {
-                    //
+                    return handle_audit_lookup_category_name_a_sub_func(line_num, result_text, buffer);
                 }
                 catch (const std::invalid_argument &ia)
                 {
