@@ -56,7 +56,7 @@ inline bool handle_method_1_static_linking_usage(LINE line_num,
             }
             else
             {
-                //
+                oss << "  Status         : Succeeded, but returned NULL string.\n";
             }
         }
         else
