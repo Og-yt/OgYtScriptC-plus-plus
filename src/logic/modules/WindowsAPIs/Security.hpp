@@ -447,18 +447,21 @@ namespace SecurityControl
             {
                 try
                 {
-                    //
+                    return handle_audit_lookup_category_guid_from_category_id_sub_func(line_num, result_text, buffer);
                 }
                 catch (const std::invalid_argument &ia)
                 {
-                    //
+                    SecurityError::handle_security_controller_error_invalid_argument(line_num, result_text, buffer);
+                    return false;
                 }
                 catch (const std::exception &e)
                 {
-                    //
+                    SecurityError::handle_security_controller_error_exception(line_num, result_text, buffer, "AuditLookupCategoryGuidFromCategoryId");
+                    return false;
                 }
             }
 
+            SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "AuditLookupCategoryGuidFromCategoryId");
             return false;
         }
     }
