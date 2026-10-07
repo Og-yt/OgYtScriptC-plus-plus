@@ -47,11 +47,11 @@ inline bool handle_audit_lookup_category_guid_from_category_id_sub_func(LINE lin
         }
         else
         {
-            //
+            SecurityError::Audit::handle_failed_to_lookup_GUID_error(line_num, result_text, buffer, err_code);
 
             if (err_code == ERROR_ACCESS_DENIED)
             {
-                //
+                SecurityError::Audit::handle_note_not_administrator(line_num, result_text, buffer);
             }
         }
 

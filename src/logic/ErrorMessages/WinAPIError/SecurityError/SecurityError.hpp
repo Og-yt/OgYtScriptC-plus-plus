@@ -344,8 +344,16 @@ namespace SecurityError
             return false;
         }
 
-        inline bool handle_failed_to_lookup_GUID_error(LINE line_num)
-        {}
+        inline bool handle_failed_to_lookup_GUID_error(LINE line_num,
+                                                       MESSAGE result_text,
+                                                       BUFFER buffer,
+                                                       WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "  Failed to lookup GUID. Error code: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
     }
 
     inline bool handle_security_controller_error_invalid_argument(LINE line_num,
