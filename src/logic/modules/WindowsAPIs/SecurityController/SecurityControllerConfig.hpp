@@ -11,5 +11,6 @@
 #include "GetSecurityDescriptorRMControl.hpp"
 
 #include "AuditEnumerateCategories.hpp"
+#include "AuditEnumeratePerUserPolicy.hpp"
 
 #endif // SECURITYCONTROLLERCONFIG_HPP
