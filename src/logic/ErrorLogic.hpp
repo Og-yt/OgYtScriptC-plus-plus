@@ -4,11 +4,15 @@
 #include <gtkmm.h>
 #include <string>
 
+#include <ostream>
+
 #include <exception>
 
 typedef int LINE;
 typedef std::string &MESSAGE;
 typedef Glib::RefPtr<Gtk::TextBuffer> BUFFER;
+
+typedef std::ostringstream OSTERR;
 
 typedef unsigned long WERROR;
 typedef WERROR WSERROR;
@@ -22,6 +26,8 @@ typedef const std::string &FWINSERV;
 typedef const std::string &FWINFSCTLFLTKEL;
 typedef const std::string &FWINMMC;
 typedef const std::string &FWINSECU;
+
+typedef const char* SEERRORFUNCTION;
 
 /* ハードウェア制御 */
 typedef const std::string &FWINHW;

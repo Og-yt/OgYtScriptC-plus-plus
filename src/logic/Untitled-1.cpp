@@ -1,109 +1,199 @@
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <ntsecapi.h>
 #include <iostream>
 #include <iomanip>
 
-// Helper function to print a GUID structure in standard string format
-void PrintGuid(const GUID* pGuid)
+#pragma comment(lib, "advapi32.lib")
+
+// Function prototype for dynamic API loading via GetProcAddress
+typedef BOOL (WINAPI *PFN_AuditLookupCategoryNameA)(
+    _In_  const GUID *pAuditCategoryGuid,
+    _Out_ PSTR       *ppszCategoryName
+);
+
+typedef ULONG (WINAPI *PFN_AuditFree)(
+    _In_ PVOID Buffer
+);
+
+// Structure for mapping GUIDs to friendly programmatic descriptors
+struct AuditCategoryEntry
 {
-    if (pGuid == NULL) return;
+    const char* MacroName;
+    GUID CategoryGuid;
+};
 
-    std::cout << "{"
-              << std::hex << std::setfill('0')
-              << std::setw(8) << pGuid->Data1 << "-"
-              << std::setw(4) << pGuid->Data2 << "-"
-              << std::setw(4) << pGuid->Data3 << "-";
+// Helper: Formats Win32 error codes into system message strings
+void PrintLastErrorDetails(const char* functionName, DWORD errorCode)
+{
+    LPSTR messageBuffer = nullptr;
+    DWORD size = FormatMessageA(
+        FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL,
+        errorCode,
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+        (LPSTR)&messageBuffer,
+        0,
+        NULL
+    );
 
-    for (int i = 0; i < 2; ++i) {
-        std::cout << std::setw(2) << static_cast<unsigned int>(pGuid->Data4[i]);
+    std::cerr << "[ERROR] " << functionName << " failed." << "\n"
+              << "  Error Code : " << errorCode << " (0x" 
+              << std::hex << std::uppercase << errorCode << std::dec << ")\n";
+
+    if (size > 0 && messageBuffer != nullptr)
+    {
+        std::cerr << "  Description: " << messageBuffer;
+        LocalFree(messageBuffer);
     }
-    std::cout << "-";
-    for (int i = 2; i < 8; ++i) {
-        std::cout << std::setw(2) << static_cast<unsigned int>(pGuid->Data4[i]);
+    else
+    {
+        std::cerr << "  Description: Unknown error condition.\n";
     }
-    std::cout << "}" << std::dec << std::endl;
 }
 
-// Helper to convert POLICY_AUDIT_EVENT_TYPE enum value to readable text
-const char* GetAuditCategoryEnumName(POLICY_AUDIT_EVENT_TYPE auditType)
+// Helper: Formats GUID structure into standard string format
+void PrintGuidString(const GUID& guid)
 {
-    switch (auditType)
-    {
-        case AuditCategorySystem:                  return "AuditCategorySystem (0)";
-        case AuditCategoryLogon:                   return "AuditCategoryLogon (1)";
-        case AuditCategoryObjectAccess:            return "AuditCategoryObjectAccess (2)";
-        case AuditCategoryPrivilegeUse:            return "AuditCategoryPrivilegeUse (3)";
-        case AuditCategoryDetailedTracking:       return "AuditCategoryDetailedTracking (4)";
-        case AuditCategoryPolicyChange:            return "AuditCategoryPolicyChange (5)";
-        case AuditCategoryAccountManagement:       return "AuditCategoryAccountManagement (6)";
-        case AuditCategoryDirectoryServiceAccess: return "AuditCategoryDirectoryServiceAccess (7)";
-        case AuditCategoryAccountLogon:            return "AuditCategoryAccountLogon (8)";
-        default:                                   return "Unknown/Unmapped Category ID";
-    }
+    std::cout << "{"
+              << std::hex << std::setfill('0')
+              << std::setw(8) << guid.Data1 << "-"
+              << std::setw(4) << guid.Data2 << "-"
+              << std::setw(4) << guid.Data3 << "-"
+              << std::setw(2) << static_cast<int>(guid.Data4[0])
+              << std::setw(2) << static_cast<int>(guid.Data4[1]) << "-"
+              << std::setw(2) << static_cast<int>(guid.Data4[2])
+              << std::setw(2) << static_cast<int>(guid.Data4[3])
+              << std::setw(2) << static_cast<int>(guid.Data4[4])
+              << std::setw(2) << static_cast<int>(guid.Data4[5])
+              << std::setw(2) << static_cast<int>(guid.Data4[6])
+              << std::setw(2) << static_cast<int>(guid.Data4[7])
+              << std::dec << "}";
 }
 
 int main()
 {
-    GUID* pAuditCategoriesArray = NULL;
-    ULONG categoryCount = 0;
+    std::cout << "====================================================\n";
+    std::cout << " Windows Audit Category Lookup Demonstration (ANSI) \n";
+    std::cout << "====================================================\n\n";
 
-    // Step 1: Enumerate all audit categories to get their GUIDs
-    BOOLEAN enumResult = AuditEnumerateCategories(&pAuditCategoriesArray, &categoryCount);
+    // -------------------------------------------------------------------------
+    // Method 1: Static Linking Usage (Direct API invocation)
+    // -------------------------------------------------------------------------
+    std::cout << "--- Direct Link Invocation (Static Linking via advapi32.lib) ---\n";
 
-    if (!enumResult || categoryCount == 0)
+    // Array of predefined category GUIDs declared in ntsecapi.h
+    AuditCategoryEntry categories[] = {
+        { "GUID_AuditCategorySystem",              AuditCategorySystem },
+        { "GUID_AuditCategoryLogon",               AuditCategoryLogon },
+        { "GUID_AuditCategoryObjectAccess",        AuditCategoryObjectAccess },
+        { "GUID_AuditCategoryPrivilegeUse",        AuditCategoryPrivilegeUse },
+        { "GUID_AuditCategoryDetailedTracking",    AuditCategoryDetailedTracking },
+        { "GUID_AuditCategoryPolicyChange",        AuditCategoryPolicyChange },
+        { "GUID_AuditCategoryAccountManagement",   AuditCategoryAccountManagement },
+        { "GUID_AuditCategoryDirectoryServiceAccess", AuditCategoryDirectoryServiceAccess },
+        { "GUID_AuditCategoryAccountLogon",        AuditCategoryAccountLogon }
+    };
+
+    size_t totalCategories = sizeof(categories) / sizeof(categories[0]);
+
+    for (size_t i = 0; i < totalCategories; ++i)
     {
-        DWORD dwError = GetLastError();
-        std::cout << "AuditEnumerateCategories failed. Error code: " << dwError << std::endl;
-        
-        if (dwError == ERROR_ACCESS_DENIED) {
-            std::cout << "Note: Ensure you are running this program as Administrator." << std::endl;
-        }
-        return 1;
-    }
+        PSTR pCategoryName = nullptr;
 
-    std::cout << "Successfully retrieved " << categoryCount << " audit category GUIDs.\n";
-    std::cout << "Looking up corresponding POLICY_AUDIT_EVENT_TYPE for each GUID:\n" << std::endl;
+        std::cout << "[" << (i + 1) << "/" << totalCategories << "] " << categories[i].MacroName << "\n";
+        std::cout << "  GUID           : ";
+        PrintGuidString(categories[i].CategoryGuid);
+        std::cout << "\n";
 
-    // Step 2: Iterate through each GUID and resolve its Category ID
-    for (ULONG i = 0; i < categoryCount; ++i)
-    {
-        GUID categoryGuid = pAuditCategoriesArray[i];
-        POLICY_AUDIT_EVENT_TYPE categoryId;
+        // Call AuditLookupCategoryNameA
+        BOOL success = AuditLookupCategoryNameA(&categories[i].CategoryGuid, &pCategoryName);
 
-        std::cout << "Category [" << i + 1 << "] GUID: ";
-        PrintGuid(&categoryGuid);
-
-        // Call AuditLookupCategoryIdFromCategoryGuid
-        BOOLEAN lookupResult = AuditLookupCategoryIdFromCategoryGuid(
-            &categoryGuid,
-            &categoryId
-        );
-
-        if (lookupResult)
+        if (success)
         {
-            std::cout << "  Mapped Category ID : " << GetAuditCategoryEnumName(categoryId) << std::endl;
-
-            // Optional: Query friendly display name
-            PWSTR pCategoryName = NULL;
-            if (AuditLookupCategoryNameW(&categoryGuid, &pCategoryName))
+            if (pCategoryName != nullptr)
             {
-                std::wcout << L"  Display Name       : " << pCategoryName << std::endl;
+                std::cout << "  Category Name  : \"" << pCategoryName << "\"\n";
+
+                // Memory release requirement
                 AuditFree(pCategoryName);
+                pCategoryName = nullptr;
+            }
+            else
+            {
+                std::cout << "  Status         : Succeeded, but returned NULL string.\n";
             }
         }
         else
         {
-            std::cout << "  Lookup failed. Error code: " << GetLastError() << std::endl;
+            DWORD err = GetLastError();
+            PrintLastErrorDetails("AuditLookupCategoryNameA", err);
         }
-
-        std::cout << "----------------------------------------------------" << std::endl;
+        std::cout << "\n";
     }
 
-    // MANDATORY: Free memory allocated by AuditEnumerateCategories
-    if (pAuditCategoriesArray != NULL)
+    // -------------------------------------------------------------------------
+    // Method 2: Dynamic Resolution (Explicit Loading via LoadLibraryA/GetProcAddress)
+    // -------------------------------------------------------------------------
+    std::cout << "--- Dynamic Module Loading (Explicit DLL Import) ---\n";
+
+    HMODULE hAdvApi32 = LoadLibraryA("advapi32.dll");
+    if (hAdvApi32 == NULL)
     {
-        AuditFree(pAuditCategoriesArray);
-        pAuditCategoriesArray = NULL;
+        PrintLastErrorDetails("LoadLibraryA(\"advapi32.dll\")", GetLastError());
+        return 1;
+    }
+
+    PFN_AuditLookupCategoryNameA pfnAuditLookupCategoryNameA = 
+        (PFN_AuditLookupCategoryNameA)GetProcAddress(hAdvApi32, "AuditLookupCategoryNameA");
+
+    PFN_AuditFree pfnAuditFree = 
+        (PFN_AuditFree)GetProcAddress(hAdvApi32, "AuditFree");
+
+    if (pfnAuditLookupCategoryNameA == NULL || pfnAuditFree == NULL)
+    {
+        std::cerr << "[ERROR] Failed to resolve function addresses from advapi32.dll.\n";
+        FreeLibrary(hAdvApi32);
+        return 1;
+    }
+
+    std::cout << "Successfully resolved function pointers from advapi32.dll.\n";
+
+    // Test dynamic invocation with System category
+    GUID targetGuid = AuditCategorySystem;
+    PSTR pDynamicCategoryName = nullptr;
+
+    BOOL dynamicResult = pfnAuditLookupCategoryNameA(&targetGuid, &pDynamicCategoryName);
+    if (dynamicResult && pDynamicCategoryName != nullptr)
+    {
+        std::cout << "  Dynamic Lookup Output: \"" << pDynamicCategoryName << "\"\n";
+        pfnAuditFree(pDynamicCategoryName);
+        pDynamicCategoryName = nullptr;
+    }
+    else
+    {
+        PrintLastErrorDetails("pfnAuditLookupCategoryNameA", GetLastError());
+    }
+
+    FreeLibrary(hAdvApi32);
+    hAdvApi32 = NULL;
+
+    // -------------------------------------------------------------------------
+    // Method 3: Error Handling Test (Passing Invalid / Zeroed GUID)
+    // -------------------------------------------------------------------------
+    std::cout << "\n--- Invalid GUID Test ---\n";
+    GUID invalidGuid = { 0x00000000, 0x0000, 0x0000, { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } };
+    PSTR pFailBuffer = nullptr;
+
+    BOOL failResult = AuditLookupCategoryNameA(&invalidGuid, &pFailBuffer);
+    if (!failResult)
+    {
+        DWORD expectedError = GetLastError();
+        PrintLastErrorDetails("AuditLookupCategoryNameA (Invalid GUID)", expectedError);
+    }
+    else
+    {
+        if (pFailBuffer) AuditFree(pFailBuffer);
     }
 
     return 0;

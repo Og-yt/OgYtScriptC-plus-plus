@@ -4,6 +4,7 @@
 #include <windows.h>
 #include "../../../ErrorLogic.hpp"
 #include "../../../ErrorMessages/Messages.hpp"
+#include "../../../modules/WindowsAPIs/OStringStreamToString.hpp"
 
 namespace SecurityError
 {
@@ -361,6 +362,41 @@ namespace SecurityError
                                                WSERROR err_code)
         {
             result_text += ErrorLogic::build_msg(line_num, "  Lookup failed. Error code: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_print_last_error_details_error_1(LINE line_num,
+                                                            MESSAGE result_text,
+                                                            BUFFER buffer,
+                                                            SEERRORFUNCTION functionName,
+                                                            WSERROR err_code)
+        {
+            OSTERR oss;
+            oss << "[ERROR] " << functionName << " failed." << "\n" << "  Error Code : " << std::to_string(err_code) << " (0x" << std::hex << std::uppercase << std::to_string(err_code) << std::dec << ")\n";
+            result_text += ErrorLogic::build_msg(line_num, OstringStreamToString(oss));
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_security_description_print_last_err(LINE line_num,
+                                                               MESSAGE result_text,
+                                                               BUFFER buffer,
+                                                               LPSTR msgBuffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, '  Description: ' + msgBuffer + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_unknown_error_condition(LINE line_num,
+                                                   MESSAGE result_text,
+                                                   BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "  Description: Unknown error condition.\n");
             ErrorLogic::highlight_line(buffer, line_num);
 
             return false;
