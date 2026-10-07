@@ -354,6 +354,17 @@ namespace SecurityError
 
             return false;
         }
+
+        inline bool handle_lookup_failed_error(LINE line_num,
+                                               MESSAGE result_text,
+                                               BUFFER buffer,
+                                               WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "  Lookup failed. Error code: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
     }
 
     inline bool handle_security_controller_error_invalid_argument(LINE line_num,

@@ -28,7 +28,7 @@ inline bool handle_audit_lookup_category_id_from_category_guid_sub_func(LINE lin
 
         if (err_code == ERROR_ACCESS_DENIED)
         {
-            //
+            SecurityError::Audit::handle_note_not_administrator(line_num, result_text, buffer);
         }
         return 1;
     }
@@ -59,7 +59,7 @@ inline bool handle_audit_lookup_category_id_from_category_guid_sub_func(LINE lin
         }
         else
         {
-            //
+            SecurityError::Audit::handle_lookup_failed_error(line_num, result_text, buffer, err_code);
         }
 
         oss << "----------------------------------------------------\n";

@@ -13,5 +13,6 @@
 #include "AuditEnumerateCategories.hpp"
 #include "AuditEnumeratePerUserPolicy.hpp"
 #include "AuditLookupCategoryGuidFromCategoryId.hpp"
+#include "AuditLookupCategoryIdFromCategoryGUID.hpp"
 
 #endif // SECURITYCONTROLLERCONFIG_HPP
