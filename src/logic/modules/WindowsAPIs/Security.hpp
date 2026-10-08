@@ -554,14 +554,16 @@ namespace SecurityControl
                 return false;
             }
 
-            static const std::regex audit_query_global_scal_a_re("AuditQueryGlobalScalA\\(\\);");
+            static const std::regex audit_query_global_scal_a_re("AuditQueryGlobalScalA\\(\\s*([a-zA-Z][a-zA-Z0-9_]*)\\);");
             std::smatch match;
 
             if (std::regex_search(line, match, audit_query_global_scal_a_re))
             {
                 try
                 {
-                    //
+                    DWORD privilegeNameCode = std::stoul(match[1]);
+
+                    return handle_audit_query_global_scal_a_sub_func(line_num, result_text, buffer);
                 }
                 catch (const std::invalid_argument &ia)
                 {

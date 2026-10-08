@@ -8,10 +8,10 @@
 #include "../../../../ErrorMessages/Messages.hpp"
 
 inline BOOL handle_method_1_set_current_process_privilege(PCSTR privilegeName,
-                                                        BOOL enable,
-                                                        LINE line_num,
-                                                        MESSAGE result_text,
-                                                        BUFFER buffer)
+                                                          BOOL enable,
+                                                          LINE line_num,
+                                                          MESSAGE result_text,
+                                                          BUFFER buffer)
 {
     std::ostringstream oss;
     HANDLE hToken = NULL;

@@ -5,6 +5,7 @@
 #include "../../../ErrorLogic.hpp"
 #include "../../../ErrorMessages/Messages.hpp"
 #include "../../../modules/WindowsAPIs/OStringStreamToString.hpp"
+#include "../../../modules/WindowsAPIs/ToHex.hpp"
 
 namespace SecurityError
 {
@@ -487,6 +488,54 @@ namespace SecurityError
                                                             WSERROR err_code)
         {
             result_text += ErrorLogic::build_msg(line_num, "[!] Failed to get ACE at index" + index + '. Error: ' + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_warning_could_not_enable_se_security_privilege_run_as_administrator(LINE line_num,
+                                                                                               MESSAGE result_text,
+                                                                                               BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[!] Warning: Could not enable SeSecurityPrivilege. Run as administrator.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_audit_query_global_sacl_a_failed_with_error(LINE line_num,
+                                                                       MESSAGE result_text,
+                                                                       BUFFER buffer,
+                                                                       WSERROR err_code)
+        {
+            OSTERR oss;
+            oss << "[!] AuditQueryGlobalSaclA failed with Error Code: " << std::to_string(err_code) << To_16::X8::handle_to_hex_ulong(err_code) << "\n";
+
+            result_text += ErrorLogic::build_msg(line_num, oss.str());
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_ensure_the_application_is_runnig_admin(LINE line_num,
+                                                                  MESSAGE result_text,
+                                                                  BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[!] Hint: Ensere the application is running elevated (As Administrator).\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_no_global_sacl_is_currently_defined(LINE line_num,
+                                                               MESSAGE result_text,
+                                                               BUFFER buffer,
+                                                               PCSTR objectTypeName)
+        {
+            OSTERR oss;
+            oss << "[!] Hint: NO Global SACL is currently defined for '" << objectTypeName << "\n";
+
+            result_text += ErrorLogic::build_msg(line_num, oss.str());
             ErrorLogic::highlight_line(buffer, line_num);
 
             return false;

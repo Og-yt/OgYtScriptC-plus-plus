@@ -88,6 +88,20 @@ namespace To_16
 
             return oss.str();
         }
+
+        inline STREAM handle_to_hex_ulong(unsigned long value)
+        {
+            std::ostringstream oss;
+
+            oss << "0x"
+                << std::hex
+                << std::uppercase
+                << std::setfill('0')
+                << std::setw(8)
+                << value;
+
+            return oss.str();
+        }
     }
 }
 
