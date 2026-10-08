@@ -9,6 +9,7 @@
 #include "StringToLPWSTR.hpp"
 #include "../../ErrorLogic.hpp"
 #include "../../ErrorMessages/Messages.hpp"
+#include "SecurityController/privilegenameCodes.hpp"
 #include "SecurityController/SecurityControllerConfig.hpp"
 
 #include "StringToLPWSTR.hpp"
@@ -554,27 +555,12 @@ namespace SecurityControl
                 return false;
             }
 
-            static const std::regex audit_query_global_scal_a_re("AuditQueryGlobalScalA\\(\\s*([a-zA-Z][a-zA-Z0-9_]*)\\);");
+            static const std::regex audit_query_global_scal_a_re("AuditQueryGlobalScalA\\s*\\(\\s*\\)\\s*;");
             std::smatch match;
 
             if (std::regex_search(line, match, audit_query_global_scal_a_re))
             {
-                try
-                {
-                    DWORD privilegeNameCode = std::stoul(match[1]);
-
-                    return handle_audit_query_global_scal_a_sub_func(line_num, result_text, buffer);
-                }
-                catch (const std::invalid_argument &ia)
-                {
-                    SecurityError::handle_security_controller_error_invalid_argument(line_num, result_text, buffer);
-                    return false;
-                }
-                catch (const std::exception &e)
-                {
-                    SecurityError::handle_security_controller_error_exception(line_num, result_text, buffer, "AuditQueryGlobalScalA");
-                    return false;
-                }
+                return handle_audit_query_global_scal_a_sub_func(line_num, result_text, buffer);
             }
 
             SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "AuditQueryGlobalScalA");

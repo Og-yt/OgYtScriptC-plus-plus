@@ -13,8 +13,6 @@ inline bool handle_method_3_main_code(LINE line_num,
                                       MESSAGE result_text,
                                       BUFFER buffer)
 {
-    PCSTR privilegeName;
-    BOOL enable;
     PACL pGlobalSacl = NULL;
     BOOL bResult = FALSE;
     std::ostringstream oss;
@@ -26,10 +24,9 @@ inline bool handle_method_3_main_code(LINE line_num,
                                                        result_text,
                                                        buffer))
     {
-        DWORD err_code = GetLastError();
         SecurityError::Audit::handle_warning_could_not_enable_se_security_privilege_run_as_administrator(line_num, result_text, buffer);
 
-        return FALSE;
+        return false;
     }
 
     /* SUCCESS */
@@ -57,7 +54,7 @@ inline bool handle_method_3_main_code(LINE line_num,
             SecurityError::Audit::handle_no_global_sacl_is_currently_defined(line_num, result_text, buffer, objectTypeName);
         }
 
-        return 1;
+        return false;
     }
 
     oss << "[+] AuditQueryGlobalSaclA succeeded!\n";
@@ -72,7 +69,7 @@ inline bool handle_method_3_main_code(LINE line_num,
     }
 
     result_text += oss.str();
-    return FALSE;
+    return true;
 }
 
 #endif // AUDITQUERYGLOBALSACLAMAINCODE_HPP
