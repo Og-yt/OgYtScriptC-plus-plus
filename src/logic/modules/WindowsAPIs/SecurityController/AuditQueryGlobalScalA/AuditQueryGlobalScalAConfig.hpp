@@ -3,5 +3,6 @@
 
 #include "FunctionProtoType.hpp"
 #include "SetCurrentProcessPrivilege.hpp"
+#include "InspectAndPrintSacl.hpp"
 
 #endif // AUDITQUERYGLOBALSCALACONFIG_HPP

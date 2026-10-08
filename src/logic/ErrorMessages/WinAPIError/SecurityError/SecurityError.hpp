@@ -458,6 +458,39 @@ namespace SecurityError
 
             return false;
         }
+
+        inline bool handle_SACL_pointer_is_NULL(LINE line_num,
+                                                MESSAGE result_text,
+                                                BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-] SACL pointer is NULL.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_GetAclInformation_failed_error(LINE line_num,
+                                                          MESSAGE result_text,
+                                                          BUFFER buffer,
+                                                          WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[!] GetAclInformation failed. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_failed_to_get_ace_at_index_error(LINE line_num,
+                                                            MESSAGE result_text,
+                                                            BUFFER buffer,
+                                                            unsigned long index,
+                                                            WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[!] Failed to get ACE at index" + index + '. Error: ' + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
     }
 
     inline bool handle_security_controller_error_invalid_argument(LINE line_num,
