@@ -22,14 +22,16 @@ inline BOOL handle_set_current_process_privilege(PCSTR privilegeName,
                           TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY,
                           &hToken))
     {
-        //
+        DWORD err_code = GetLastError();
+        SecurityError::Audit::handle_open_process_token_failed_error(line_num, result_text, buffer, err_code);
+
         return FALSE;
     }
 
     if (!LookupPrivilegeValueA(NULL, privilegeName, &luid))
     {
         DWORD err_code = GetLastError();
-        //
+        SecurityError::Audit::handle_lookup_privilege_value_a_failed_error(line_num, result_text, buffer, err_code);
 
         CloseHandle(hToken);
         return FALSE;
@@ -47,6 +49,7 @@ inline BOOL handle_set_current_process_privilege(PCSTR privilegeName,
                                NULL))
     {
         DWORD err_code = GetLastError();
+        SecurityError::Audit::hanlde_adjust_token_privileges_failed_error(line_num, result_text, buffer, err_code);
 
         CloseHandle(hToken);
         return FALSE;
@@ -54,7 +57,7 @@ inline BOOL handle_set_current_process_privilege(PCSTR privilegeName,
 
     if (GetLastError() == ERROR_NOT_ALL_ASSIGNED)
     {
-        //
+        SecurityError::Audit::handle_token_does_not_process_the_privilege(line_num, result_text, buffer, privilegeName);
 
         CloseHandle(hToken);
         return FALSE;

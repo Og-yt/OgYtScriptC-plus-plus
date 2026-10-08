@@ -411,6 +411,53 @@ namespace SecurityError
 
             return false;
         }
+
+        inline bool handle_open_process_token_failed_error(LINE line_num,
+                                                           MESSAGE result_text,
+                                                           BUFFER buffer,
+                                                           WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[!] OpenProcessToken failed. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_lookup_privilege_value_a_failed_error(LINE line_num,
+                                                                 MESSAGE result_text,
+                                                                 BUFFER buffer,
+                                                                 WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[!] LookupPRivilegeValueA failed. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool hanlde_adjust_token_privileges_failed_error(LINE line_num,
+                                                                MESSAGE result_text,
+                                                                BUFFER buffer,
+                                                                WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[!] AdjustTokenPrivileges failed. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_token_does_not_process_the_privilege(LINE line_num,
+                                                                MESSAGE result_text,
+                                                                BUFFER buffer,
+                                                                PCSTR privilegeName)
+        {
+            OSTERR oss;
+
+            oss << "[!] Token does not process the privilege: " << privilegeName << '\n';
+            result_text += ErrorLogic::build_msg(line_num, oss.str());
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
     }
 
     inline bool handle_security_controller_error_invalid_argument(LINE line_num,
