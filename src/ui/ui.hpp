@@ -1579,6 +1579,20 @@ private:
                     break;
                 }
             }
+            else if (line.find("GetSecurityDescriptor") == 0)
+            {
+                if (!SecurityControl::Get::handle_get_security_descriptor(line, lineCount, resultText, buffer, windows_api_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("GetSecurityDescriptControl") == 0)
+            {
+                if (!SecurityControl::Get::handle_get_security_descriptor_control(line, lineCount, resultText, buffer, windows_api_imported))
+                {
+                    break;
+                }
+            }
             else if (line.find("Command") == 0)
             {
                 if (!System::handle_executing_command(line, lineCount, resultText, buffer, windows_api_imported))

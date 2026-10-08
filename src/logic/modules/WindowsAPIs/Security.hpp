@@ -339,9 +339,9 @@ namespace SecurityControl
     namespace Audit
     {
         /**
-         * 
+         *
          * @brief 使用可能な監視ポリシーを列挙する関数
-         * 
+         *
          */
         inline bool handle_audit_enumerate_categories(const std::string &line,
                                                       int line_num,
@@ -381,9 +381,9 @@ namespace SecurityControl
         }
 
         /**
-         * 
+         *
          * @brief ユーザーごとの監査ポリシーが指定されているユーザーを列挙する関数
-         * 
+         *
          */
         inline bool handle_audit_enumerate_per_user_policy(const std::string &line,
                                                            int line_num,
@@ -423,15 +423,15 @@ namespace SecurityControl
         }
 
         /**
-         * 
+         *
          * @brief 使用可能な監査ポリシーサブカテゴリを列挙する関数
-         * 
+         *
          */
         inline bool handle_audit_lookup_category_guid_from_categoryid(const std::string &line,
-                                                      int line_num,
-                                                      std::string &result_text,
-                                                      Glib::RefPtr<Gtk::TextBuffer> buffer,
-                                                      bool is_imported)
+                                                                      int line_num,
+                                                                      std::string &result_text,
+                                                                      Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                                      bool is_imported)
         {
             if (!is_imported)
             {
@@ -465,9 +465,9 @@ namespace SecurityControl
         }
 
         /**
-         * 
+         *
          * @brief
-         * 
+         *
          */
         inline bool handle_audit_lookup_category_id_from_category_guid(const std::string &line,
                                                                        int line_num,
@@ -564,6 +564,43 @@ namespace SecurityControl
             }
 
             SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "AuditQueryGlobalScalA");
+            return false;
+        }
+
+        inline bool handle_audit_query_per_user_policy(const std::string &line,
+                                                       int line_num,
+                                                       std::string &result_text,
+                                                       Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                       bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "AuditQueryPerUserPolicy()");
+                return false;
+            }
+
+            static const std::regex audit_query_per_user_policy_re("AuditQueryPerUserPolicy\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, audit_query_per_user_policy_re))
+            {
+                try
+                {
+                    return handle_audit_query_per_user_policy_sub_func(line_num, result_text, buffer);
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    SecurityError::handle_security_controller_error_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (const std::exception &e)
+                {
+                    SecurityError::handle_security_controller_error_exception(line_num, result_text, buffer, "AuditQueryPerUserPolicy");
+                    return false;
+                }
+            }
+
+            SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "AuditQueryPerUserPolicy");
             return false;
         }
     }

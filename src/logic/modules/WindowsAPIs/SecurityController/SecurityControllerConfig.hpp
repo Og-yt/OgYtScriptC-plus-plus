@@ -16,5 +16,6 @@
 #include "AuditLookupCategoryIdFromCategoryGUID.hpp"
 #include "AuditLookupCategoryNameA.hpp"
 #include "AuditQueryGlobalScalA.hpp"
+#include "AuditQueryPerUserPolicy.hpp"
 
 #endif // SECURITYCONTROLLERCONFIG_HPP
