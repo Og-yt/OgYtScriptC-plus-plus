@@ -3,6 +3,7 @@
 
 #include <gtkmm.h>
 #include <string>
+#include <algorithm>
 
 #include <ostream>
 
@@ -12,8 +13,13 @@ typedef int LINE;
 typedef std::string &MESSAGE;
 typedef Glib::RefPtr<Gtk::TextBuffer> BUFFER;
 
+/* テキストバッファ */
+typedef BUFFER TXBUF;
+
+/* 文字列ストリーム */
 typedef std::ostringstream OSTERR;
 
+/* エラーコード GetLastError */
 typedef unsigned long WERROR;
 typedef WERROR WSERROR;
 typedef WERROR HWERROR;
@@ -23,11 +29,21 @@ typedef const std::string &FWINMEM;
 typedef const std::string &FWINREG;
 typedef const std::string &FWINPYS;
 typedef const std::string &FWINSERV;
-typedef const std::string &FWINFSCTLFLTKEL;
 typedef const std::string &FWINMMC;
 typedef const std::string &FWINSECU;
 
-typedef const char* SEERRORFUNCTION;
+/* カーネル */
+typedef const std::string &FWINFSCTLFLTKEL;
+
+/* セキュリティエラー : 権限不足 */
+/* windows7以上の場合 PCSTR : CSTR */
+#ifdef _WIN32_WINNT >= 0x0601
+typedef const char *SEERRORFUNCTION;
+
+#else
+typedef const char SEERRORFUNCTION;
+
+#endif // _WIN32_WINNT
 
 /* ハードウェア制御 */
 typedef const std::string &FWINHW;
@@ -36,6 +52,12 @@ typedef const std::string &FWINHW;
 typedef const std::string &FARRAY;
 typedef const std::string &TYPENAME;
 typedef const std::string &ARRVAR;
+
+/* Algorithm */
+typedef const std::string &FALG, &FALGORITHM;
+
+/* ビット */
+typedef const std::string &FBIT;
 
 /* 例外処理 */
 typedef const std::invalid_argument &EX_IA;

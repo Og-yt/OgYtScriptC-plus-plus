@@ -562,6 +562,88 @@ namespace SecurityError
 
             return false;
         }
+
+        inline bool handle_security_descriptor_is_null(LINE line_num,
+                                                       MESSAGE result_text,
+                                                       BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "Security Descriptor is NULL.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_owner_sid_not_present_or_failed(LINE line_num,
+                                                           MESSAGE result_text,
+                                                           BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "  [-] Owner SID: Not Present or failed.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_audit_query_security_dacl_is_null(LINE line_num,
+                                                             MESSAGE result_text,
+                                                             BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "  [!] DACL is NULL (Grants Full Access to Everyone)\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_audit_query_dacl_not_present(LINE line_num,
+                                                        MESSAGE result_text,
+                                                        BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "  [-] DACL Not Present.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_audit_query_sacl_not_present(LINE line_num,
+                                                        MESSAGE result_text,
+                                                        BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "  [-] SACL Not Precent.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_audit_query_security_failed_error(LINE line_num,
+                                                             MESSAGE result_text,
+                                                             BUFFER buffer,
+                                                             WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-] AuditQuerySecurity failed. Error Code: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_reason_access_denied_querying_sacl_requires_se_security_privilege(LINE line_num,
+                                                                                             MESSAGE result_text,
+                                                                                             BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "    Reason: Access Denied. Querying SACL requires SeSecurityPrivilege.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_failed_to_convert_security_descriptor_to_sddl_error(LINE line_num,
+                                                                               MESSAGE result_text,
+                                                                               BUFFER buffer,
+                                                                               WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "  [-] Failed to convert Security Descriptor to SDDL. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
     }
 
     inline bool handle_security_controller_error_invalid_argument(LINE line_num,
