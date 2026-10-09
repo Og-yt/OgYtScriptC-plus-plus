@@ -1,0 +1,11 @@
+#ifndef AUDITSETGLOBALSACLACONFIG_HPP
+#define AUDITSETGLOBALSACLACONFIG_HPP
+
+#include "Method1EnableSeSecurityPrivilegeOnCurrentProcessToken.hpp"
+#include "Method2TargetObjectSubSystem.hpp"
+#include "Method3ConstructATargetSACLUsingSDDLString.hpp"
+#include "Method4ExtractThePACLStructureFromTheParsedSecurityDescriptor.hpp"
+#include "Method5VerifyUpdatedGlobalSACLViaAuditQueryGlobalSaclA.hpp"
+#include "Method6CleanupCurrentTestSACLOrRestoreOriginalGlobalSACL.hpp"
+
+#endif // AUDITSETGLOBALSACLACONFIG_HPP

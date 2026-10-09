@@ -36,14 +36,8 @@ typedef const std::string &FWINSECU;
 typedef const std::string &FWINFSCTLFLTKEL;
 
 /* セキュリティエラー : 権限不足 */
-/* windows7以上の場合 PCSTR : CSTR */
-#ifdef _WIN32_WINNT >= 0x0601
 typedef const char *SEERRORFUNCTION;
-
-#else
-typedef const char SEERRORFUNCTION;
-
-#endif // _WIN32_WINNT
+typedef const char *SZPRIVILEGE;
 
 /* ハードウェア制御 */
 typedef const std::string &FWINHW;

@@ -336,6 +336,46 @@ namespace SecurityControl
             return false;
         }
     }
+
+    namespace Set
+    {
+        inline bool handle_audit_set_global_sacl_a(const std::string &line,
+                                                   int line_num,
+                                                   std::string &result_text,
+                                                   Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                   bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "AuditSetGlobalSaclA()");
+                return false;
+            }
+
+            static const std::regex audit_set_global_sacl_a_re("AuditSetGlobalSaclA\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, audit_set_global_sacl_a_re))
+            {
+                try
+                {
+                    return handle_audit_set_global_sacl_a_sub_func(line_num, result_text, buffer);
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    SecurityError::handle_security_controller_error_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (const std::exception &e)
+                {
+                    SecurityError::handle_security_controller_error_exception(line_num, result_text, buffer, "AuditSetGlobalSaclA");
+                    return false;
+                }
+            }
+
+            SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "AuditSetGlobalSacl");
+            return false;
+        }
+    }
     namespace Audit
     {
         /**

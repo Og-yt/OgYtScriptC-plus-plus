@@ -19,5 +19,6 @@
 #include "AuditQueryPerUserPolicy.hpp"
 #include "AuditQuerySecurity.hpp"
 #include "AuditQuerySystemPolicy.hpp"
+#include "AuditSetGlobalSaclA.hpp"
 
 #endif // SECURITYCONTROLLERCONFIG_HPP

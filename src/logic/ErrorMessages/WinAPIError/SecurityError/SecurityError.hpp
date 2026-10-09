@@ -313,6 +313,138 @@ namespace SecurityError
         }
     }
 
+    namespace Set
+    {
+        inline bool handle_lookup_privilege_value_a_error(LINE line_num,
+                                                          MESSAGE result_text,
+                                                          BUFFER buffer,
+                                                          WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-] LookupPrivilegeValueA error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_adjust_token_privileges_error(LINE line_num,
+                                                         MESSAGE result_text,
+                                                         BUFFER buffer,
+                                                         WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-] AdjustTokenPrivileges error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_token_does_not_hold_privilege(LINE line_num,
+                                                         MESSAGE result_text,
+                                                         BUFFER buffer,
+                                                         SZPRIVILEGE lpszPrivilege)
+        {
+            OSTERR oss;
+            oss << "[-] Token does not hold privilege (" << lpszPrivilege << "). Run elevated as Administrator.\n";
+            
+            result_text += ErrorLogic::build_msg(line_num, oss.str());
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_warning_could_not_enable_se_security_privilege_set_operations_my_failed(LINE line_num,
+                                                                                                   MESSAGE result_text,
+                                                                                                   BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[!] Warning: Could not enable SeSecurityPrivilege. Set operations my failed.\n\n");
+            
+            return false;
+        }
+
+        inline bool handle_failed_to_open_process_token_error(LINE line_num,
+                                                              MESSAGE result_text,
+                                                              BUFFER buffer,
+                                                              WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-] Failed to open process token. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_no_prior_global_sacl_found_or_query_returned_empty(LINE line_num,
+                                                                              MESSAGE result_text,
+                                                                              BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "  [*] No prior Global SACL found or query returned empty. Continuing...\n\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_failed_to_parse_sddl_error(LINE line_num,
+                                                      MESSAGE result_text,
+                                                      BUFFER buffer,
+                                                      WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-] Failed to parse SDDL. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_failed_to_extract_sacl_from_parsed_security_descriptor_error(LINE line_num,
+                                                                                        MESSAGE result_text,
+                                                                                        BUFFER buffer,
+                                                                                        WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-] Failed to extract SACL from parsed Security Descriptor. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_audit_set_global_sacl_a_failed_error(LINE line_num,
+                                                                MESSAGE result_text,
+                                                                BUFFER buffer,
+                                                                WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-] AuditSetGlobalSaclA failed. Error Code: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_reason_access_ensure_process_is_running_as_administrator_with_se_security_prigilege(LINE line_num, MESSAGE result_text, BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "   Reason: Access Denied. Enusere process is running as Administrator with SeSecurityPrivilege.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_verification_query_failed_error(LINE line_num,
+                                                           MESSAGE result_text,
+                                                           BUFFER buffer,
+                                                           WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-] Verification query failed. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_failed_to_restore_global_sacl_error(LINE line_num,
+                                                               MESSAGE result_text,
+                                                               BUFFER buffer,
+                                                               WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-] Failed to restore Global SACL. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+    }
+
     namespace Audit
     {
         inline bool handle_audit_enumerate_per_user_policy_failed_with_error(LINE line_num,
