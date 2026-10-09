@@ -39,6 +39,15 @@ namespace To_16
         return oss.str();
     }
 
+    inline STREAM handle_to_hex_ulong(unsigned long value, int code)
+    {
+        std::ostringstream oss;
+
+        oss << std::hex << value << std::dec << PARAGRAPH;
+
+        return oss.str();
+    }
+
     namespace X2
     {
         inline STREAM handle_to_hex_int(int value)

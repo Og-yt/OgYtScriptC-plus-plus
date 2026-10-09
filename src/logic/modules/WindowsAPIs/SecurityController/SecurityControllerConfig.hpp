@@ -18,5 +18,6 @@
 #include "AuditQueryGlobalScalA.hpp"
 #include "AuditQueryPerUserPolicy.hpp"
 #include "AuditQuerySecurity.hpp"
+#include "AuditQuerySystemPolicy.hpp"
 
 #endif // SECURITYCONTROLLERCONFIG_HPP

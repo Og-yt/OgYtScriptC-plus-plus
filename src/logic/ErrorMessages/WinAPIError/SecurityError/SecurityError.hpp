@@ -644,6 +644,48 @@ namespace SecurityError
 
             return false;
         }
+
+        inline bool handle_reason_access_denied_querying_policy_requires_administrator_privileges(LINE line_num,
+                                                                                                  MESSAGE result_text,
+                                                                                                  BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "    Reason: Access Denied. Querying policy requires Administrator privileges.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_failed_to_enumerate_categories_error(LINE line_num,
+                                                                MESSAGE result_text,
+                                                                BUFFER buffer,
+                                                                WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-] Failed to enumerate categories. Error Code: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_no_subcategories_found(LINE line_num,
+                                                  MESSAGE result_text,
+                                                  BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-] No subCategories found.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_audit_query_system_policy_failed_error(LINE line_num,
+                                                                  MESSAGE result_text,
+                                                                  BUFFER buffer,
+                                                                  WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-] AuditQuerySystemPolicy failed. Error Code: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
     }
 
     inline bool handle_security_controller_error_invalid_argument(LINE line_num,

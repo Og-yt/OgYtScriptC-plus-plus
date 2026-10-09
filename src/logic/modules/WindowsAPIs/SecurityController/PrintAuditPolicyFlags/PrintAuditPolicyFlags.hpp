@@ -5,6 +5,7 @@
 #include <ntsecapi.h>
 #include <sstream>
 #include <string>
+#include "../../ToHex.hpp"
 
 namespace AuditPolicyFlag
 {
@@ -33,6 +34,36 @@ namespace AuditPolicyFlag
         }
 
         oss << "\n";
+        result_text += oss.str();
+    }
+
+    inline void handle_audit_query_system_policy_print_audit_policy_flags(ULONG auditPolicy, std::string &result_text)
+    {
+        std::ostringstream oss;
+
+        oss << "0x" << To_16::handle_to_hex_ulong(auditPolicy, 1) << " [ ";
+
+        if (auditPolicy == POLICY_AUDIT_EVENT_UNCHANGED)
+        {
+            oss << "AUDIT_POLICY_UNCHAGED ";
+        }
+        else if (auditPolicy == POLICY_AUDIT_EVENT_FAILURE)
+        {
+            oss << "AUDIT_POLICY_FAILURE (None) ";
+        }
+        else
+        {
+            if (auditPolicy & POLICY_AUDIT_EVENT_SUCCESS)
+            {
+                oss << "SUCCESS ";
+            }
+            if (auditPolicy & POLICY_AUDIT_EVENT_FAILURE)
+            {
+                oss << "FAILURE ";
+            }
+        }
+
+        oss << "]";
         result_text += oss.str();
     }
 }
