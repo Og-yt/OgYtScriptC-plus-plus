@@ -603,6 +603,40 @@ namespace SecurityControl
             SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "AuditQueryPerUserPolicy");
             return false;
         }
+
+        inline bool handle_audit_query_security(const std::string &line,
+                                                int line_num,
+                                                std::string &result_text,
+                                                Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "AuditQuerySecurity()");
+                return false;
+            }
+
+            static const std::regex audit_query_security_re("AuditQuerySecurity\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, audit_query_security_re))
+            {
+                try
+                {
+                    //
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    //
+                }
+                catch (const std::exception &e)
+                {
+                    //
+                }
+            }
+
+            return false;
+        }
     }
 }
 

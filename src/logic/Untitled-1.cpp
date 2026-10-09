@@ -1,127 +1,166 @@
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <ntsecapi.h>
+#include <sddl.h>
 #include <iostream>
 #include <vector>
+#include <memory>
 
-// Link Advapi32.lib
+// Link against Advapi32.lib
 #pragma comment(lib, "Advapi32.lib")
 
-// Helper function to print LSA error messages
-void PrintLsaError(LPCSTR functionName, NTSTATUS status) {
-    ULONG win32Error = LsaNtStatusToWinError(status);
-    std::cout << functionName << " failed with NTSTATUS: 0x" 
-              << std::hex << status 
-              << " (Win32 Error: " << std::dec << win32Error << ")\n";
-}
-
-// Helper function to convert SID string to binary PSID
-PSID GetSidFromAccountName(LPCWSTR accountName) {
-    DWORD sidSize = 0;
-    DWORD domainSize = 0;
-    SID_NAME_USE sidUse;
-
-    // First call to get required buffer sizes
-    LookupAccountNameW(NULL, accountName, NULL, &sidSize, NULL, &domainSize, &sidUse);
-
-    if (GetLastError() != ERROR_INSUFFICIENT_BUFFER) {
-        std::cout << "LookupAccountNameW failed to get buffer sizes. Error: " << GetLastError() << "\n";
-        return NULL;
+// Custom deleter smart pointer to ensure LsaFreeMemory is automatically called
+struct LsaMemoryDeleter {
+    void operator()(PVOID ptr) const {
+        if (ptr != nullptr) {
+            LsaFreeMemory(ptr);
+        }
     }
+};
 
-    PSID pSid = (PSID)malloc(sidSize);
-    LPWSTR domainName = (LPWSTR)malloc(domainSize * sizeof(WCHAR));
-
-    if (!LookupAccountNameW(NULL, accountName, pSid, &sidSize, domainName, &domainSize, &sidUse)) {
-        std::cout << "LookupAccountNameW failed. Error: " << GetLastError() << "\n";
-        free(pSid);
-        free(domainName);
-        return NULL;
-    }
-
-    free(domainName);
-    return pSid;
-}
-
-// Helper function to interpret audit policy flags
-void PrintAuditPolicyFlags(ULONG policyFlags) {
-    if (policyFlags == POLICY_AUDIT_EVENT_UNCHANGED) {
-        std::cout << "Unchanged / Not Set";
-    } else if (policyFlags == POLICY_AUDIT_EVENT_NONE) {
-        std::cout << "No Auditing";
+// Helper function to print LSA UNICODE_STRING structures safely
+void PrintUnicodeString(const LSA_UNICODE_STRING& unicodeStr) {
+    if (unicodeStr.Buffer != nullptr && unicodeStr.Length > 0) {
+        std::wcout << std::wstring(unicodeStr.Buffer, unicodeStr.Length / sizeof(WCHAR));
     } else {
-        if (policyFlags & POLICY_AUDIT_EVENT_SUCCESS) {
-            std::cout << "[Success] ";
-        }
-        if (policyFlags & POLICY_AUDIT_EVENT_FAILURE) {
-            std::cout << "[Failure] ";
-        }
+        std::wcout << L"(null)";
     }
-    std::cout << "\n";
 }
 
-int main() {
-    // Target user account name to query
-    LPCWSTR targetAccount = L"Administrator";
+// Helper function to render binary security descriptor details
+void ParseAndPrintSecurityDescriptor(PSECURITY_DESCRIPTOR pSD) {
+    if (pSD == nullptr) {
+        std::wcout << L"Security Descriptor is NULL.\n";
+        return;
+    }
 
-    std::wcout << L"Querying per-user audit policy for account: " << targetAccount << L"\n";
-    std::wcout << L"--------------------------------------------------\n";
+    // 1. Check Control Flags
+    SECURITY_DESCRIPTOR_CONTROL sdControl = 0;
+    DWORD dwRevision = 0;
+    if (GetSecurityDescriptorControl(pSD, &sdControl, &dwRevision)) {
+        std::wcout << L"  [+] Revision: " << dwRevision << L"\n";
+        std::wcout << L"  [+] Control Flags: 0x" << std::hex << sdControl << std::dec << L"\n";
+        if (sdControl & SE_DACL_PRESENT) std::wcout << L"      - DACL Present\n";
+        if (sdControl & SE_DACL_PROTECTED) std::wcout << L"      - DACL Protected (Inheritance Blocked)\n";
+        if (sdControl & SE_SACL_PRESENT) std::wcout << L"      - SACL Present\n";
+        if (sdControl & SE_SELF_RELATIVE) std::wcout << L"      - Self-Relative Format\n";
+    }
 
-    // Step 1: Convert Account Name to PSID
-    PSID pUserSid = GetSidFromAccountName(targetAccount);
-    if (pUserSid == NULL) {
-        std::cout << "Failed to obtain SID for the target account.\n";
+    // 2. Extract Owner SID
+    PSID pOwner = nullptr;
+    BOOL bOwnerDefaulted = FALSE;
+    if (GetSecurityDescriptorOwner(pSD, &pOwner, &bOwnerDefaulted) && pOwner != nullptr) {
+        LPWSTR szOwnerSid = nullptr;
+        if (ConvertSidToStringSidW(pOwner, &szOwnerSid)) {
+            std::wcout << L"  [+] Owner SID: " << szOwnerSid 
+                       << (bOwnerDefaulted ? L" (Defaulted)\n" : L"\n");
+            LocalFree(szOwnerSid);
+        }
+    } else {
+        std::wcout << L"  [-] Owner SID: Not Present or Failed\n";
+    }
+
+    // 3. Extract Group SID
+    PSID pGroup = nullptr;
+    BOOL bGroupDefaulted = FALSE;
+    if (GetSecurityDescriptorGroup(pSD, &pGroup, &bGroupDefaulted) && pGroup != nullptr) {
+        LPWSTR szGroupSid = nullptr;
+        if (ConvertSidToStringSidW(pGroup, &szGroupSid)) {
+            std::wcout << L"  [+] Primary Group SID: " << szGroupSid 
+                       << (bGroupDefaulted ? L" (Defaulted)\n" : L"\n");
+            LocalFree(szGroupSid);
+        }
+    } else {
+        std::wcout << L"  [-] Primary Group SID: Not Present or Failed\n";
+    }
+
+    // 4. Extract Discretionary ACL (DACL)
+    PACL pDacl = nullptr;
+    BOOL bDaclPresent = FALSE;
+    BOOL bDaclDefaulted = FALSE;
+    if (GetSecurityDescriptorDacl(pSD, &bDaclPresent, &pDacl, &bDaclDefaulted)) {
+        if (bDaclPresent && pDacl != nullptr) {
+            std::wcout << L"  [+] DACL Count: " << pDacl->AceCount << L" ACEs\n";
+        } else if (bDaclPresent && pDacl == nullptr) {
+            std::wcout << L"  [!] DACL is NULL (Grants Full Access to Everyone)\n";
+        } else {
+            std::wcout << L"  [-] DACL Not Present\n";
+        }
+    }
+
+    // 5. Extract System ACL (SACL)
+    PACL pSacl = nullptr;
+    BOOL bSaclPresent = FALSE;
+    BOOL bSaclDefaulted = FALSE;
+    if (GetSecurityDescriptorSacl(pSD, &bSaclPresent, &pSacl, &bSaclDefaulted)) {
+        if (bSaclPresent && pSacl != nullptr) {
+            std::wcout << L"  [+] SACL Count: " << pSacl->AceCount << L" ACEs\n";
+        } else {
+            std::wcout << L"  [-] SACL Not Present\n";
+        }
+    }
+}
+
+int wmain() {
+    // Specify which components of the Security Descriptor to query:
+    // OWNER_SECURITY_INFORMATION | GROUP_SECURITY_INFORMATION | DACL_SECURITY_INFORMATION | SACL_SECURITY_INFORMATION
+    SECURITY_INFORMATION SecurityInformation = OWNER_SECURITY_INFORMATION | 
+                                         GROUP_SECURITY_INFORMATION | 
+                                         DACL_SECURITY_INFORMATION | 
+                                         SACL_SECURITY_INFORMATION;
+
+    PSECURITY_DESCRIPTOR pRawSecurityDescriptor = nullptr;
+
+    std::wcout << L"[1] Invoking AuditQuerySecurity()...\n";
+
+    // Calling the API function directly
+    BOOLEAN bResult = AuditQuerySecurity(
+        SecurityInformation,
+        &pRawSecurityDescriptor
+    );
+
+    // Wrap the returned pointer in a unique_ptr to guarantee LsaFreeMemory execution
+    std::unique_ptr<void, LsaMemoryDeleter> sdSmartPtr(pRawSecurityDescriptor);
+
+    if (!bResult) {
+        DWORD dwError = GetLastError();
+        std::wcout << L"[-] AuditQuerySecurity failed. Error Code: " << dwError << L"\n";
+        
+        if (dwError == ERROR_ACCESS_DENIED) {
+            std::wcout << L"    Reason: Access Denied. Querying SACL requires SeSecurityPrivilege.\n";
+        }
         return 1;
     }
 
-    // Step 2: Define Subcategory GUIDs to query
-    // Example subcategories:
-    //  - Logon (Audit Logon): {0CCE9215-69AE-11D9-BED3-505054503030}
-    //  - Logoff:              {0CCE9216-69AE-11D9-BED3-505054503030}
-    //  - File System:         {0CCE921D-69AE-11D9-BED3-505054503030}
-    
-    GUID subcategories[] = {
-        // GUID_AUDIT_LOGON
-        { 0x0CCE9215, 0x69AE, 0x11D9, { 0xBE, 0xD3, 0x50, 0x50, 0x54, 0x50, 0x30, 0x30 } },
-        // GUID_AUDIT_LOGOFF
-        { 0x0CCE9216, 0x69AE, 0x11D9, { 0xBE, 0xD3, 0x50, 0x50, 0x54, 0x50, 0x30, 0x30 } },
-        // GUID_AUDIT_FILE_SYSTEM
-        { 0x0CCE921D, 0x69AE, 0x11D9, { 0xBE, 0xD3, 0x50, 0x50, 0x54, 0x50, 0x30, 0x30 } }
-    };
+    std::wcout << L"[+] Successfully retrieved Audit Security Descriptor.\n";
+    std::wcout << L"[+] Raw Buffer Address: 0x" << std::hex << pRawSecurityDescriptor << std::dec << L"\n\n";
 
-    ULONG subcategoryCount = sizeof(subcategories) / sizeof(GUID);
-    PULONG pAuditPolicy = NULL;
+    // Parse security descriptor structure
+    std::wcout << L"[2] Inspecting Security Descriptor details:\n";
+    ParseAndPrintSecurityDescriptor(pRawSecurityDescriptor);
 
-    // Step 3: Call AuditQueryPerUserPolicy
-    // Signature:
-    // NTSTATUS AuditQueryPerUserPolicy(
-    //   [in]  const PSID        pSid,
-    //   [in]  const GUID        *pSubCategoryGuids,
-    //   [in]  ULONG             dwPolicyCount,
-    //   [out] PULONG            *ppAuditPolicy
-    // );
-    NTSTATUS status = AuditQueryPerUserPolicy(
-        pUserSid,
-        subcategories,
-        subcategoryCount,
-        &pAuditPolicy
+    // Convert binary Security Descriptor to SDDL string representation
+    std::wcout << L"\n[3] Converting Security Descriptor to SDDL format...\n";
+    LPWSTR szSddl = nullptr;
+    ULONG cchSddl = 0;
+
+    BOOL bSddlConverted = ConvertSecurityDescriptorToStringSecurityDescriptorW(
+        pRawSecurityDescriptor,
+        SDDL_REVISION_1,
+        SecurityInformation,
+        &szSddl,
+        &cchSddl
     );
 
-    // Step 4: Handle Response
-    if (status != 0) { // STATUS_SUCCESS is 0
-        PrintLsaError("AuditQueryPerUserPolicy", status);
-    } else if (pAuditPolicy != NULL) {
-        for (ULONG i = 0; i < subcategoryCount; i++) {
-            std::cout << "Subcategory [" << i + 1 << "] Audit Flags (0x" 
-                      << std::hex << pAuditPolicy[i] << std::dec << "): ";
-            PrintAuditPolicyFlags(pAuditPolicy[i]);
-        }
-
-        // Step 5: Free the allocated policy array using AuditFree
-        AuditFree(pAuditPolicy);
+    if (bSddlConverted && szSddl != nullptr) {
+        std::wcout << L"  [+] SDDL String: " << szSddl << L"\n";
+        LocalFree(szSddl);
+    } else {
+        std::wcout << L"  [-] Failed to convert Security Descriptor to SDDL. Error: " 
+                   << GetLastError() << L"\n";
     }
 
-    // Step 6: Cleanup User SID allocation
-    free(pUserSid);
-
+    std::wcout << L"\n[4] Releasing memory using LsaFreeMemory()...\n";
+    // Smart pointer cleans up pRawSecurityDescriptor automatically on scope exit
     return 0;
 }
