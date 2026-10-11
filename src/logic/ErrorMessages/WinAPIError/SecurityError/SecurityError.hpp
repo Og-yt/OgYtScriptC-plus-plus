@@ -558,6 +558,47 @@ namespace SecurityError
 
             return false;
         }
+
+        inline bool handle_failed_to_enable_se_security_privilege_administrator_rights_are_required(LINE line_num,
+                                                                                                    MESSAGE result_text,
+                                                                                                    BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-] Failed to enable SeSecurityPrivilege. Administrator rights are required.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_audit_set_security_failed_error(LINE line_num,
+                                                           MESSAGE result_text,
+                                                           BUFFER buffer,
+                                                           WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-] AuditSetSecurity failed with error code: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_reason_access_denied_ensure_you_are_running_in_an_elevated_context(LINE line_num,
+                                                                                              MESSAGE result_text,
+                                                                                              BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "    -> Reason: Access Denied. Ensure you are running in an elevated context.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_reason_invalid_parameter_check_if_security_info_or_p_security_descriptor_is_malformed(LINE line_num,
+                                                                                                                 MESSAGE result_text,
+                                                                                                                 BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "    -> Reason: Invalid parameter. Check if SecurityInformation or pSecurityDescriptor is malformed.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
     }
 
     namespace Audit
@@ -962,6 +1003,17 @@ namespace SecurityError
                                                             FWINSECU func_name)
     {
         result_text += ErrorLogic::build_msg(line_num, "Invalid " + func_name + "() call.\n");
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
+    inline bool handle_convert_string_security_descriptor_to_security_descriptor_failed_error(LINE line_num,
+                                                                                              MESSAGE result_text,
+                                                                                              BUFFER buffer,
+                                                                                              WSERROR err_code)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "[-] ConvertStringSecurityDescriptorToSecurityDescriptor failed. Error: " + std::to_string(err_code) + '\n');
         ErrorLogic::highlight_line(buffer, line_num);
 
         return false;
