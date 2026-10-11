@@ -599,6 +599,37 @@ namespace SecurityError
 
             return false;
         }
+
+        inline bool handle_audit_set_system_policy_failed_error(LINE line_num,
+                                                                MESSAGE result_text,
+                                                                BUFFER buffer,
+                                                                WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-]  AuditSetSystemPolicy failed error code: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_audit_set_system_policy_access_denied_error(LINE line_num,
+                                                                       MESSAGE result_text,
+                                                                       BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-]  Access was denied for AuditSetSystemPolicy.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_audit_set_system_policy_invalid_parameter(LINE line_num,
+                                                                     MESSAGE result_text,
+                                                                     BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-] AuditSetSystemPolicy: Invalid parameter.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
     }
 
     namespace Audit
@@ -974,6 +1005,11 @@ namespace SecurityError
 
             return false;
         }
+    }
+
+    namespace LSA
+    {
+        //
     }
 
     inline bool handle_security_controller_error_invalid_argument(LINE line_num,

@@ -8,7 +8,7 @@
 #include "../../../ErrorLogic.hpp"
 #include "../../../ErrorMessages/Messages.hpp"
 
-#include "ConfigreAuditSecurity/ConfigureAuditSecurity.hpp"
+#include "ConfigureAuditSecurity/ConfigureAuditSecurity.hpp"
 
 inline bool handle_audit_set_security_sub_func(LINE line_num, MESSAGE result_text, BUFFER buffer)
 {
