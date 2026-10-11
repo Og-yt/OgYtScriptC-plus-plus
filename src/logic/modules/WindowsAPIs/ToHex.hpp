@@ -26,9 +26,9 @@ namespace To_16
     }
 
     /**
-     * 
+     *
      * @brief 第2引数が 0 の場合改行をする, 2 の場合2回改行 それ以外: 空白
-     * 
+     *
      */
     inline STREAM handle_to_hex_ushort(unsigned short value, int code)
     {
@@ -121,6 +121,18 @@ namespace To_16
                 << value;
 
             return oss.str();
+        }
+
+        inline STREAM handle_to_hex_ulong_w(unsigned long value)
+        {
+            std::wostringstream oss;
+
+            oss << L"0x"
+                << std::hex
+                << std::setw(8)
+                << std::setfill(L'0')
+                << value
+                << std::dec;
         }
 
         inline STREAM handle_to_hex_ulong(unsigned long value)

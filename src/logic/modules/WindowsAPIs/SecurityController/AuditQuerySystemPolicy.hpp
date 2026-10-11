@@ -55,13 +55,13 @@ inline bool handle_audit_query_system_policy_sub_func(LINE line_num,
             szCategoryName != NULL)
         {
             oss << L"Category " << (i + 1) << L": " << szCategoryName
-                << L" (" << Guid_to_string(&currentCategory) << L")\n";
+                << L" (" << GUID_TO_STRING::Guid_to_string(&currentCategory, "AuditQuerySystemPolicy") << L")\n";
 
             AuditFree(szCategoryName);
         }
         else
         {
-            oss << L"Category " << (i + 1) << L": " << Guid_to_string(&currentCategory) << L"\n";
+            oss << L"Category " << (i + 1) << L": " << GUID_TO_STRING::Guid_to_string(&currentCategory, "AuditQuerySystemPolicy") << L"\n";
         }
 
         GUID* pSubCategoryGuidList = NULL;
@@ -83,13 +83,13 @@ inline bool handle_audit_query_system_policy_sub_func(LINE line_num,
                     && szSubCategoryName != NULL)
                 {
                     oss << L"  - Subcategory: " << szSubCategoryName
-                        << L" (" << Guid_to_string(&pSubCategoryGuidList[j]) << L")\n";
+                        << L" (" << GUID_TO_STRING::Guid_to_string(&pSubCategoryGuidList[j], "AuditQuerySystemPolicy") << L")\n";
 
                     AuditFree(szSubCategoryName);
                 }
                 else
                 {
-                    oss << L"  - Subcategory: " << Guid_to_string(&pSubCategoryGuidList[j]) << L"\n";
+                    oss << L"  - Subcategory: " << GUID_TO_STRING::Guid_to_string(&pSubCategoryGuidList[j], "AuditQuerySystemPolicy") << L"\n";
                 }
             }
 
@@ -143,7 +143,7 @@ inline bool handle_audit_query_system_policy_sub_func(LINE line_num,
         }
 
         oss << L"[" << (k + 1) << L"] " << wstrName << L"\n";
-        oss << L"    GUID:   " << Guid_to_string(&subCategoryGuid) << L"\n";
+        oss << L"    GUID:   " << GUID_TO_STRING::Guid_to_string(&subCategoryGuid, "AuditQuerySystemPolicy") << L"\n";
         oss << L"    Policy: ";
         std::string policyText;
         AuditPolicyFlag::handle_audit_query_system_policy_print_audit_policy_flags(auditSetting, policyText);

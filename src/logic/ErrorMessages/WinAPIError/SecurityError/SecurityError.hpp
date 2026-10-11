@@ -443,6 +443,121 @@ namespace SecurityError
 
             return false;
         }
+
+        inline bool handle_lookup_privilege_value_w_failed_error(LINE line_num,
+                                                                 MESSAGE result_text,
+                                                                 BUFFER buffer,
+                                                                 WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-] LookupPrivilegeValueW failed. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_token_missing_required_privilege(LINE line_num,
+                                                            MESSAGE result_text,
+                                                            BUFFER buffer,
+                                                            LPCWSTR lpszPrigilege)
+        {
+            OSTERR oss;
+            oss << "[-] Token missing required privilege (" << lpszPrigilege << "). Execution required Administrator elevation.\n";
+
+            result_text += ErrorLogic::build_msg(line_num, oss.str());
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_failed_to_enable_se_security_privilege_per_user_operations_may_fail(LINE line_num,
+                                                                                               MESSAGE result_text,
+                                                                                               BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "  [!] Failed to enable SeSecurityPrivilege. Per-user operations my fail.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_open_process_token_failed_error(LINE line_num,
+                                                           MESSAGE result_text,
+                                                           BUFFER buffer,
+                                                           WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "  [-] OperationProcessToken failed. Error Code: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_account_lookup_failed_error(LINE line_num,
+                                                       MESSAGE result_text,
+                                                       BUFFER buffer,
+                                                       WSERROR err_code,
+                                                       LPCWSTR szTargetAccount)
+        {
+            OSTERR oss;
+            oss << "  [-] Account lookup failed for \"" << szTargetAccount << "\". Error: " << std::to_string(err_code) << "\n";
+
+            result_text += ErrorLogic::build_msg(line_num, oss.str());
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_audit_enumerate_categories_failed_error(LINE line_num,
+                                                                   MESSAGE result_text,
+                                                                   BUFFER buffer,
+                                                                   WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "  [-] AuditEnumerateCategories failed. Error: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_audit_set_per_user_policy_failed_error(LINE line_num,
+                                                                  MESSAGE result_text, 
+                                                                  BUFFER buffer,
+                                                                  WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "  [-] AuditSetPerUserPolicy failed. Error Code: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_reason_access_denied_ensere_process_is_elevated_as_administrator_with_se_security_privilege(LINE line_num,
+                                                                                                                       MESSAGE result_text,
+                                                                                                                       BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "      Reason: Access Denied. Ensure process is elevated as Administrator with SeSecurityPrivilege.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_post_modification_verification_query_failed_error(LINE line_num,
+                                                                             MESSAGE result_text,
+                                                                             BUFFER buffer,
+                                                                             WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "  [-] Post-modification verification query failed. Error Code: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_failed_to_restore_original_policy_settings_error(LINE line_num,
+                                                                            MESSAGE result_text,
+                                                                            BUFFER buffer,
+                                                                            WSERROR err_code)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "  [-] Failed to restore original policy settings. Error Code: " + std::to_string(err_code) + '\n');
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
     }
 
     namespace Audit
