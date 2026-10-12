@@ -344,7 +344,7 @@ namespace SecurityError
         {
             OSTERR oss;
             oss << "[-] Token does not hold privilege (" << lpszPrivilege << "). Run elevated as Administrator.\n";
-            
+
             result_text += ErrorLogic::build_msg(line_num, oss.str());
             ErrorLogic::highlight_line(buffer, line_num);
 
@@ -356,7 +356,7 @@ namespace SecurityError
                                                                                                    BUFFER buffer)
         {
             result_text += ErrorLogic::build_msg(line_num, "[!] Warning: Could not enable SeSecurityPrivilege. Set operations my failed.\n\n");
-            
+
             return false;
         }
 
@@ -517,7 +517,7 @@ namespace SecurityError
         }
 
         inline bool handle_audit_set_per_user_policy_failed_error(LINE line_num,
-                                                                  MESSAGE result_text, 
+                                                                  MESSAGE result_text,
                                                                   BUFFER buffer,
                                                                   WSERROR err_code)
         {
@@ -630,6 +630,16 @@ namespace SecurityError
 
             return false;
         }
+
+        inline bool handle_audit_set_system_policy_unsupported_audit_subcategory(LINE line_num,
+                                                                                 MESSAGE result_text,
+                                                                                 BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "Unsupported audit subcategory; use 0 (Logon) or 1 (Logoff)");
+            ErrorLogic::highlight_line(buffer, line_num);
+            
+            return false;
+        }
     }
 
     namespace Audit
@@ -694,7 +704,8 @@ namespace SecurityError
                                                             WSERROR err_code)
         {
             OSTERR oss;
-            oss << "[ERROR] " << functionName << " failed." << "\n" << "  Error Code : " << std::to_string(err_code) << " (0x" << std::hex << std::uppercase << std::to_string(err_code) << std::dec << ")\n";
+            oss << "[ERROR] " << functionName << " failed." << "\n"
+                << "  Error Code : " << std::to_string(err_code) << " (0x" << std::hex << std::uppercase << std::to_string(err_code) << std::dec << ")\n";
             result_text += ErrorLogic::build_msg(line_num, OstringStreamToString(oss));
             ErrorLogic::highlight_line(buffer, line_num);
 

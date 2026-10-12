@@ -462,14 +462,16 @@ namespace SecurityControl
                 return false;
             }
 
-            static const std::regex audit_set_system_policy_re("AuditSetSystemPolicy\\(\\);");
+            static const std::regex audit_set_system_policy_re("AuditSetSystemPolicy\\(\\s*([0-9]+)\\s*\\);");
             std::smatch match;
 
             if (std::regex_search(line, match, audit_set_system_policy_re))
             {
                 try
                 {
-                    return handle_audit_set_system_policy_sub_func(line_num, result_text, buffer);
+                    DWORD type = std::stoul(match[1]);
+
+                    return handle_audit_set_system_policy_sub_func(type, line_num, result_text, buffer);
                 }
                 catch (const std::invalid_argument &ia)
                 {
