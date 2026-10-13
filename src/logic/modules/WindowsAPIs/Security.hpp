@@ -834,7 +834,42 @@ namespace SecurityControl
 
     namespace LSA
     {
-        //
+        inline bool handle_lsa_add_account_rights(const std::string &line,
+                                                  int line_num,
+                                                  std::string &result_text,
+                                                  Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                  bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "LsaAddAccountRights()");
+                return false;
+            }
+
+            static const std::regex lsa_add_account_rights_re("LsaAddAccountRights\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, lsa_add_account_rights_re))
+            {
+                try
+                {
+                    //
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    SecurityError::handle_security_controller_error_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (const std::exception &e)
+                {
+                    SecurityError::handle_security_controller_error_exception(line_num, result_text, buffer, "LsaAddAccountRights");
+                    return false;
+                }
+            }
+
+            SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "LsaAddAccountRights");
+            return false;
+        }
     }
 }
 

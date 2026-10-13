@@ -12,16 +12,21 @@
 
 #include "AuditEnumerateCategories.hpp"
 #include "AuditEnumeratePerUserPolicy.hpp"
+
 #include "AuditLookupCategoryGuidFromCategoryId.hpp"
 #include "AuditLookupCategoryIdFromCategoryGUID.hpp"
 #include "AuditLookupCategoryNameA.hpp"
+
 #include "AuditQueryGlobalScalA.hpp"
 #include "AuditQueryPerUserPolicy.hpp"
 #include "AuditQuerySecurity.hpp"
 #include "AuditQuerySystemPolicy.hpp"
+
 #include "AuditSetGlobalSaclA.hpp"
 #include "AuditSetPerUserPolicy.hpp"
 #include "AuditSetSecurity.hpp"
 #include "AuditSetSystemPolicy.hpp"
+
+#include "LsaAddAccountRights.hpp"
 
 #endif // SECURITYCONTROLLERCONFIG_HPP
