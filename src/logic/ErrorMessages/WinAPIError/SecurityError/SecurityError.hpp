@@ -637,7 +637,7 @@ namespace SecurityError
         {
             result_text += ErrorLogic::build_msg(line_num, "Unsupported audit subcategory; use 0 (Logon) or 1 (Logoff)");
             ErrorLogic::highlight_line(buffer, line_num);
-            
+
             return false;
         }
     }
@@ -1020,7 +1020,15 @@ namespace SecurityError
 
     namespace LSA
     {
-        //
+        inline bool handle_lsa_add_account_rights_invalid_rightsCount(LINE line_num,
+                                                                      MESSAGE result_text,
+                                                                      BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[-]  LsaAddAccountRights: Invalid rightCount [1 - 2].\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
     }
 
     inline bool handle_security_controller_error_invalid_argument(LINE line_num,

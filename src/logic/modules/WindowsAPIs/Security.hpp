@@ -846,14 +846,14 @@ namespace SecurityControl
                 return false;
             }
 
-            static const std::regex lsa_add_account_rights_re("LsaAddAccountRights\\(\\);");
+            static const std::regex lsa_add_account_rights_re("LsaAddAccountRights\\(\\s*([0-9]+)\\s*\\);");
             std::smatch match;
 
             if (std::regex_search(line, match, lsa_add_account_rights_re))
             {
                 try
                 {
-                    //
+                    ULONG rightsCount = std::stoul(match[1]);
                 }
                 catch (const std::invalid_argument &ia)
                 {
