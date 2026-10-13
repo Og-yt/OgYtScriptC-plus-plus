@@ -854,6 +854,8 @@ namespace SecurityControl
                 try
                 {
                     ULONG rightsCount = std::stoul(match[1]);
+
+                    return handle_lsa_add_account_rights_sub_func(rightsCount, line_num, result_text, buffer);
                 }
                 catch (const std::invalid_argument &ia)
                 {

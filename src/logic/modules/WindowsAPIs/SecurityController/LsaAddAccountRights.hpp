@@ -3,7 +3,9 @@
 
 #include <windows.h>
 #include <ntsecapi.h>
+#include <ntstatus.h>
 
+#include <cwchar>
 #include <sstream>
 
 #include "../../../ErrorLogic.hpp"
@@ -11,6 +13,8 @@
 
 #include "../NtStatusToWinError.hpp"
 #include "../LsaOpnePolicy.hpp"
+
+#include "../CustomNtStatus.hpp"
 
 inline bool handle_lsa_add_account_rights_sub_func(ULONG rightsCount,
                                                    LINE line_num,
@@ -28,34 +32,35 @@ inline bool handle_lsa_add_account_rights_sub_func(ULONG rightsCount,
     PLSA_HANDLE lHandle = NULL;
     PSID pSid = NULL;
 
-    PLSA_UNICODE_STRING userRights = {};
+    LSA_UNICODE_STRING userRight = {};
     wchar_t rightName[] = L"SeServiceLogonRight";
-    userRights->Buffer = rightName;
-    userRights->Length = static_cast<USHORT>((wcslen(rightName)) * sizeof(wchar_t));
-    userRights->MaximumLength = static_cast<USHORT>(sizeof(rightName));
 
-    LSA_OBJECT_ATTRIBUTES objAttribute = {};
-    objAttribute.Length = sizeof(LSA_OBJECT_ATTRIBUTES);
+    userRight.Buffer = rightName;
+    userRight.Length = static_cast<USHORT>((wcslen(rightName)) * sizeof(wchar_t));
+    userRight.MaximumLength = static_cast<USHORT>(sizeof(rightName));
 
-    ACCESS_MASK accessMask = POLICY_LOOKUP_NAMES;
+    PLSA_UNICODE_STRING userRights = &userRight;
 
-    NTSTATUS status = LsaOpenPolicy(NULL, &objAttribute, accessMask, lHandle);
+    NTSTATUS status = LSAOPENPOLICY::LsaAddAccountPolicyE(&lHandle);
     if (status != 0)
     {
-        //
+        NTAPIERRTOWINERR::PrintLsaError("LsaAddAccountRights", status, oss, result_text);
     }
 
-    BOOLEAN result = LsaAddAccountRights(lHandle, pSid, userRights, rightsCount);
-    if (!result)
+    NTSTATUS result = LsaAddAccountRights(lHandle, pSid, userRights, rightsCount);
+    if (!CUSTOM_NT_SUCCESS(result))
     {
-        //
+        NTAPIERRTOWINERR::PrintLsaError("LsaAddAccountRights", result, oss, result_text);
     }
     else
     {
-        //
+        oss << "LsaAddAccountRights: Successfully\n";
     }
 
+    LsaClose(lHandle);
+
     result_text += oss.str();
+    return true;
 }
 
 #endif // LSAADDACCOUNTRIGHTS_HPP

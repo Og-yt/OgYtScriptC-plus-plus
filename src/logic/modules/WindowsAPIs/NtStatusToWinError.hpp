@@ -9,7 +9,7 @@
 #include "../../ErrorLogic.hpp"
 #include "../../ErrorMessages/Messages.hpp"
 
-namespace NTAPIERR_TO_WINERR
+namespace NTAPIERRTOWINERR
 {
     void PrintLsaError(const std::string& operation,
                        NTSTATUS status,
