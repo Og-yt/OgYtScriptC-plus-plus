@@ -18,7 +18,7 @@ namespace LSAOPENPOLICY
 
         ACCESS_MASK accessMask = LSAOPENPOLICY_MASK;
 
-        return LsaOpenPolicy(NULL, &objAttrs, accessMask, lHandle);
+        return LsaOpenPolicy(NULL, &objAttrs, accessMask, &lHandle);
     }
 }
 
