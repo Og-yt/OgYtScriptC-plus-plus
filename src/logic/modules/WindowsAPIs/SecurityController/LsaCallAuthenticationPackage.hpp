@@ -5,23 +5,30 @@
 #include <ntsecapi.h>
 
 #include <sstream>
+#include <cstring>
+#include <vector>
 
 #include "../../../ErrorLogic.hpp"
 #include "../../../ErrorMessages/Messages.hpp"
 
 #include "../CustomNtStatus.hpp"
 
-inline bool handle_lsa_call_authentication_package_sub_func(LINE line_num,
+inline bool handle_lsa_call_authentication_package_sub_func(const char* processName,
+                                                            LINE line_num,
                                                             MESSAGE result_text,
                                                             BUFFER buffer)
 {
     std::ostringstream oss;
 
     HANDLE lHandle;
-    PLSA_STRING lString = {};
+    LSA_STRING lString = {};
     LSA_OPERATIONAL_MODE lOperationalMode = 0;
 
-    NTSTATUS regStatus = LsaRegisterLogonProcess(lString, &lHandle, &lOperationalMode);
+    lString.Buffer = const_cast<CHAR*>(processName);
+    lString.Length = static_cast<USHORT>(strlen(processName));
+    lString.MaximumLength = static_cast<USHORT>(lString.Length + 1);
+
+    NTSTATUS regStatus = LsaRegisterLogonProcess(&lString, &lHandle, &lOperationalMode);
     if (!CUSTOM_NT_SUCCESS(regStatus))
     {
         NTAPIERRTOWINERR::PrintLsaError("LsaCallAuthenticationPackage", regStatus, oss, result_text);

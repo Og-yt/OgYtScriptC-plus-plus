@@ -885,14 +885,17 @@ namespace SecurityControl
                 return false;
             }
 
-            static const std::regex lsa_call_authentication_package_re("LsaCallAuthenticationPackage\\(\\);");
+            static const std::regex lsa_call_authentication_package_re("LsaCallAuthenticationPackage\\(\\s*([a-zA-Z][a-zA-Z0-9_]*)\\);");
             std::smatch match;
 
             if (std::regex_search(line, match, lsa_call_authentication_package_re))
             {
                 try
                 {
-                    return handle_lsa_call_authentication_package_sub_func(line_num, result_text, buffer);
+                    std::string process = match[1];
+                    const char* processName = process.c_str();
+
+                    return handle_lsa_call_authentication_package_sub_func(processName, line_num, result_text, buffer);
                 }
                 catch (const std::invalid_argument &ia)
                 {
