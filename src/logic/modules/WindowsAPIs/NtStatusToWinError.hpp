@@ -11,13 +11,13 @@
 
 namespace NTAPIERRTOWINERR
 {
-    void PrintLsaError(const std::string& operation,
+    void PrintLsaError(const std::string& func_name,
                        NTSTATUS status,
                        std::ostringstream &oss,
                        std::string &result_text)
     {
         DWORD winError = LsaNtStatusToWinError(status);
-        oss << "[-] " << operation
+        oss << "[-] " << func_name
             << " failed. NTSTATUS: 0x"
             << std::hex
             << status

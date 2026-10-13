@@ -28,5 +28,6 @@
 #include "AuditSetSystemPolicy.hpp"
 
 #include "LsaAddAccountRights.hpp"
+#include "LsaCallAuthenticationPackage.hpp"
 
 #endif // SECURITYCONTROLLERCONFIG_HPP
