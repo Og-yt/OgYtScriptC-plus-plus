@@ -6,7 +6,6 @@
 
 #include <sstream>
 #include <cstring>
-#include <vector>
 
 #include "../../../ErrorLogic.hpp"
 #include "../../../ErrorMessages/Messages.hpp"
@@ -20,7 +19,19 @@ inline bool handle_lsa_call_authentication_package_sub_func(const char* processN
 {
     std::ostringstream oss;
 
-    HANDLE lHandle;
+    if (processName == NULL)
+    {
+        SecurityError::LSA::handle_lsa_call_authentication_package_process_name_null(line_num, result_text, buffer);
+        return false;
+    }
+    else if (strlen(processName) > 65534)
+    {
+        SecurityError::LSA::handle_lsa_call_authentication_package_process_name_out_of_range(line_num, result_text, buffer);
+        return false;
+    }
+
+    /* --------- step 1 --------- */
+    HANDLE lHandle = NULL;
     LSA_STRING lString = {};
     LSA_OPERATIONAL_MODE lOperationalMode = 0;
 
@@ -35,12 +46,13 @@ inline bool handle_lsa_call_authentication_package_sub_func(const char* processN
         return false;
     }
 
+    /* --------- step 2 --------- */
     ULONG authenticationPackage = 0;
     ULONG protReturnLength = 0;
     ULONG submitBufLength = 0;
     NTSTATUS protState = 0;
-    PVOID protSubBuf;
-    VOID *protReturnBuf;
+    PVOID protSubBuf = NULL;
+    VOID *protReturnBuf = NULL;
 
     NTSTATUS status = LsaCallAuthenticationPackage(lHandle,
                                                    authenticationPackage,
@@ -52,11 +64,30 @@ inline bool handle_lsa_call_authentication_package_sub_func(const char* processN
     if (!CUSTOM_NT_SUCCESS(status))
     {
         NTAPIERRTOWINERR::PrintLsaError("LsaCallAuthenticationPackage", status, oss, result_text);
+        LsaDeregisterLogonProcess(lHandle);
+
         return false;
     }
-    else
+
+    result_text += "[+] LsaCallAuthenticationPackage: Successfully.\n";
+
+    /* --------- step 3 --------- */
+    char packageNames[] = MSV1_0_PACKAGE_NAME;
+
+    LSA_STRING packageName;
+    ULONG authenPack = 0;
+
+    packageName.Buffer = packageNames;
+    packageName.Length = static_cast<USHORT>(sizeof(packageNames) + 1);
+    packageName.MaximumLength = static_cast<USHORT>(sizeof(packageNames));
+
+    NTSTATUS lookupStatus = LsaLookupAuthenticationPackage(lHandle, &packageName, &authenPack);
+    if (!CUSTOM_NT_SUCCESS(lookupStatus))
     {
-        result_text += "[+] LsaCallAuthenticationPackage: Successfully.\n";
+        NTAPIERRTOWINERR::PrintLsaError("LsaCallAuthenticationPackage", lookupStatus, oss, result_text);
+        LsaDeregisterLogonProcess(lHandle);
+
+        return false;
     }
 
     if (lHandle != NULL)

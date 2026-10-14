@@ -13,6 +13,7 @@
 #include "SecurityController/SecurityControllerConfig.hpp"
 
 #include "StringToLPWSTR.hpp"
+#include "StringToWString.hpp"
 
 namespace SecurityControl
 {
@@ -910,6 +911,42 @@ namespace SecurityControl
             }
 
             SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "LsaCallAuthenticationPackage");
+            return false;
+        }
+
+        inline bool handle_lsa_create_trunsted_domain_ex(const std::string &line,
+                                                         int line_num,
+                                                         std::string &result_text,
+                                                         Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                         bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "LsaCreateTrustedDomainEx");
+                return false;
+            }
+
+            static const std::regex lsa_create_trunsted_domain_ex_re("LsaCreateTrunstedDomainEx\\(\\s*([a-zA-Z][a-zA-Z0-9_]*\\,\\s*([a-zA-Z][a-zA-Z0-9_]*)\\)\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, lsa_create_trunsted_domain_ex_re))
+            {
+                try
+                {
+                    std::string domainName = match[1].str();
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    SecurityError::handle_security_controller_error_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (const std::exception &e)
+                {
+                    SecurityError::handle_security_controller_error_exception(line_num, result_text, buffer, "LsaCreateTrustedDomainEx");
+                }
+            }
+
+            SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "LsaCreateTrastedDomainEx");
             return false;
         }
     }
