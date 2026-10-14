@@ -933,7 +933,7 @@ namespace SecurityControl
             {
                 try
                 {
-                    std::string domainName = match[1].str();
+                    std::string domainSid = match[1].str();
                 }
                 catch (const std::invalid_argument &ia)
                 {
