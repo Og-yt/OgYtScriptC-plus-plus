@@ -30,6 +30,8 @@ def git_commit() -> None:
     auto.hotkey('ctrl', 'v')
     auto.press('m')
     
+    auto.press('space')
+    
     clip.copy('"_"')
     auto.hotkey('ctrl', 'v')
     
