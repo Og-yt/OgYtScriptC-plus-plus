@@ -29,5 +29,6 @@
 
 #include "LsaAddAccountRights.hpp"
 #include "LsaCallAuthenticationPackage.hpp"
+#include "LsaCreateTrunstedDomainEx.hpp"
 
 #endif // SECURITYCONTROLLERCONFIG_HPP

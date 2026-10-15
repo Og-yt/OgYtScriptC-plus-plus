@@ -914,6 +914,7 @@ namespace SecurityControl
             return false;
         }
 
+        /*
         inline bool handle_lsa_create_trunsted_domain_ex(const std::string &line,
                                                          int line_num,
                                                          std::string &result_text,
@@ -934,6 +935,8 @@ namespace SecurityControl
                 try
                 {
                     std::string domainSid = match[1].str();
+
+                    return handle_lsa_create_trusted_domain_ex_sub_func(line_num, result_text, buffer);
                 }
                 catch (const std::invalid_argument &ia)
                 {
@@ -947,6 +950,44 @@ namespace SecurityControl
             }
 
             SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "LsaCreateTrastedDomainEx");
+            return false;
+        }
+        */
+
+        inline bool handle_lsa_enumerate_account_rights(const std::string &line,
+                                                        int line_num,
+                                                        std::string &result_text,
+                                                        Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                        bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "LsaEnumerateAccountRights");
+                return false;
+            }
+
+            static const std::regex lsa_enumerate_account_rights_re("LsaEnumerateAccountRights\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, lsa_enumerate_account_rights_re))
+            {
+                try
+                {
+                    //
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    SecurityError::handle_security_controller_error_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (const std::exception &e)
+                {
+                    SecurityError::handle_security_controller_error_exception(line_num, result_text, buffer, "LsaEnumerateAccountRights");
+                    return false;
+                }
+            }
+
+            SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "LsaEnumerateAccountRights");
             return false;
         }
     }

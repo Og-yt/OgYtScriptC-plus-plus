@@ -30,10 +30,12 @@ inline bool handle_lsa_create_trusted_domain_ex_sub_func(LINE line_num,
     if (lsaStatus != CUSTOM_STATUS_SUCCESS)
     {
         SecurityError::LSA::handle_lsa_open_policy_Lhandle_ntstatus_error(line_num, result_text, buffer);
+        NTAPIERRTOWINERR::PrintLsaError("LsaOpenPolicy", lsaStatus, oss, result_text);
+        result_text += oss.str();
+
         return false;
     }
 
-    LSA_HANDLE lHandle = NULL;
     LSA_HANDLE plHandle = NULL;
     TRUSTED_DOMAIN_INFORMATION_EX trustInfoEx = {};
     TRUSTED_DOMAIN_AUTH_INFORMATION trustAuthInfo = {};
@@ -44,6 +46,7 @@ inline bool handle_lsa_create_trusted_domain_ex_sub_func(LINE line_num,
     {
         DWORD err_code = GetLastError();
         SecurityError::LSA::handle_lsa_create_trusted_domain_ex_invalid_with_error(line_num, result_text, buffer, err_code);
+        LsaClose(lHandle);
 
         return false;
     }
@@ -85,12 +88,18 @@ inline bool handle_lsa_create_trusted_domain_ex_sub_func(LINE line_num,
     {
         NTAPIERRTOWINERR::PrintLsaError("LsaCreateTrustedDomainEx", status, oss, result_text);
         LocalFree(domainSid);
+        LsaClose(lHandle);
+        result_text += oss.str();
 
         return false;
     }
 
+    if (plHandle != NULL)
+    {
+        LsaClose(plHandle);
+    }
+    LsaClose(lHandle);
     LocalFree(domainSid);
-    domainSid = NULL;
 
     result_text += oss.str();
     return true;
