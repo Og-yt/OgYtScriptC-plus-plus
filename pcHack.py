@@ -51,9 +51,11 @@ time.sleep(0.001)
 auto.write('cmd')
 auto.press('enter')
 
+time.sleep(0.1)
+
 command_line_setting()
 
-time.sleep(0.01)
+time.sleep(0.1)
 
 git_status()
 auto.press('enter')
