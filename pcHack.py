@@ -10,20 +10,20 @@ def command_line_setting():
     auto.press('enter')
 
 def git_status() -> None:
-    auto.press('g'); time.sleep(0.01); auto.press('i'); time.sleep(0.01); auto.press('t'); time.sleep(0.01); auto.press('space')
-    auto.press('s'); time.sleep(0.01); auto.press('t'); time.sleep(0.01); auto.press('a'); time.sleep(0.01); auto.press('t'); time.sleep(0.01); auto.press('u'); time.sleep(0.01); auto.press('s')
+    auto.press('g'); time.sleep(0.001); auto.press('i'); time.sleep(0.001); auto.press('t'); time.sleep(0.001); auto.press('space')
+    auto.press('s'); time.sleep(0.001); auto.press('t'); time.sleep(0.001); auto.press('a'); time.sleep(0.001); auto.press('t'); time.sleep(0.001); auto.press('u'); time.sleep(0.001); auto.press('s')
     
 def git_add() -> None:
-    auto.press('g'); time.sleep(0.01); auto.press('i'); time.sleep(0.01); auto.press('t'); time.sleep(0.01); auto.press('space')
-    auto.press('a'); time.sleep(0.01); auto.press('d'); time.sleep(0.01); auto.press('d'); time.sleep(0.01); auto.press('space'); time.sleep(0.01);
+    auto.press('g'); time.sleep(0.001); auto.press('i'); time.sleep(0.001); auto.press('t'); time.sleep(0.001); auto.press('space')
+    auto.press('a'); time.sleep(0.001); auto.press('d'); time.sleep(0.001); auto.press('d'); time.sleep(0.001); auto.press('space'); time.sleep(0.001);
     
     clip.copy('.')
     
     auto.hotkey('ctrl', 'v')
     
 def git_commit() -> None:
-    auto.press('g'); time.sleep(0.01); auto.press('i'); time.sleep(0.01); auto.press('t'); time.sleep(0.01); auto.press('space')
-    auto.press('c'); time.sleep(0.01); auto.press('o'); time.sleep(0.01); auto.press('m'); time.sleep(0.01); auto.press('m'); time.sleep(0.01); auto.press('i'); time.sleep(0.01); auto.press('t'); time.sleep(0.01); auto.press('space'); time.sleep(0.01)
+    auto.press('g'); time.sleep(0.001); auto.press('i'); time.sleep(0.001); auto.press('t'); time.sleep(0.001); auto.press('space')
+    auto.press('c'); time.sleep(0.001); auto.press('o'); time.sleep(0.001); auto.press('m'); time.sleep(0.001); auto.press('m'); time.sleep(0.001); auto.press('i'); time.sleep(0.001); auto.press('t'); time.sleep(0.001); auto.press('space'); time.sleep(0.001)
     
     clip.copy('-')
     
@@ -36,18 +36,18 @@ def git_commit() -> None:
     auto.hotkey('ctrl', 'v')
     
 def git_push() -> None:
-    auto.press('g'); time.sleep(0.01); auto.press('i'); time.sleep(0.01); auto.press('t'); time.sleep(0.01); auto.press('space')
-    auto.press('p'); time.sleep(0.01); auto.press('u'); time.sleep(0.01); auto.press('s'); time.sleep(0.01); auto.press('h')
+    auto.press('g'); time.sleep(0.001); auto.press('i'); time.sleep(0.001); auto.press('t'); time.sleep(0.001); auto.press('space')
+    auto.press('p'); time.sleep(0.001); auto.press('u'); time.sleep(0.001); auto.press('s'); time.sleep(0.001); auto.press('h')
 
 auto.hotkey('win', 'r')
-time.sleep(0.01)
+time.sleep(0.001)
 
 auto.write('cmd')
 auto.press('enter')
 
 command_line_setting()
 
-time.sleep(0.1)
+time.sleep(0.01)
 
 git_status()
 auto.press('enter')
