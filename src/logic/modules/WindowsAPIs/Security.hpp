@@ -914,7 +914,6 @@ namespace SecurityControl
             return false;
         }
 
-        /*
         inline bool handle_lsa_create_trunsted_domain_ex(const std::string &line,
                                                          int line_num,
                                                          std::string &result_text,
@@ -927,15 +926,13 @@ namespace SecurityControl
                 return false;
             }
 
-            static const std::regex lsa_create_trunsted_domain_ex_re("LsaCreateTrunstedDomainEx\\(\\s*([a-zA-Z][a-zA-Z0-9_]*\\,\\s*([a-zA-Z][a-zA-Z0-9_]*)\\)\\);");
+            static const std::regex lsa_create_trunsted_domain_ex_re("LsaCreateTrunstedDomainEx\\(\\);");
             std::smatch match;
 
             if (std::regex_search(line, match, lsa_create_trunsted_domain_ex_re))
             {
                 try
                 {
-                    std::string domainSid = match[1].str();
-
                     return handle_lsa_create_trusted_domain_ex_sub_func(line_num, result_text, buffer);
                 }
                 catch (const std::invalid_argument &ia)
@@ -952,7 +949,6 @@ namespace SecurityControl
             SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "LsaCreateTrastedDomainEx");
             return false;
         }
-        */
 
         inline bool handle_lsa_enumerate_account_rights(const std::string &line,
                                                         int line_num,
