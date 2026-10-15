@@ -3,6 +3,7 @@
 
 #include <windows.h>
 #include <ntsecapi.h>
+#include <aclapi.h>
 #include <sddl.h>
 
 #include <sstream>
@@ -11,6 +12,7 @@
 #include "../../../ErrorMessages/Messages.hpp"
 
 #include "../GetPolicyHandle.hpp"
+#include "../GetAccountName.hpp"
 
 inline bool handle_lsa_enumerate_account_rights_sub_func(LINE line_num,
                                                          MESSAGE result_text,
@@ -18,15 +20,14 @@ inline bool handle_lsa_enumerate_account_rights_sub_func(LINE line_num,
 {
     std::ostringstream oss;
 
-    LPCWSTR sysName = L"sysName";
-    LPCWSTR AccountName = L"AccountName";
+    LPCWSTR AccountName = GetAccountName().c_str();
     SID sid = {};
     DWORD cbSid = 0;
     LPWSTR refDomainName = L"";
     DWORD cchRefDomainName = 0;
-    SID_NAME_USE peUse = {};
+    SID_NAME_USE peUse;
 
-    BOOL lookState = LookupAccountNameW(sysName, AccountName, &sid, &cbSid, refDomainName, &cchRefDomainName, &peUse);
+    BOOL lookState = LookupAccountNameW(NULL, AccountName, &sid, &cbSid, refDomainName, &cchRefDomainName, &peUse);
     if (!lookState)
     {
         DWORD err_code = GetLastError();
