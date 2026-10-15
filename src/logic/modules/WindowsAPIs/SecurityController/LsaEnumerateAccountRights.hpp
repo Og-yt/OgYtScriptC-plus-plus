@@ -26,7 +26,7 @@ inline bool handle_lsa_enumerate_account_rights_sub_func(LINE line_num,
     DWORD cchRefDomainName = 0;
     SID_NAME_USE peUse = {};
 
-    WINBOOL lookState = LookupAccountNameW(sysName, AccountName, &sid, &cbSid, refDomainName, &cchRefDomainName, &peUse);
+    BOOL lookState = LookupAccountNameW(sysName, AccountName, &sid, &cbSid, refDomainName, &cchRefDomainName, &peUse);
     if (!lookState)
     {
         DWORD err_code = GetLastError();

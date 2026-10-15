@@ -1,0 +1,4 @@
+#ifndef WINAPICONFIG_HPP
+#define WINAPICONFIG_HPP
+
+#endif // WINAPICONFIG_HPP
