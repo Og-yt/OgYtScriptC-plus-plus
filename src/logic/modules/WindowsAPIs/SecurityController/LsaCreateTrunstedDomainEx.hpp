@@ -19,6 +19,19 @@ inline bool handle_lsa_create_trusted_domain_ex_sub_func(LINE line_num,
 {
     std::ostringstream oss;
 
+    LSA_OBJECT_ATTRIBUTES objAttr = {};
+    LSA_HANDLE lHandle = NULL;
+
+    objAttr.Length = sizeof(objAttr);
+
+    ACCESS_MASK desiredMask = POLICY_TRUST_ADMIN;
+    
+    NTSTATUS lsaStatus = LsaOpenPolicy(NULL, &objAttr, desiredMask, &lHandle);
+    if (!CUSTOM_NT_SUCCESS(lsaStatus))
+    {
+        //
+    }
+
     LSA_HANDLE lHandle = NULL;
     LSA_HANDLE plHandle = NULL;
     TRUSTED_DOMAIN_INFORMATION_EX trustInfoEx = {};
@@ -51,8 +64,8 @@ inline bool handle_lsa_create_trusted_domain_ex_sub_func(LINE line_num,
     };
 
     trustInfoEx.FlatName = {
-        static_cast<USHORT>(sizeof(domainName) - sizeof(WCHAR)),
-        static_cast<USHORT>(sizeof(domainName)),
+        static_cast<USHORT>(sizeof(flatName) - sizeof(WCHAR)),
+        static_cast<USHORT>(sizeof(flatName)),
         flatName,
     };
 
@@ -70,6 +83,8 @@ inline bool handle_lsa_create_trusted_domain_ex_sub_func(LINE line_num,
     if (!CUSTOM_NT_SUCCESS(status))
     {
         NTAPIERRTOWINERR::PrintLsaError("LsaCreateTrustedDomainEx", status, oss, result_text);
+        LocalFree(domainSid);
+
         return false;
     }
 
