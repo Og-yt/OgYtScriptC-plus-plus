@@ -21,17 +21,23 @@ inline bool handle_lsa_enumerate_account_rights_sub_func(LINE line_num,
     std::ostringstream oss;
 
     LPCWSTR AccountName = GetAccountName().c_str();
-    SID sid = {};
-    DWORD cbSid = 0;
+    DWORD domainSize = 0;
     LPWSTR refDomainName = L"";
     DWORD cchRefDomainName = 0;
-    SID_NAME_USE peUse;
+    SID_NAME_USE sidType = SidTypeUnknown;
 
-    BOOL lookState = LookupAccountNameW(NULL, AccountName, &sid, &cbSid, refDomainName, &cchRefDomainName, &peUse);
+    BOOL lookState = LookupAccountNameW(NULL, AccountName, NULL, &domainSize, NULL, &cchRefDomainName, &sidType);
     if (!lookState)
     {
         DWORD err_code = GetLastError();
-        SecurityError::handle_lookup_account_name_w_invalid_error(line_num, result_text, buffer, err_code);
+        if (err_code == ERROR_INSUFFICIENT_BUFFER)
+        {
+            SecurityError::handle_lookup_account_name_w_error_insufficient_buffer(line_num, result_text, buffer);
+        }
+        else
+        {
+            SecurityError::handle_lookup_account_name_w_invalid_error(line_num, result_text, buffer, err_code);
+        }
 
         return false;
     }

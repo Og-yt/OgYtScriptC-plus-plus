@@ -1115,6 +1115,16 @@ namespace SecurityError
         return false;
     }
 
+    inline bool handle_lookup_account_name_w_error_insufficient_buffer(LINE line_num,
+                                                                       MESSAGE result_text,
+                                                                       BUFFER buffer)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "[*] LookupAccountNameW Error: insufficient buffer.\n");
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
     inline bool handle_lookup_account_name_w_invalid_error(LINE line_num,
                                                            MESSAGE result_text,
                                                            BUFFER buffer,
