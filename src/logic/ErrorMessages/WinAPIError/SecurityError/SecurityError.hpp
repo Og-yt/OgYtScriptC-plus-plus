@@ -1060,6 +1060,16 @@ namespace SecurityError
 
             return false;
         }
+
+        inline bool handle_lsa_open_policy_Lhandle_ntstatus_error(LINE line_num,
+                                                                  MESSAGE result_text,
+                                                                  BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "[!] Handle invalid NTSTATUS error.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
     }
 
     inline bool handle_security_controller_error_invalid_argument(LINE line_num,

@@ -27,9 +27,10 @@ inline bool handle_lsa_create_trusted_domain_ex_sub_func(LINE line_num,
     ACCESS_MASK desiredMask = POLICY_TRUST_ADMIN;
     
     NTSTATUS lsaStatus = LsaOpenPolicy(NULL, &objAttr, desiredMask, &lHandle);
-    if (!CUSTOM_NT_SUCCESS(lsaStatus))
+    if (lsaStatus != CUSTOM_STATUS_SUCCESS)
     {
-        //
+        SecurityError::LSA::handle_lsa_open_policy_Lhandle_ntstatus_error(line_num, result_text, buffer);
+        return false;
     }
 
     LSA_HANDLE lHandle = NULL;
