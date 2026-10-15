@@ -39,6 +39,12 @@ def git_push() -> None:
     auto.press('g'); time.sleep(0.001); auto.press('i'); time.sleep(0.001); auto.press('t'); time.sleep(0.001); auto.press('space')
     auto.press('p'); time.sleep(0.001); auto.press('u'); time.sleep(0.001); auto.press('s'); time.sleep(0.001); auto.press('h')
 
+def exit() -> None:
+    clip.copy('exit')
+    
+    auto.hotkey('ctrl', 'v')
+    auto.press('enter')
+
 auto.hotkey('win', 'r')
 time.sleep(0.001)
 
@@ -60,3 +66,7 @@ auto.press('enter')
 
 git_push()
 auto.press('enter')
+
+time.sleep(0.01)
+
+exit()
