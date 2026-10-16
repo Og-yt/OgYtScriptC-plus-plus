@@ -969,7 +969,7 @@ namespace SecurityControl
             {
                 try
                 {
-                    //
+                    return handle_lsa_enumerate_account_rights_sub_func(line_num, result_text, buffer);
                 }
                 catch (const std::invalid_argument &ia)
                 {
