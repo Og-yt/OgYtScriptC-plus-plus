@@ -32,6 +32,9 @@ typedef const std::string &FWINSERV;
 typedef const std::string &FWINMMC;
 typedef const std::string &FWINSECU;
 
+/* アカウント名 */
+typedef const wchar_t* ACCOUNTN;
+
 /* カーネル */
 typedef const std::string &FWINFSCTLFLTKEL;
 

@@ -14,12 +14,16 @@
 #include "../GetPolicyHandle.hpp"
 #include "../GetAccountName.hpp"
 
-inline bool handle_lsa_enumerate_account_rights_sub_func(LINE line_num,
+#include "../EnumerateAccountRights.hpp"
+
+inline bool handle_lsa_enumerate_account_rights_sub_func(ACCOUNTN accountName,
+                                                         LINE line_num,
                                                          MESSAGE result_text,
                                                          BUFFER buffer)
 {
     std::ostringstream oss;
 
+    /*
     LPCWSTR AccountName = GetAccountName().c_str();
     DWORD domainSize = 0;
     LPWSTR refDomainName = L"";
@@ -41,9 +45,7 @@ inline bool handle_lsa_enumerate_account_rights_sub_func(LINE line_num,
 
         return false;
     }
-    /* successed [ return 1 ] */
 
-    /* ----- ----- */
     LSA_HANDLE lHandle;
     SID accountSid;
     PLSA_UNICODE_STRING userRights;
@@ -54,6 +56,10 @@ inline bool handle_lsa_enumerate_account_rights_sub_func(LINE line_num,
     {
         //
     }
+    */
+
+    EnumerateAccountRights(accountName, line_num, result_text, buffer);
+    return false;
 }
 
 #endif // LSAENUMERATEACCOUNTRIGHTS_HPP
