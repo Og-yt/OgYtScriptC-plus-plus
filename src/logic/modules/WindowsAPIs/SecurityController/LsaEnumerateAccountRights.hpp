@@ -58,7 +58,6 @@ inline bool handle_lsa_enumerate_account_rights_sub_func(ACCOUNTN accountName,
     }
     */
 
-    EnumerateAccountRights(accountName, line_num, result_text, buffer);
     return false;
 }
 

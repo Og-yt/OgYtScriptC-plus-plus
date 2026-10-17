@@ -3,6 +3,7 @@ import time
 import subprocess
 import os
 import shutil
+import tempfile
 
 # import ...
 
@@ -13,6 +14,27 @@ WATCH_EXTENSIONS = ("Makefile", ".cpp", ".hpp")
 EXECUTABLE = "MyLang.exe"
 # ビルドコマンド
 BUILD_CMD = [r"C:\msys64\mingw64\bin\mingw32-make.exe"]
+RUNTIME_DLLS = (
+    "libgcc_s_seh-1.dll",
+    "libstdc++-6.dll",
+    "libwinpthread-1.dll",
+)
+
+
+def launch_application(runtime_dir):
+    """MinGW runtime DLLs beside the executable take precedence over System32."""
+    executable = os.path.abspath(EXECUTABLE)
+    staged_executable = os.path.join(runtime_dir, EXECUTABLE)
+    mingw_bin = os.path.dirname(BUILD_CMD[0])
+
+    shutil.copy2(executable, staged_executable)
+    for dll in RUNTIME_DLLS:
+        shutil.copy2(os.path.join(mingw_bin, dll), runtime_dir)
+
+    return subprocess.Popen(
+        [staged_executable],
+        cwd=os.path.dirname(executable),
+    )
 
 
 def get_file_mtime(filepath):
@@ -100,21 +122,32 @@ def main():
     last_mtimes = {f: get_file_mtime(f) for f in watch_files}
 
     process = None
-
-    # 初回ビルドと起動
-    print("\n[Initial Build]")
-    if subprocess.call(BUILD_CMD) == 0:
-        print(f"Starting {EXECUTABLE}...")
-        if os.path.exists(EXECUTABLE):
-            process = subprocess.Popen(
-                [os.path.abspath(EXECUTABLE)], stdout=None, stderr=None
-            )
-    else:
-        print("Build failed.")
+    runtime_dir = tempfile.mkdtemp(prefix="MyLang-runtime-")
 
     try:
+        # 初回ビルドと起動
+        print("\n[Initial Build]")
+        if subprocess.call(BUILD_CMD) == 0:
+            print(f"Starting {EXECUTABLE}...")
+            if os.path.exists(EXECUTABLE):
+                process = launch_application(runtime_dir)
+            else:
+                print(f"[Error] {EXECUTABLE} が見つかりません。")
+        else:
+            print("Build failed.")
+
         while True:
             time.sleep(1)  # 1秒間隔でポーリング
+
+            if process is not None:
+                exit_code = process.poll()
+                if exit_code is not None:
+                    print(
+                        f"{EXECUTABLE} exited with code {exit_code} "
+                        f"(0x{exit_code & 0xFFFFFFFF:08X}).",
+                        flush=True,
+                    )
+                    process = None
 
             current_files = get_watch_files()
             changed_file = None
@@ -143,9 +176,7 @@ def main():
                     if subprocess.call(BUILD_CMD) == 0:
                         # 3. 再起動
                         print("Restarting application...")
-                        process = subprocess.Popen(
-                            [os.path.abspath(EXECUTABLE)], stdout=None, stderr=None
-                        )
+                        process = launch_application(runtime_dir)
                     else:
                         print("Build failed. Waiting for fix...")
                 except Exception as e:
@@ -153,10 +184,20 @@ def main():
 
     except KeyboardInterrupt:
         print("\nExiting watcher...")
-        if process and process.poll() is None:
-            process.terminate()
     except Exception as e:
         print(f"EXCEPTION: {str(e)}")
+    finally:
+        if process and process.poll() is None:
+            process.terminate()
+            try:
+                process.wait(timeout=2)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait()
+        try:
+            shutil.rmtree(runtime_dir)
+        except OSError as e:
+            print(f"Runtime cleanup failed: {e}")
 
 
 if __name__ == "__main__":
