@@ -1070,6 +1070,30 @@ namespace SecurityError
 
             return false;
         }
+
+        inline bool handle_no_accounts_found_with_the_specified_right(LINE line_num,
+                                                                      MESSAGE result_text,
+                                                                      BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "\n[-] No accounts found with the specified right, or the privilege name is invalid.");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+
+        inline bool handle_lsa_enumerate_accounts_with_user_right_failed(NTSTATUS status,
+                                                                         LINE line_num,
+                                                                         MESSAGE result_text,
+                                                                         BUFFER buffer)
+        {
+            OSTERR oss;
+
+            oss << "\n[!] LsaEnumerateAccountsWithUserRight failed with NTSTATUS: 0x" << std::hex << status << "\n";
+            result_text += ErrorLogic::build_msg(line_num, oss.str());
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
     }
 
     inline bool handle_security_controller_error_invalid_argument(LINE line_num,
@@ -1131,6 +1155,20 @@ namespace SecurityError
                                                            WSERROR err_code)
     {
         result_text += ErrorLogic::build_msg(line_num, "LookupAccountNameW: Invalid with error code: " + std::to_string(err_code) + '\n');
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
+    inline bool handle_lsa_open_policy_failed_error(NTSTATUS status,
+                                                    LINE line_num,
+                                                    MESSAGE result_text,
+                                                    BUFFER buffer)
+    {
+        OSTERR oss;
+        oss << "LsaOpenPolicy failed with NTSTATUS: 0x" << std::hex << status << "\n";
+        
+        result_text += ErrorLogic::build_msg(line_num, oss.str());
         ErrorLogic::highlight_line(buffer, line_num);
 
         return false;

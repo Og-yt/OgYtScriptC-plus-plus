@@ -1007,7 +1007,7 @@ namespace SecurityControl
             {
                 try
                 {
-                    //
+                    return handle_lsa_enumerate_accounts_with_user_right_sub_func(line_num, result_text, buffer);
                 }
                 catch (const std::invalid_argument &ia)
                 {
