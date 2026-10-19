@@ -21,4 +21,6 @@ inline bool handle_lsa_query_domain_information_policy_sub_func(LINE line_num,
     return true;
 }
 
+
+
 #endif // LSAWUERYDOMAININFORMATIONPOLICY_HPP
