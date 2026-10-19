@@ -32,5 +32,6 @@
 #include "LsaCreateTrunstedDomainEx.hpp"
 #include "LsaEnumerateAccountRights.hpp"
 #include "LsaEnumerateAccountsWithUserRight.hpp"
+#include "LsaEnumerateLogonSessions.hpp"
 
 #endif // SECURITYCONTROLLERCONFIG_HPP

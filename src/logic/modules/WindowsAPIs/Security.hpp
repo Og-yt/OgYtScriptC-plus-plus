@@ -894,7 +894,7 @@ namespace SecurityControl
                 try
                 {
                     std::string process = match[1];
-                    const char* processName = process.c_str();
+                    const char *processName = process.c_str();
 
                     return handle_lsa_call_authentication_package_sub_func(processName, line_num, result_text, buffer);
                 }
@@ -1022,6 +1022,44 @@ namespace SecurityControl
             }
 
             SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "LsaEnumerateAccountsWithUserRight");
+            return false;
+        }
+
+        /* LsaEnumerateLogonSessions */
+        inline bool handle_lsa_enumerate_logon_sessions(const std::string &line,
+                                                        int line_num,
+                                                        std::string &result_text,
+                                                        Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                        bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "LsaEnumerateLogonSessions");
+                return false;
+            }
+
+            static const std::regex lsa_enumerate_logon_sessions_re("LsaEnumerateLogonSessions\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, lsa_enumerate_logon_sessions_re))
+            {
+                try
+                {
+                    return handle_lsa_enumerate_logon_sessions_sub_func(line_num, result_text, buffer);
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    SecurityError::handle_security_controller_error_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (const std::exception &e)
+                {
+                    SecurityError::handle_security_controller_error_exception(line_num, result_text, buffer, "LsaEnumerateLogonSessions");
+                    return false;
+                }
+            }
+
+            SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "LsaEnumerateLogonSessions");
             return false;
         }
     }
