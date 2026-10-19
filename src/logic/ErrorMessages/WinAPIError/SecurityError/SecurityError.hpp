@@ -1191,10 +1191,38 @@ namespace SecurityError
     {
         OSTERR oss;
         oss << "LsaOpenPolicy failed with NTSTATUS: 0x" << std::hex << status << "\n";
-        
+
         result_text += ErrorLogic::build_msg(line_num, oss.str());
         ErrorLogic::highlight_line(buffer, line_num);
 
+        return false;
+    }
+
+    inline bool handle_enumerate_policy_domain_information_code_error(LINE line_num,
+                                                                      MESSAGE result_text,
+                                                                      BUFFER buffer)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "invalid 1.\n");
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
+    inline bool handle_enumerate_policy_domain_information_code_error_oor(DWORD code,
+                                                                          LINE line_num,
+                                                                          MESSAGE result_text,
+                                                                          BUFFER buffer)
+    {
+        if (code == 0)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "invalid [ 2 - 3 ]\n");
+        }
+        else if (code == 1)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "invalid [ 1 - 3 ]\n");
+        }
+
+        ErrorLogic::highlight_line(buffer, line_num);
         return false;
     }
 }

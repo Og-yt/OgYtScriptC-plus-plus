@@ -19,5 +19,6 @@
 #include "WindowsAPIs/MouseControls.hpp"         // カーソルコントロール
 #include "WindowsAPIs/TaskSchedulerControls.hpp" // タスクスケジューラサービスの使用
 #include "WindowsAPIs/Security.hpp"              // セキュリティ操作
+#include "WindowsAPIs/msinfo32Control.hpp"       // msinfo32制御
 
 #endif // WINDOWSAPI_HPP

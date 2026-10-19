@@ -1100,6 +1100,44 @@ namespace SecurityControl
             SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "LsaOpenTrustedDomainByName");
             return false;
         }
+
+        /* LsaQueryDomainInformationPolicy */
+        inline bool handle_query_domain_information_policy(const std::string &line,
+                                                           int line_num,
+                                                           std::string &result_text,
+                                                           Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                           bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "LsaQueryDomainInformationPolicy");
+                return false;
+            }
+
+            static const std::regex query_domain_information_policy_re("LsaQueryDomainInformationPolicy\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, query_domain_information_policy_re))
+            {
+                try
+                {
+                    //
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    SecurityError::handle_security_controller_error_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (const std::exception &e)
+                {
+                    SecurityError::handle_security_controller_error_exception(line_num, result_text, buffer, "LsaQueryDomainInformationPolicy");
+                    return false;
+                }
+            }
+
+            SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "LsaQueryDomainInformationPolicy");
+            return false;
+        }
     }
 }
 

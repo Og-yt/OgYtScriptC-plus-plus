@@ -14,8 +14,6 @@
 #include "../GetPolicyHandle.hpp"
 #include "../GetAccountName.hpp"
 
-#include "../EnumerateAccountRights.hpp"
-
 inline bool handle_lsa_enumerate_account_rights_sub_func(ACCOUNTN accountName,
                                                          LINE line_num,
                                                          MESSAGE result_text,
