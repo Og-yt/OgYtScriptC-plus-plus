@@ -33,5 +33,6 @@
 #include "LsaEnumerateAccountRights.hpp"
 #include "LsaEnumerateAccountsWithUserRight.hpp"
 #include "LsaEnumerateLogonSessions.hpp"
+#include "LsaOpenTrustedDomainByName.hpp"
 
 #endif // SECURITYCONTROLLERCONFIG_HPP

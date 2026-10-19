@@ -1108,6 +1108,16 @@ namespace SecurityError
 
             return false;
         }
+
+        inline bool handle_lsa_open_trusted_domain_by_name_invalid_error(LINE line_num,
+                                                                         MESSAGE result_text,
+                                                                         BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "LsaOpenTrusteDomainByName: failed with error.\n");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
     }
 
     inline bool handle_security_controller_error_invalid_argument(LINE line_num,

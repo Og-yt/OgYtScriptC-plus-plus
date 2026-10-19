@@ -1062,6 +1062,44 @@ namespace SecurityControl
             SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "LsaEnumerateLogonSessions");
             return false;
         }
+
+        /* LsaOpenTrustedDomainByName */
+        inline bool handle_lsa_open_trusted_domain_by_name(const std::string &line,
+                                                           int line_num,
+                                                           std::string &result_text,
+                                                           Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                           bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "LsaOpenTrustedDomainByName");
+                return false;
+            }
+
+            static const std::regex lsa_open_trusted_domain_by_name_re("LsaOpenTrustedDomainByName\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, lsa_open_trusted_domain_by_name_re))
+            {
+                try
+                {
+                    return handle_lsa_open_trusted_domain_by_name_sub_func(line_num, result_text, buffer);
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    SecurityError::handle_security_controller_error_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (const std::exception &e)
+                {
+                    SecurityError::handle_security_controller_error_exception(line_num, result_text, buffer, "LsaOpenTrustedDomainByName");
+                    return false;
+                }
+            }
+
+            SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "LsaOpenTrustedDomainByName");
+            return false;
+        }
     }
 }
 
