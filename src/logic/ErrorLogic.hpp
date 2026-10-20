@@ -23,6 +23,7 @@ typedef std::ostringstream OSTERR;
 typedef unsigned long WERROR;
 typedef WERROR WSERROR;
 typedef WERROR HWERROR;
+typedef WERROR REGERROR;
 
 /* windows */
 typedef const std::string &FWINMEM;
@@ -31,10 +32,13 @@ typedef const std::string &FWINPYS;
 typedef const std::string &FWINSERV;
 typedef const std::string &FWINMMC;
 typedef const std::string &FWINSECU;
+typedef const std::string &FMSINF32;
 
-typedef const std::string &MSINF32;
+/* レジストリ */
+typedef long REGISTORY;
 
-typedef DWORD POLICYINF;
+/* LSA */
+typedef unsigned long POLICYINF;
 
 /* アカウント名 */
 typedef const wchar_t* ACCOUNTN;

@@ -1160,6 +1160,8 @@ namespace SecurityControl
                 try
                 {
                     DWORD policyinformationclass = std::stoul(match[1]);
+
+                    return handle_lsa_query_information_policy_sub_func(policyinformationclass, line_num, result_text, buffer);
                 }
                 catch (const std::invalid_argument &ia)
                 {

@@ -35,5 +35,6 @@
 #include "LsaEnumerateLogonSessions.hpp"
 #include "LsaOpenTrustedDomainByName.hpp"
 #include "LsaQueryDomainInformationPolicy.hpp"
+#include "LsaQueryInformationPolicy.hpp"
 
 #endif // SECURITYCONTROLLERCONFIG_HPP

@@ -12,5 +12,6 @@
 #include "TaskSchedulerError/TaskSchedulerError.hpp"
 #include "MouseError/MouseError.hpp"
 #include "SecurityError/SecurityError.hpp"
+#include "msInfo32Error/msInfo32Error.hpp"
 
 #endif // WINAPIERROR_HPP

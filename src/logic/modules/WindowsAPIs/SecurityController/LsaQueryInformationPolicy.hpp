@@ -2,7 +2,7 @@
 #define LSAQUERYINFORMATIONPOLICY_HPP
 
 #include "SecuritySet.hpp"
-#include "PolicyInformationClass/PolicyInformationClasses.hpp"
+#include "LsaQueryInformationPolicy/LsaQueryInformationPolicyPolicyInfoEnumerator.hpp"
 
 inline bool handle_lsa_query_information_policy_sub_func(POLICYINF policyInfo,
                                                          LINE line_num,
@@ -24,9 +24,10 @@ inline bool handle_lsa_query_information_policy_sub_func(POLICYINF policyInfo,
 
     if (CUSTOM_NT_SUCCESS(status))
     {
+        POLICY_INFORMATION_CLASS policyInformation = {};
         PVOID pbuffer;
 
-        status = LsaQueryInformationPolicy(lHandle, PolicyInformationClassEnumerator(policyInfo), &pbuffer);
+        status = LsaQueryInformationPolicy(lHandle, PolInfClassEnum(policyInfo, policyInformation, line_num, result_text, buffer), &pbuffer);
         if (!CUSTOM_NT_SUCCESS(status))
         {
             LsaClose(lHandle);
