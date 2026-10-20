@@ -5,6 +5,8 @@
 #include <ntsecapi.h>
 #include <sddl.h>
 
+#include <ntstatus.h>
+
 #include <sstream>
 #include <string>
 

@@ -32,6 +32,10 @@ typedef const std::string &FWINSERV;
 typedef const std::string &FWINMMC;
 typedef const std::string &FWINSECU;
 
+typedef const std::string &MSINF32;
+
+typedef DWORD POLICYINF;
+
 /* アカウント名 */
 typedef const wchar_t* ACCOUNTN;
 

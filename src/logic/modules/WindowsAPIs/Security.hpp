@@ -1121,7 +1121,7 @@ namespace SecurityControl
             {
                 try
                 {
-                    //
+                    return handle_lsa_query_domain_information_policy_sub_func(line_num, result_text, buffer);
                 }
                 catch (const std::invalid_argument &ia)
                 {
@@ -1136,6 +1136,44 @@ namespace SecurityControl
             }
 
             SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "LsaQueryDomainInformationPolicy");
+            return false;
+        }
+
+        /* LsaQueryInformationPolicy */
+        inline bool handle_lsa_query_information_policy(const std::string &line,
+                                                        int line_num,
+                                                        std::string &result_text,
+                                                        Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                        bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "LsaQueryInformationPolicy");
+                return false;
+            }
+
+            static const std::regex lsa_query_information_policy_re("LsaQueryInformationPolicy\\(\\s*([0-9]+)\\s*\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, lsa_query_information_policy_re))
+            {
+                try
+                {
+                    DWORD policyinformationclass = std::stoul(match[1]);
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    SecurityError::handle_security_controller_error_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (const std::exception &e)
+                {
+                    SecurityError::handle_security_controller_error_exception(line_num, result_text, buffer, "LsaQueryInformationPolicy");
+                    return false;
+                }
+            }
+
+            SecurityError::handle_security_controller_error_call_error(line_num, result_text, buffer, "LsaQueryInformationPolicy");
             return false;
         }
     }
