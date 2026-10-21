@@ -40,7 +40,7 @@ typedef const std::string &FWINSECU;
 typedef const std::string &FMSINF32;
 
 /* レジストリ */
-typedef long REGISTORY;
+typedef long REGISTRY;
 
 /* LSA */
 typedef unsigned long POLICYINF;

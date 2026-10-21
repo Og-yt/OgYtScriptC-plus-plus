@@ -7,60 +7,37 @@
 
 namespace msInfo32Error
 {
-    namespace CPU
+    inline bool handle_reg_open_key_ex_w_failed_error(LINE line_num,
+                                                                   MESSAGE result_text,
+                                                                   BUFFER buffer,
+                                                                   REGERROR status)
     {
-        inline bool handle_get_cpu_name_reg_open_key_ex_a_failed_error(LINE line_num,
-                                                                       MESSAGE result_text,
-                                                                       BUFFER buffer,
-                                                                       REGERROR status)
-        {
-            result_text += ErrorLogic::build_msg(line_num, "RegOpenKeyExA failed: " + status + '\n');
-            ErrorLogic::highlight_line(buffer, line_num);
+        result_text += ErrorLogic::build_msg(line_num, "RegOpenKeyExA failed: " + status + '\n');
+        ErrorLogic::highlight_line(buffer, line_num);
 
-            return false;
-        }
-
-        inline bool handle_get_cpu_name_reg_query_key_ex_w_failed_error(LINE line_num,
-                                                                        MESSAGE result_text,
-                                                                        BUFFER buffer,
-                                                                        REGERROR status)
-        {
-            result_text += ErrorLogic::build_msg(line_num, "RegQueryValueExW failed: " + status + '\n');
-            ErrorLogic::highlight_line(buffer, line_num);
-
-            return false;
-        }
-
-        inline bool handle_get_cpu_name_invalid_registory_error(LINE line_num,
-                                                                MESSAGE result_text,
-                                                                BUFFER buffer,
-                                                                REGERROR status)
-        {
-            result_text += ErrorLogic::build_msg(line_num, "Invalid registry value. Error: " + status + '\n');
-            ErrorLogic::highlight_line(buffer, line_num);
-
-            return false;
-        }
+        return false;
     }
 
-    namespace RAM
+    inline bool handle_reg_query_key_ex_w_failed_error(LINE line_num,
+                                                                    MESSAGE result_text,
+                                                                    BUFFER buffer,
+                                                                    REGERROR status)
     {
-        //
+        result_text += ErrorLogic::build_msg(line_num, "RegQueryValueExW failed: " + status + '\n');
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
     }
 
-    namespace HardWare
+    inline bool handle_invalid_registry_error(LINE line_num,
+                                                            MESSAGE result_text,
+                                                            BUFFER buffer,
+                                                            REGERROR status)
     {
-        //
-    }
+        result_text += ErrorLogic::build_msg(line_num, "Invalid registry value. Error: " + status + '\n');
+        ErrorLogic::highlight_line(buffer, line_num);
 
-    namespace Processor
-    {
-        //
-    }
-
-    namespace GPU
-    {
-        //
+        return false;
     }
 
     inline bool handle_ms_info_32_invalid_argument(LINE line_num,

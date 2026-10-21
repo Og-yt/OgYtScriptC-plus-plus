@@ -1,7 +1,0 @@
-#ifndef MSINFO32CONTROLLERCONFIG_HPP
-#define MSINFO32CONTROLLERCONFIG_HPP
-
-#include "GetCPUName.hpp"
-#include "GetCerealNumber.hpp"
-
-#endif // MSINFO32CONTROLLERCONFIG_HPP
