@@ -8,9 +8,9 @@
 namespace msInfo32Error
 {
     inline bool handle_reg_open_key_ex_w_failed_error(LINE line_num,
-                                                                   MESSAGE result_text,
-                                                                   BUFFER buffer,
-                                                                   REGERROR status)
+                                                      MESSAGE result_text,
+                                                      BUFFER buffer,
+                                                      REGERROR status)
     {
         result_text += ErrorLogic::build_msg(line_num, "RegOpenKeyExA failed: " + status + '\n');
         ErrorLogic::highlight_line(buffer, line_num);
@@ -19,9 +19,9 @@ namespace msInfo32Error
     }
 
     inline bool handle_reg_query_key_ex_w_failed_error(LINE line_num,
-                                                                    MESSAGE result_text,
-                                                                    BUFFER buffer,
-                                                                    REGERROR status)
+                                                       MESSAGE result_text,
+                                                       BUFFER buffer,
+                                                       REGERROR status)
     {
         result_text += ErrorLogic::build_msg(line_num, "RegQueryValueExW failed: " + status + '\n');
         ErrorLogic::highlight_line(buffer, line_num);
@@ -30,9 +30,9 @@ namespace msInfo32Error
     }
 
     inline bool handle_invalid_registry_error(LINE line_num,
-                                                            MESSAGE result_text,
-                                                            BUFFER buffer,
-                                                            REGERROR status)
+                                              MESSAGE result_text,
+                                              BUFFER buffer,
+                                              REGERROR status)
     {
         result_text += ErrorLogic::build_msg(line_num, "Invalid registry value. Error: " + status + '\n');
         ErrorLogic::highlight_line(buffer, line_num);
