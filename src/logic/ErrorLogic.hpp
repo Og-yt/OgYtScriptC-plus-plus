@@ -5,6 +5,7 @@
 #include <string>
 #include <algorithm>
 
+#include <sstream>
 #include <ostream>
 
 #include <exception>
@@ -18,6 +19,10 @@ typedef BUFFER TXBUF;
 
 /* 文字列ストリーム */
 typedef std::ostringstream OSTERR;
+
+/* ASCII コード */
+typedef const std::string &ASCIICODE;
+typedef std::istringstream ASCIISTREAM;
 
 /* エラーコード GetLastError */
 typedef unsigned long WERROR;

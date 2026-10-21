@@ -176,7 +176,7 @@ private:
         std::regex math_re("\\b(MathSin|MathCos|MathTan|MathASin|MathACos|MathATan|MathSqrt|MathCbrt|MathLog[2-9]|MathLog[1][1-6]|MathPower|MathFact|MathE|MathPI|MathPower[2-5]|MathPermutation|MathCombination|MathIntegral|MathDoubleIntegral|MathTripleIntegral|MathTetraIntegral|MathPentaIntegral|Math[1-4]EQT|MathPhi|MathMobius|MathDiv0|MathDiv1|MathDivS|MathPrime|MathExtGCD|MathBell|MathGamma|MathCatalan|MathECatalan|MathFibonacci|MathLucas|MathAAiry|MathBAiry|MathDwIntegral|MathFreIntegral|MathClausen|MathLerTransc|MathPolyLog|MathHWzeta|MathBarnesInteger|MathBarnesReal|MathDigamma|MathTrigamma|MathPolygamma|MathWeiss|MathJacoSN|MathJacoDN|MathWeissP|MathJacoT1)\\b");
 
         // windows関連
-        std::regex windows_re("\\b(RegCreateKeyExA|RegOpenKeyExA|RegCloseKey|RegDeleteKeyExA|RegSetValueExA|RegQueryValueExA|WinCreateMsgBox|GTKCreateMsgBox|HWGetMemoryInfo|HWGetCPUCoreInfo|PBGetDiskInfo|PBGetLogicalDriveInfo|NetGetIPAddress|GetGlobalMemoryInfo|GetMemoryUsageInfo|GetTotalRAMInfo|GetAvailabelRAMInfo|GetTotalPageFileInfo|GetAvailabelPageFileInfo|GetAvailabelVirtualMemorySizeInfo|GetTotalVirtualMemorySizeInfo|GetAvailabelExtendedVirtualMemorySizeInfo|GetMemoryInformationCode|GetOgYtScriptMemoryUsageInfo|OpenServiceManager|GetServiceInfo|OpenCommand|CreateMsgBox|VolPysDiskMitigationIO|CreateORGetObjectID|CreateUSNJournalData|GetCSVLocalNodeControl|FSCTLDeleteObjectId|FSCTLDeleteUSNJournal|SetCursorPosition|GetCurrentCursorPosition|ExSetCursorPosition|CtrlKeyControl|Command|GetCPUName)\\b");
+        std::regex windows_re("\\b(RegCreateKeyExA|RegOpenKeyExA|RegCloseKey|RegDeleteKeyExA|RegSetValueExA|RegQueryValueExA|WinCreateMsgBox|GTKCreateMsgBox|HWGetMemoryInfo|HWGetCPUCoreInfo|PBGetDiskInfo|PBGetLogicalDriveInfo|NetGetIPAddress|GetGlobalMemoryInfo|GetMemoryUsageInfo|GetTotalRAMInfo|GetAvailabelRAMInfo|GetTotalPageFileInfo|GetAvailabelPageFileInfo|GetAvailabelVirtualMemorySizeInfo|GetTotalVirtualMemorySizeInfo|GetAvailabelExtendedVirtualMemorySizeInfo|GetMemoryInformationCode|GetOgYtScriptMemoryUsageInfo|OpenServiceManager|GetServiceInfo|OpenCommand|CreateMsgBox|VolPysDiskMitigationIO|CreateORGetObjectID|CreateUSNJournalData|GetCSVLocalNodeControl|FSCTLDeleteObjectId|FSCTLDeleteUSNJournal|SetCursorPosition|GetCurrentCursorPosition|ExSetCursorPosition|CtrlKeyControl|Command|GetCPUName|GetCerealNumber)\\b");
 
         // AutoScript関連
         std::regex auto_script_re("\\b(CtrlKeyControl|ShiftKeyControl|WindowsKey|AltKeyControl|EscapeKeyControl|MouseControlSetCursorPositionN|OpenCMD)\\b");
@@ -1597,6 +1597,13 @@ private:
             else if (line.find("GetCPUName") == 0)
             {
                 if (!msInfo32Control::CPU::handle_get_cpu_name(line, lineCount, resultText, buffer, windows_api_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("GetCerealNumber") == 0)
+            {
+                if (!msInfo32Control::Numbers::handle_get_cereal_number(line, lineCount, resultText, buffer, windows_api_imported))
                 {
                     break;
                 }

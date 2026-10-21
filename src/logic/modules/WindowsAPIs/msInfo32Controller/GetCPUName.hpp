@@ -9,6 +9,8 @@
 #include "../../../ErrorLogic.hpp"
 #include "../../../ErrorMessages/Messages.hpp"
 
+#include "../ASCIIToPlainText.hpp"
+
 inline bool GetCPUName(LINE line_num, MESSAGE result_text, BUFFER buffer)
 {
     std::ostringstream oss;
@@ -47,7 +49,7 @@ inline bool GetCPUName(LINE line_num, MESSAGE result_text, BUFFER buffer)
 
     buf.back() = L'\0';
 
-    oss << L"CPU: " << buf.data() << "\n";
+    oss << "CPU: " << ASCIIToPlainText(buf) << "\n";
 
     result_text += oss.str();
     return false;
