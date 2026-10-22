@@ -176,7 +176,10 @@ private:
         std::regex math_re("\\b(MathSin|MathCos|MathTan|MathASin|MathACos|MathATan|MathSqrt|MathCbrt|MathLog[2-9]|MathLog[1][1-6]|MathPower|MathFact|MathE|MathPI|MathPower[2-5]|MathPermutation|MathCombination|MathIntegral|MathDoubleIntegral|MathTripleIntegral|MathTetraIntegral|MathPentaIntegral|Math[1-4]EQT|MathPhi|MathMobius|MathDiv0|MathDiv1|MathDivS|MathPrime|MathExtGCD|MathBell|MathGamma|MathCatalan|MathECatalan|MathFibonacci|MathLucas|MathAAiry|MathBAiry|MathDwIntegral|MathFreIntegral|MathClausen|MathLerTransc|MathPolyLog|MathHWzeta|MathBarnesInteger|MathBarnesReal|MathDigamma|MathTrigamma|MathPolygamma|MathWeiss|MathJacoSN|MathJacoDN|MathWeissP|MathJacoT1)\\b");
 
         // windows関連
-        std::regex windows_re("\\b(RegCreateKeyExA|RegOpenKeyExA|RegCloseKey|RegDeleteKeyExA|RegSetValueExA|RegQueryValueExA|WinCreateMsgBox|GTKCreateMsgBox|HWGetMemoryInfo|HWGetCPUCoreInfo|PBGetDiskInfo|PBGetLogicalDriveInfo|NetGetIPAddress|GetGlobalMemoryInfo|GetMemoryUsageInfo|GetTotalRAMInfo|GetAvailabelRAMInfo|GetTotalPageFileInfo|GetAvailabelPageFileInfo|GetAvailabelVirtualMemorySizeInfo|GetTotalVirtualMemorySizeInfo|GetAvailabelExtendedVirtualMemorySizeInfo|GetMemoryInformationCode|GetOgYtScriptMemoryUsageInfo|OpenServiceManager|GetServiceInfo|OpenCommand|CreateMsgBox|VolPysDiskMitigationIO|CreateORGetObjectID|CreateUSNJournalData|GetCSVLocalNodeControl|FSCTLDeleteObjectId|FSCTLDeleteUSNJournal|SetCursorPosition|GetCurrentCursorPosition|ExSetCursorPosition|CtrlKeyControl|Command|GetCPUName|GetCerealNumber|GetSystemProductName|GetProductName)\\b");
+        std::regex windows_re("\\b(RegCreateKeyExA|RegOpenKeyExA|RegCloseKey|RegDeleteKeyExA|RegSetValueExA|RegQueryValueExA|WinCreateMsgBox|GTKCreateMsgBox|HWGetMemoryInfo|HWGetCPUCoreInfo|PBGetDiskInfo|PBGetLogicalDriveInfo|NetGetIPAddress|GetGlobalMemoryInfo|GetMemoryUsageInfo|GetTotalRAMInfo|GetAvailabelRAMInfo|GetTotalPageFileInfo|GetAvailabelPageFileInfo|GetAvailabelVirtualMemorySizeInfo|GetTotalVirtualMemorySizeInfo|GetAvailabelExtendedVirtualMemorySizeInfo|GetMemoryInformationCode|GetOgYtScriptMemoryUsageInfo|OpenServiceManager|GetServiceInfo|OpenCommand|CreateMsgBox|VolPysDiskMitigationIO|CreateORGetObjectID|CreateUSNJournalData|GetCSVLocalNodeControl|FSCTLDeleteObjectId|FSCTLDeleteUSNJournal|SetCursorPosition|GetCurrentCursorPosition|ExSetCursorPosition|CtrlKeyControl|Command|GetCPUName|GetCerealNumber|GetSystemProductName|GetProductName|GetSystemRoot)\\b");
+
+        // PCData
+        std::regex pc_data_re("\\b(GetCPUName|GetCerealNumber|GetSystemProductName|GetProductName|GetSystemRoot|GetProductID|GetDisplayVersion)\\b");
 
         // AutoScript関連
         std::regex auto_script_re("\\b(CtrlKeyControl|ShiftKeyControl|WindowsKey|AltKeyControl|EscapeKeyControl|MouseControlSetCursorPositionN|OpenCMD)\\b");
@@ -215,6 +218,7 @@ private:
         apply_style(auto_script_re, "special");
         apply_style(time_re, "special");
         apply_style(country_code_re, "keyword");
+        apply_style(pc_data_re, "special");
 
         // 型の後に続く変数名をハイライト (キャプチャグループ 2 を使用)
         auto decl_begin = std::sregex_iterator(raw_text.begin(), raw_text.end(), var_decl_re);
@@ -358,6 +362,7 @@ private:
         bool auto_script_imported = false;
         bool thread_imported = false;
         bool python_imported = false;
+        bool pc_data_imported = false;
         std::map<std::string, std::string> auto_scripts;
 
         ErrorLogic::clear_highlights(buffer);
@@ -435,6 +440,10 @@ private:
                 else if (line.find("\"python\"") != std::string::npos)
                 {
                     python_imported = true;
+                }
+                else if (line.find("\"PCData\"") != std::string::npos)
+                {
+                    pc_data_imported = true;
                 }
                 continue;
             }
@@ -1594,34 +1603,57 @@ private:
                 }
             }
 
+            /* PCData */
             else if (line.find("GetCPUName") == 0)
             {
-                if (!msInfo32Control::CPU::handle_get_cpu_name(line, lineCount, resultText, buffer, windows_api_imported))
+                if (!msInfo32Control::CPU::handle_get_cpu_name(line, lineCount, resultText, buffer, pc_data_imported))
                 {
                     break;
                 }
             }
             else if (line.find("GetCerealNumber") == 0)
             {
-                if (!msInfo32Control::Numbers::handle_get_cereal_number(line, lineCount, resultText, buffer, windows_api_imported))
+                if (!msInfo32Control::Numbers::handle_get_cereal_number(line, lineCount, resultText, buffer, pc_data_imported))
                 {
                     break;
                 }
             }
             else if (line.find("GetSystemProductName") == 0)
             {
-                if (!msInfo32Control::Numbers::handle_get_system_product_name(line, lineCount, resultText, buffer, windows_api_imported))
+                if (!msInfo32Control::Numbers::handle_get_system_product_name(line, lineCount, resultText, buffer, pc_data_imported))
                 {
                     break;
                 }
             }
             else if (line.find("GetProductName") == 0)
             {
-                if (!msInfo32Control::Numbers::handle_get_product_name(line, lineCount, resultText, buffer, windows_api_imported))
+                if (!msInfo32Control::Numbers::handle_get_product_name(line, lineCount, resultText, buffer, pc_data_imported))
                 {
                     break;
                 }
             }
+            else if (line.find("GetSystemRoot") == 0)
+            {
+                if (!msInfo32Control::Numbers::handle_get_system_root(line, lineCount, resultText, buffer, pc_data_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("GetProductID") == 0)
+            {
+                if (!msInfo32Control::Numbers::handle_get_prodcuct_id(line, lineCount, resultText, buffer, pc_data_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("GetDisplayVersion") == 0)
+            {
+                if (!msInfo32Control::Numbers::handle_get_display_version(line, lineCount, resultText, buffer, pc_data_imported))
+                {
+                    break;
+                }
+            }
+            /* END PCData */
 
 
             else if (line.find("Command") == 0)

@@ -20,6 +20,9 @@ typedef BUFFER TXBUF;
 /* 文字列ストリーム */
 typedef std::ostringstream OSTERR;
 
+typedef const std::string &FUNCNAME;
+typedef bool IMPORT;
+
 /* ASCII コード */
 typedef const std::string &ASCIICODE;
 typedef std::istringstream ASCIISTREAM;
@@ -37,6 +40,7 @@ typedef const std::string &FWINPYS;
 typedef const std::string &FWINSERV;
 typedef const std::string &FWINMMC;
 typedef const std::string &FWINSECU;
+
 typedef const std::string &FMSINF32;
 
 /* レジストリ */

@@ -1,5 +1,5 @@
-#ifndef MSINFO32CONTROL_HPP
-#define MSINFO32CONTROL_HPP
+#ifndef PCDATACONFIG_HPP
+#define PCDATACONFIG_HPP
 
 #include <windows.h>
 #include <ntsecapi.h>
@@ -11,12 +11,13 @@
 #include "../../ErrorLogic.hpp"
 #include "../../ErrorMessages/Messages.hpp"
 
-#include "GetRegistryPCData.hpp"
+#include "../WindowsAPIs/GetRegistryPCData.hpp"
 
 namespace msInfo32Control
 {
     namespace CPU
     {
+        /* CPUの種別を取得 */
         inline bool handle_get_cpu_name(const std::string &line,
                                         int line_num,
                                         std::string &result_text,
@@ -25,7 +26,7 @@ namespace msInfo32Control
         {
             if (!is_imported)
             {
-                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "GetCPUName()");
+                ImportError::is_pc_data_imported(line_num, result_text, buffer, is_imported, "GetCPUName()");
                 return false;
             }
 
@@ -69,7 +70,7 @@ namespace msInfo32Control
     {
         //
     }
-    
+
     namespace NPU
     {
         //
@@ -77,15 +78,16 @@ namespace msInfo32Control
 
     namespace Numbers
     {
+        /* 謎のナンバーを取得 */
         inline bool handle_get_cereal_number(const std::string &line,
-                                              int line_num,
-                                              std::string &result_text,
-                                              Glib::RefPtr<Gtk::TextBuffer> buffer, 
-                                              bool is_imported)
+                                             int line_num,
+                                             std::string &result_text,
+                                             Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                             bool is_imported)
         {
             if (!is_imported)
             {
-                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "GetCerealNumber()");
+                ImportError::is_pc_data_imported(line_num, result_text, buffer, is_imported, "GetCerealNumber()");
                 return false;
             }
 
@@ -114,6 +116,7 @@ namespace msInfo32Control
             return false;
         }
 
+        /* プロダクトネームの取得 */
         inline bool handle_get_system_product_name(const std::string &line,
                                                    int line_num,
                                                    std::string &result_text,
@@ -122,7 +125,7 @@ namespace msInfo32Control
         {
             if (!is_imported)
             {
-                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "GetSystemProductName()");
+                ImportError::is_pc_data_imported(line_num, result_text, buffer, is_imported, "GetSystemProductName()");
                 return false;
             }
 
@@ -151,6 +154,7 @@ namespace msInfo32Control
             return false;
         }
 
+        /* プロダクトネームを取得する */
         inline bool handle_get_product_name(const std::string &line,
                                             int line_num,
                                             std::string &result_text,
@@ -159,7 +163,7 @@ namespace msInfo32Control
         {
             if (!is_imported)
             {
-                ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "GetProductName()");
+                ImportError::is_pc_data_imported(line_num, result_text, buffer, is_imported, "GetProductName()");
                 return false;
             }
 
@@ -187,7 +191,121 @@ namespace msInfo32Control
             msInfo32Error::handle_ms_info_32_call_error(line_num, result_text, buffer, "GetProductName");
             return false;
         }
+
+        /* システムルートを取得 */
+        inline bool handle_get_system_root(const std::string &line,
+                                           int line_num,
+                                           std::string &result_text,
+                                           Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                           bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_pc_data_imported(line_num, result_text, buffer, is_imported, "GetSystemRoot()");
+                return false;
+            }
+
+            static const std::regex get_system_root_re("GetSystemRoot\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, get_system_root_re))
+            {
+                try
+                {
+                    return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"SystemRoot", "SystemRoot", line_num, result_text, buffer);
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (const std::exception &e)
+                {
+                    msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetSystemRoot");
+                    return false;
+                }
+            }
+
+            msInfo32Error::handle_ms_info_32_call_error(line_num, result_text, buffer, "GetSystemRoot");
+            return false;
+        }
+
+        /* プロダクトID */
+        inline bool handle_get_prodcuct_id(const std::string &line,
+                                           int line_num,
+                                           std::string &result_text,
+                                           Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                           bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_pc_data_imported(line_num, result_text, buffer, is_imported, "GetProductID()");
+                return false;
+            }
+
+            static const std::regex get_product_id_re("GetProductID\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, get_product_id_re))
+            {
+                try
+                {
+                    return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"ProductID", "ProductId", line_num, result_text, buffer);
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (const std::exception &e)
+                {
+                    msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetProductID");
+                    return false;
+                }
+            }
+
+            msInfo32Error::handle_ms_info_32_call_error(line_num, result_text, buffer, "GetProductID");
+            return false;
+        }
+
+        /* DisplayVersionを取得 */
+        inline bool handle_get_display_version(const std::string &line,
+                                               int line_num,
+                                               std::string &result_text,
+                                               Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                               bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_pc_data_imported(line_num, result_text, buffer, is_imported, "GetDisplayVersion()");
+                return false;
+            }
+
+            static const std::regex get_display_version_re("GetDisplayData\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, get_display_version_re))
+            {
+                try
+                {
+                    return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"DisplayVersion", "DisplayVersion", line_num, result_text, buffer);
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (const std::exception &e)
+                {
+                    msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetDisplayData");
+                    return false;
+                }
+            }
+
+            msInfo32Error::handle_ms_info_32_call_error(line_num, result_text, buffer, "GetDisplayData");
+            return false;
+        }
     }
 }
 
-#endif // MSINFO32CONTROL_HPP
+#endif // PCDATACONFIG_HPP
