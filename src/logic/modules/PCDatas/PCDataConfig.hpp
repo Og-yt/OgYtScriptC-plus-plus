@@ -306,6 +306,47 @@ namespace msInfo32Control
             return false;
         }
 
+        /* ComposidionEditionIDの取得 */
+        inline bool handle_get_compos_edit_id(const std::string &line,
+                                              int line_num,
+                                              std::string &result_text,
+                                              Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                              bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_pc_data_imported(line_num, result_text, buffer, is_imported, "GetComposEditID()");
+                return false;
+            }
+
+            static const std::regex get_compos_edit_id_re("GetComposEditID\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, get_compos_edit_id_re))
+            {
+                try
+                {
+                    return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"CompositionEditionID", "CompositionEditionIdentification", line_num, result_text, buffer);
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (const std::exception &e)
+                {
+                    msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetComposEditID");
+                    return false;
+                }
+            }
+
+            msInfo32Error::handle_ms_info_32_call_error(line_num, result_text, buffer, "GetComposEditID");
+            return false;
+        }
+    }
+
+    namespace Build
+    {
         /* BuildLabを取得 */
         inline bool handle_get_build_lab(const std::string &line,
                                          int line_num,
