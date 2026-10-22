@@ -39,12 +39,12 @@ namespace msInfo32Control
                 {
                     return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", L"ProcessorNameString", "CPU", line_num, result_text, buffer);
                 }
-                catch (const std::invalid_argument &ia)
+                catch (EX_IA ia)
                 {
                     msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
                     return false;
                 }
-                catch (const std::exception &e)
+                catch (EX_E e)
                 {
                     msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetCPUName");
                     return false;
@@ -76,6 +76,51 @@ namespace msInfo32Control
         //
     }
 
+    namespace Application
+    {
+        namespace RunMRU
+        {
+            //
+        }
+
+        inline bool handle_cmd_true_type_font(const std::string &line,
+                                              int line_num,
+                                              std::string &result_text,
+                                              Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                              bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_pc_data_imported(line_num, result_text, buffer, is_imported, "GetCMDTrueTypeFont()");
+                return false;
+            }
+
+            static const std::regex cmd_true_type_font_re("GetCMDTrueTypeFont\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, cmd_true_type_font_re))
+            {
+                try
+                {
+                    return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Console\\TrueTypeFont", L"932", "CMD font", line_num, result_text, buffer);
+                }
+                catch (EX_IA ia)
+                {
+                    msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (EX_E e)
+                {
+                    msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetCMDTrueTypeFont");
+                    return false;
+                }
+            }
+
+            msInfo32Error::handle_ms_info_32_call_error(line_num, result_text, buffer, "GetCMDTrueTypeFont");
+            return false;
+        }
+    }
+
     namespace Numbers
     {
         /* 謎のナンバーを取得 */
@@ -100,12 +145,12 @@ namespace msInfo32Control
                 {
                     return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"HARDWARE\\DESCRIPTION\\System\\BIOS", L"SystemVersion", "CerealNumber", line_num, result_text, buffer);
                 }
-                catch (const std::invalid_argument &ia)
+                catch (EX_IA ia)
                 {
                     msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
                     return false;
                 }
-                catch (const std::exception &e)
+                catch (EX_E e)
                 {
                     msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetCerealNumber");
                     return false;
@@ -138,12 +183,12 @@ namespace msInfo32Control
                 {
                     return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"HARDWARE\\DESCRIPTION\\System\\BIOS", L"SystemProductName", "SystemProductName", line_num, result_text, buffer);
                 }
-                catch (const std::invalid_argument &ia)
+                catch (EX_IA ia)
                 {
                     msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
                     return false;
                 }
-                catch (const std::exception &e)
+                catch (EX_E e)
                 {
                     msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetSystemProductName");
                     return false;
@@ -176,12 +221,12 @@ namespace msInfo32Control
                 {
                     return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"ProductName", "ProductName", line_num, result_text, buffer);
                 }
-                catch (const std::invalid_argument &ia)
+                catch (EX_IA ia)
                 {
                     msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
                     return false;
                 }
-                catch (const std::exception &e)
+                catch (EX_E e)
                 {
                     msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetProductName");
                     return false;
@@ -214,12 +259,12 @@ namespace msInfo32Control
                 {
                     return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"SystemRoot", "SystemRoot", line_num, result_text, buffer);
                 }
-                catch (const std::invalid_argument &ia)
+                catch (EX_IA ia)
                 {
                     msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
                     return false;
                 }
-                catch (const std::exception &e)
+                catch (EX_E e)
                 {
                     msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetSystemRoot");
                     return false;
@@ -252,12 +297,12 @@ namespace msInfo32Control
                 {
                     return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"ProductID", "ProductId", line_num, result_text, buffer);
                 }
-                catch (const std::invalid_argument &ia)
+                catch (EX_IA ia)
                 {
                     msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
                     return false;
                 }
-                catch (const std::exception &e)
+                catch (EX_E e)
                 {
                     msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetProductID");
                     return false;
@@ -290,12 +335,12 @@ namespace msInfo32Control
                 {
                     return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"DisplayVersion", "DisplayVersion", line_num, result_text, buffer);
                 }
-                catch (const std::invalid_argument &ia)
+                catch (EX_IA ia)
                 {
                     msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
                     return false;
                 }
-                catch (const std::exception &e)
+                catch (EX_E e)
                 {
                     msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetDisplayData");
                     return false;
@@ -328,12 +373,12 @@ namespace msInfo32Control
                 {
                     return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"CompositionEditionID", "CompositionEditionIdentification", line_num, result_text, buffer);
                 }
-                catch (const std::invalid_argument &ia)
+                catch (EX_IA ia)
                 {
                     msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
                     return false;
                 }
-                catch (const std::exception &e)
+                catch (EX_E e)
                 {
                     msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetComposEditID");
                     return false;
@@ -369,12 +414,12 @@ namespace msInfo32Control
                 {
                     return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"BuildLab", "BuildLab", line_num, result_text, buffer);
                 }
-                catch (const std::invalid_argument &ia)
+                catch (EX_IA ia)
                 {
                     msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
                     return false;
                 }
-                catch (const std::exception &e)
+                catch (EX_E e)
                 {
                     msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetBuildLab");
                     return false;
@@ -407,12 +452,12 @@ namespace msInfo32Control
                 {
                     return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"BuildLabEx", "BuildLabEx", line_num, result_text, buffer);
                 }
-                catch (const std::invalid_argument &ia)
+                catch (EX_IA ia)
                 {
                     msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
                     return false;
                 }
-                catch (const std::exception &e)
+                catch (EX_E e)
                 {
                     msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetBuildLabEx");
                     return false;
@@ -421,6 +466,21 @@ namespace msInfo32Control
 
             msInfo32Error::handle_ms_info_32_call_error(line_num, result_text, buffer, "GetBuildLabEx");
             return false;
+        }
+    }
+
+    namespace Change
+    {
+        namespace Application
+        {
+            inline bool handle_cmd_font_change(const std::string &line,
+                                               int line_num,
+                                               std::string &result_text,
+                                               Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                               bool is_imported)
+            {
+                //
+            }
         }
     }
 }

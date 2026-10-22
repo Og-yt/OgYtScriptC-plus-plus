@@ -72,6 +72,7 @@ typedef const std::string &FALG, &FALGORITHM;
 
 /* ビット */
 typedef const std::string &FBIT;
+typedef FBIT CFBIT;
 
 /* 例外処理 */
 typedef const std::invalid_argument &EX_IA;
