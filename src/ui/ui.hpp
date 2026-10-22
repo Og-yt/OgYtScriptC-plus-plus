@@ -179,7 +179,7 @@ private:
         std::regex windows_re("\\b(RegCreateKeyExA|RegOpenKeyExA|RegCloseKey|RegDeleteKeyExA|RegSetValueExA|RegQueryValueExA|WinCreateMsgBox|GTKCreateMsgBox|HWGetMemoryInfo|HWGetCPUCoreInfo|PBGetDiskInfo|PBGetLogicalDriveInfo|NetGetIPAddress|GetGlobalMemoryInfo|GetMemoryUsageInfo|GetTotalRAMInfo|GetAvailabelRAMInfo|GetTotalPageFileInfo|GetAvailabelPageFileInfo|GetAvailabelVirtualMemorySizeInfo|GetTotalVirtualMemorySizeInfo|GetAvailabelExtendedVirtualMemorySizeInfo|GetMemoryInformationCode|GetOgYtScriptMemoryUsageInfo|OpenServiceManager|GetServiceInfo|OpenCommand|CreateMsgBox|VolPysDiskMitigationIO|CreateORGetObjectID|CreateUSNJournalData|GetCSVLocalNodeControl|FSCTLDeleteObjectId|FSCTLDeleteUSNJournal|SetCursorPosition|GetCurrentCursorPosition|ExSetCursorPosition|CtrlKeyControl|Command|GetCPUName|GetCerealNumber|GetSystemProductName|GetProductName|GetSystemRoot)\\b");
 
         // PCData
-        std::regex pc_data_re("\\b(GetCPUName|GetCerealNumber|GetSystemProductName|GetProductName|GetSystemRoot|GetProductID|GetDisplayVersion)\\b");
+        std::regex pc_data_re("\\b(GetCPUName|GetCerealNumber|GetSystemProductName|GetProductName|GetSystemRoot|GetProductID|GetDisplayVersion|GetBuildLab|GetBuildLabEx)\\b");
 
         // AutoScript関連
         std::regex auto_script_re("\\b(CtrlKeyControl|ShiftKeyControl|WindowsKey|AltKeyControl|EscapeKeyControl|MouseControlSetCursorPositionN|OpenCMD)\\b");
@@ -1649,6 +1649,20 @@ private:
             else if (line.find("GetDisplayVersion") == 0)
             {
                 if (!msInfo32Control::Numbers::handle_get_display_version(line, lineCount, resultText, buffer, pc_data_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("GetBuildLab") == 0)
+            {
+                if (!msInfo32Control::Numbers::handle_get_build_lab(line, lineCount, resultText, buffer, pc_data_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("GetBuildLabEx") == 0)
+            {
+                if (!msInfo32Control::Numbers::handle_get_build_lab_ex(line, lineCount, resultText, buffer, pc_data_imported))
                 {
                     break;
                 }

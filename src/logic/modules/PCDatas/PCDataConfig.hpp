@@ -281,7 +281,7 @@ namespace msInfo32Control
                 return false;
             }
 
-            static const std::regex get_display_version_re("GetDisplayData\\(\\);");
+            static const std::regex get_display_version_re("GetDisplayVersion\\(\\);");
             std::smatch match;
 
             if (std::regex_search(line, match, get_display_version_re))
@@ -303,6 +303,82 @@ namespace msInfo32Control
             }
 
             msInfo32Error::handle_ms_info_32_call_error(line_num, result_text, buffer, "GetDisplayData");
+            return false;
+        }
+
+        /* BuildLabを取得 */
+        inline bool handle_get_build_lab(const std::string &line,
+                                         int line_num,
+                                         std::string &result_text,
+                                         Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                         bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_pc_data_imported(line_num, result_text, buffer, is_imported, "GetBuildLab()");
+                return false;
+            }
+
+            static const std::regex get_build_lab_re("GetBuildLab\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, get_build_lab_re))
+            {
+                try
+                {
+                    return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"BuildLab", "BuildLab", line_num, result_text, buffer);
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (const std::exception &e)
+                {
+                    msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetBuildLab");
+                    return false;
+                }
+            }
+
+            msInfo32Error::handle_ms_info_32_call_error(line_num, result_text, buffer, "GetBuildLab");
+            return false;
+        }
+
+        /* BuildLabExを取得 */
+        inline bool handle_get_build_lab_ex(const std::string &line,
+                                         int line_num,
+                                         std::string &result_text,
+                                         Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                         bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_pc_data_imported(line_num, result_text, buffer, is_imported, "GetBuildLabEx()");
+                return false;
+            }
+
+            static const std::regex get_build_lab_ex_re("GetBuildLabEx\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, get_build_lab_ex_re))
+            {
+                try
+                {
+                    return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"BuildLabEx", "BuildLabEx", line_num, result_text, buffer);
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (const std::exception &e)
+                {
+                    msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetBuildLabEx");
+                    return false;
+                }
+            }
+
+            msInfo32Error::handle_ms_info_32_call_error(line_num, result_text, buffer, "GetBuildLabEx");
             return false;
         }
     }
