@@ -7,6 +7,19 @@
 
 namespace msInfo32Error
 {
+    namespace Application
+    {
+        inline bool handle_RunMRU_error(LINE line_num,
+                                        MESSAGE result_text,
+                                        BUFFER buffer)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "Invalid length");
+            ErrorLogic::highlight_line(buffer, line_num);
+
+            return false;
+        }
+    }
+
     inline bool handle_reg_open_key_ex_w_failed_error(LINE line_num,
                                                       MESSAGE result_text,
                                                       BUFFER buffer,

@@ -1732,6 +1732,13 @@ private:
             }
 
             /**
+             * 
+             * @brief security functions
+             * 
+             */
+            // else if (line.find("") == 0){}
+
+            /**
              *
              * @brief thread relational functions
              *

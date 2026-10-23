@@ -13,6 +13,10 @@
 
 #include "../WindowsAPIs/GetRegistryPCData.hpp"
 
+#include "../WindowsAPIs/StringToLPWSTR.hpp"
+#include "../WindowsAPIs/LPCWSTRToString.hpp"
+
+
 namespace msInfo32Control
 {
     namespace CPU
@@ -37,7 +41,7 @@ namespace msInfo32Control
             {
                 try
                 {
-                    return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", L"ProcessorNameString", "CPU", line_num, result_text, buffer);
+                    RegistryStructure(2, 0, L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", L"ProcessorNameString", "CPU", line_num, result_text, buffer);
                 }
                 catch (EX_IA ia)
                 {
@@ -80,7 +84,56 @@ namespace msInfo32Control
     {
         namespace RunMRU
         {
-            //
+            inline bool handle_get_run_mru_data(const std::string &line,
+                                                int line_num,
+                                                std::string &result_text,
+                                                Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                bool is_imported)
+            {
+                if (!is_imported)
+                {
+                    ImportError::is_pc_data_imported(line_num, result_text, buffer, is_imported, "GetRunMRUData()");
+                    return false;
+                }
+
+                static const std::regex get_run_mru_data_re("GetRunMRUData\\(\\s*([a-zA-Z][a-zA-Z0-9_]*)\\);");
+                std::smatch match;
+
+                if (std::regex_search(line, match, get_run_mru_data_re))
+                {
+                    try
+                    {
+                        if (match[1].str() == "MRUList")
+                        {
+                            RegistryStructure(1, 0, L"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RunMRU", L"MRUList", "", line_num, result_text, buffer);
+                        }
+
+                        if (match[1].length() == 2)
+                        {
+                            return msInfo32Error::Application::handle_RunMRU_error(line_num, result_text, buffer);
+                        }
+
+                        LPCWSTR code = string_to_lpwstr(match[1].str());
+                        std::string Vcode = LPCWSTRToString(code, result_text);
+
+                        RegistryStructure(1, 0, L"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RunMRU", code, Vcode, line_num, result_text, buffer);
+                        delete[] code;
+                    }
+                    catch (EX_IA ia)
+                    {
+                        msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
+                        return false;
+                    }
+                    catch (EX_E e)
+                    {
+                        msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetRunMRUData");
+                        return false;
+                    }
+                }
+
+                msInfo32Error::handle_ms_info_32_call_error(line_num, result_text, buffer, "GetRunMRUData");
+                return false;
+            }
         }
 
         inline bool handle_cmd_true_type_font(const std::string &line,
@@ -102,7 +155,7 @@ namespace msInfo32Control
             {
                 try
                 {
-                    return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Console\\TrueTypeFont", L"932", "CMD font", line_num, result_text, buffer);
+                    RegistryStructure(2, 0, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Console\\TrueTypeFont", L"932", "CMD font", line_num, result_text, buffer);
                 }
                 catch (EX_IA ia)
                 {
@@ -143,7 +196,7 @@ namespace msInfo32Control
             {
                 try
                 {
-                    return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"HARDWARE\\DESCRIPTION\\System\\BIOS", L"SystemVersion", "CerealNumber", line_num, result_text, buffer);
+                    RegistryStructure(2, 0, L"HARDWARE\\DESCRIPTION\\System\\BIOS", L"SystemVersion", "CerealNumber", line_num, result_text, buffer);
                 }
                 catch (EX_IA ia)
                 {
@@ -181,7 +234,7 @@ namespace msInfo32Control
             {
                 try
                 {
-                    return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"HARDWARE\\DESCRIPTION\\System\\BIOS", L"SystemProductName", "SystemProductName", line_num, result_text, buffer);
+                    RegistryStructure(2, 0, L"HARDWARE\\DESCRIPTION\\System\\BIOS", L"SystemProductName", "SystemProductName", line_num, result_text, buffer);
                 }
                 catch (EX_IA ia)
                 {
@@ -219,7 +272,7 @@ namespace msInfo32Control
             {
                 try
                 {
-                    return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"ProductName", "ProductName", line_num, result_text, buffer);
+                    RegistryStructure(2, 0, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"ProductName", "ProductName", line_num, result_text, buffer);
                 }
                 catch (EX_IA ia)
                 {
@@ -257,7 +310,7 @@ namespace msInfo32Control
             {
                 try
                 {
-                    return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"SystemRoot", "SystemRoot", line_num, result_text, buffer);
+                    RegistryStructure(2, 0, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"SystemRoot", "SystemRoot", line_num, result_text, buffer);
                 }
                 catch (EX_IA ia)
                 {
@@ -295,7 +348,7 @@ namespace msInfo32Control
             {
                 try
                 {
-                    return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"ProductID", "ProductId", line_num, result_text, buffer);
+                    RegistryStructure(2, 0, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"ProductID", "ProductId", line_num, result_text, buffer);
                 }
                 catch (EX_IA ia)
                 {
@@ -333,7 +386,7 @@ namespace msInfo32Control
             {
                 try
                 {
-                    return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"DisplayVersion", "DisplayVersion", line_num, result_text, buffer);
+                    RegistryStructure(2, 0, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"DisplayVersion", "DisplayVersion", line_num, result_text, buffer);
                 }
                 catch (EX_IA ia)
                 {
@@ -371,7 +424,7 @@ namespace msInfo32Control
             {
                 try
                 {
-                    return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"CompositionEditionID", "CompositionEditionIdentification", line_num, result_text, buffer);
+                    RegistryStructure(2, 0, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"CompositionEditionID", "CompositionEditionIdentification", line_num, result_text, buffer);
                 }
                 catch (EX_IA ia)
                 {
@@ -412,7 +465,7 @@ namespace msInfo32Control
             {
                 try
                 {
-                    return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"BuildLab", "BuildLab", line_num, result_text, buffer);
+                    RegistryStructure(2, 0, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"BuildLab", "BuildLab", line_num, result_text, buffer);
                 }
                 catch (EX_IA ia)
                 {
@@ -450,7 +503,7 @@ namespace msInfo32Control
             {
                 try
                 {
-                    return RegistryStructure::H_LOCAL_MACHINE::RegistryStructureSZ(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"BuildLabEx", "BuildLabEx", line_num, result_text, buffer);
+                    RegistryStructure(2, 0, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"BuildLabEx", "BuildLabEx", line_num, result_text, buffer);
                 }
                 catch (EX_IA ia)
                 {
