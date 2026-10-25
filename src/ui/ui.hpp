@@ -184,6 +184,9 @@ private:
         // AutoScript関連
         std::regex auto_script_re("\\b(CtrlKeyControl|ShiftKeyControl|WindowsKey|AltKeyControl|EscapeKeyControl|MouseControlSetCursorPositionN|OpenCMD)\\b");
 
+        // NET
+        std::regex net_re("\\b(WlanEnumeratorInterfaces)\\b");
+
         /* time関連 & 国コード(3桁)  */
         std::regex time_re("\\b(CurrentTime|CurrentWorldTime)\\b");
         std::regex country_code_re("\\b(MID|NIU|ASM|USA_HL|COK_RAR|PYF|USA_ANC|GMD|USA_LOS|PCN|USA_CAM|USA_CHI|ECW|USA_NEW|EASTER|USA_CAR|BMU|ARG|SGS|CPV|CIV|GBR|ITA|GRC|KEN|RUS_MOS|IRQ|UAE|PAK|BGD|IDN|CHN|JPN|GUM|RUS_SAK|NRU)\\b");
@@ -219,6 +222,7 @@ private:
         apply_style(time_re, "special");
         apply_style(country_code_re, "keyword");
         apply_style(pc_data_re, "special");
+        apply_style(net_re, "special");
 
         // 型の後に続く変数名をハイライト (キャプチャグループ 2 を使用)
         auto decl_begin = std::sregex_iterator(raw_text.begin(), raw_text.end(), var_decl_re);
@@ -363,6 +367,7 @@ private:
         bool thread_imported = false;
         bool python_imported = false;
         bool pc_data_imported = false;
+        bool net_imported = false;
         std::map<std::string, std::string> auto_scripts;
 
         ErrorLogic::clear_highlights(buffer);
@@ -444,6 +449,10 @@ private:
                 else if (line.find("\"PCData\"") != std::string::npos)
                 {
                     pc_data_imported = true;
+                }
+                else if (line.find("\"NET\"") != std::string::npos)
+                {
+                    net_imported = true;
                 }
                 continue;
             }
@@ -1772,6 +1781,15 @@ private:
              * 
              */
             // else if (line.find("") == 0){}
+
+            /* NET */
+            else if (line.find("WlanEnumeratorInterfaces") == 0)
+            {
+                if (!NetWorkControl::handle_wlan_enumerator_interfaces(line, lineCount, resultText, buffer, net_imported))
+                {
+                    break;
+                }
+            }
 
             /**
              *

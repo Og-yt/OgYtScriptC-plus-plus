@@ -15,6 +15,7 @@
 #include "Thread.hpp"                      // スレッド / Interrupt
 #include "Python.hpp"                      // Pythonプログラム
 #include "PCData.hpp"                      // PCDataを取得する
+#include "NetWork.hpp"                     // ネットワーク処理
 
 #include "ErrorMessageAndWarningBox/ErrorMessageAndWarningBox.hpp"
 

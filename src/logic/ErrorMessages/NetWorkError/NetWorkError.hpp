@@ -7,6 +7,28 @@
 
 namespace NetWorkError
 {
+    inline bool handle_wlan_open_handle_failed_error(LINE line_num,
+                                                     MESSAGE result_text,
+                                                     BUFFER buffer,
+                                                     NETRESULT result)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "WlanOpenHandle with failed error: " + result + '\n');
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
+    inline bool handle_wlan_enum_interfaces_failed_error(LINE line_num,
+                                                         MESSAGE result_text,
+                                                         BUFFER buffer,
+                                                         NETRESULT result)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "WlanEnumInterfaces with failed erorr: " + result + '\n');
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
     inline bool handle_net_work_invalid_argument(LINE line_num,
                                                  MESSAGE result_text,
                                                  BUFFER buffer)

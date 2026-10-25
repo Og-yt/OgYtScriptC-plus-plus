@@ -33,7 +33,7 @@ namespace NetWorkControl
         {
             try
             {
-                //
+                return handle_wlan_enumerator_interfaces_sub_func(line_num, result_text, buffer);
             }
             catch (EX_IA ia)
             {

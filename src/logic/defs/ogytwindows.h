@@ -28,6 +28,7 @@ typedef const std::string &FMSINF32;
 typedef const std::string &FWINNET;
 typedef unsigned long NETWORK;
 typedef NETWORK NETINFOLIST;
+typedef NETWORK NETRESULT;
 
 /* ハードウェア制御 */
 typedef const std::string &FWINHW;
