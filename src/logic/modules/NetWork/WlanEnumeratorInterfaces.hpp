@@ -3,6 +3,7 @@
 
 #include <windows.h>
 #include <wlanapi.h>
+#include <sstream>
 
 #include "../../ErrorLogic.hpp"
 #include "../../ErrorMessages/Messages.hpp"

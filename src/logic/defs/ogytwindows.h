@@ -1,0 +1,51 @@
+#ifndef OGYTWINDOWS_H
+#define OGYTWINDOWS_H
+
+#include <string>
+
+/* ASCII コード */
+typedef const std::string &ASCIICODE;
+typedef std::istringstream ASCIISTREAM;
+
+/* エラーコード GetLastError */
+typedef unsigned long WERROR;
+typedef WERROR WSERROR;
+typedef WERROR HWERROR;
+typedef WERROR REGERROR;
+
+/* windows */
+typedef const std::string &FWINMEM;
+typedef const std::string &FWINREG;
+typedef const std::string &FWINPYS;
+typedef const std::string &FWINSERV;
+typedef const std::string &FWINMMC;
+typedef const std::string &FWINSECU;
+
+/* msinfo32 */
+typedef const std::string &FMSINF32;
+
+/* ネットワーク */
+typedef const std::string &FWINNET;
+typedef unsigned long NETWORK;
+typedef NETWORK NETINFOLIST;
+
+/* ハードウェア制御 */
+typedef const std::string &FWINHW;
+
+/* レジストリ */
+typedef long REGISTRY;
+
+/* LSA */
+typedef unsigned long POLICYINF;
+
+/* アカウント名 */
+typedef const wchar_t* ACCOUNTN;
+
+/* カーネル */
+typedef const std::string &FWINFSCTLFLTKEL;
+
+/* セキュリティエラー : 権限不足 */
+typedef const char *SEERRORFUNCTION;
+typedef const char *SZPRIVILEGE;
+
+#endif // OGYTWINDOWS_H
