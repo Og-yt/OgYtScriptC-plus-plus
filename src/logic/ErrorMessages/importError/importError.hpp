@@ -177,6 +177,18 @@ namespace ImportError
 
         return false;
     }
+
+    inline bool is_net_imported(LINE line_num,
+                                MESSAGE result_text,
+                                BUFFER buffer,
+                                IMPORT is_net_imported,
+                                FUNCNAME net_func_name)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "The 'NET' library is required to use '" + net_func_name + "'. Pleace add 'import \"NET\"';");
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
 }
 
 #endif // IMPORTERROR_HPP

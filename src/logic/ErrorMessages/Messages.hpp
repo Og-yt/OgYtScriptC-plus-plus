@@ -16,5 +16,6 @@
 #include "ThreadError/ThreadError.hpp"           // Thread
 #include "PythonError/PythonError.hpp"           // Python
 #include "../ErrorLogic.hpp"                     // ErrorMessageIO
+#include "NetWorkError/NetWorkError.hpp"
 
 #endif // MESSAGES_HPP

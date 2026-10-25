@@ -41,7 +41,15 @@ typedef const std::string &FWINSERV;
 typedef const std::string &FWINMMC;
 typedef const std::string &FWINSECU;
 
+/* msinfo32 */
 typedef const std::string &FMSINF32;
+
+/* ネットワーク */
+typedef const std::string &FWINNET;
+typedef unsigned long NETWORK;
+
+/* ハードウェア制御 */
+typedef const std::string &FWINHW;
 
 /* レジストリ */
 typedef long REGISTRY;
@@ -58,9 +66,6 @@ typedef const std::string &FWINFSCTLFLTKEL;
 /* セキュリティエラー : 権限不足 */
 typedef const char *SEERRORFUNCTION;
 typedef const char *SZPRIVILEGE;
-
-/* ハードウェア制御 */
-typedef const std::string &FWINHW;
 
 /* Array */
 typedef const std::string &FARRAY;
