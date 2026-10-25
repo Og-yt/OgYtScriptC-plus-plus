@@ -18,7 +18,7 @@ inline bool handle_wlan_enumerator_interfaces_sub_func(LINE line_num,
     DWORD negotiatedVersion = 0;
     std::ostringstream oss;
 
-    NETWORK result = WlanOpenHandle(2, NULL, NULL, &hClient);
+    NETWORK result = WlanOpenHandle(2, NULL, &negotiatedVersion, &hClient);
     if (result != ERROR_SUCCESS)
     {
         NetWorkError::handle_wlan_open_handle_failed_error(line_num, result_text, buffer, result);
@@ -34,11 +34,32 @@ inline bool handle_wlan_enumerator_interfaces_sub_func(LINE line_num,
         {
             const WLAN_INTERFACE_INFO &info = pList->InterfaceInfo[i];
 
-            oss << L" Interfaces: "
-                << info.strInterfaceDescription
-                << L"\nState: "
-                << info.isState
-                << L"\n\n";
+            const int descriptionLength = WideCharToMultiByte(CP_UTF8, 0, info.strInterfaceDescription, -1, NULL, 0, NULL, NULL);
+            if (descriptionLength == 0)
+            {
+                const DWORD err = GetLastError();
+                NetWorkError::handle_wlan_enum_interfaces_failed_error(line_num, result_text, buffer, err);
+
+                WlanFreeMemory(pList);
+                WlanCloseHandle(hClient, NULL);
+                return 1;
+            }
+
+            std::string description(descriptionLength, '\0');
+            if (WideCharToMultiByte(CP_UTF8, 0, info.strInterfaceDescription, -1, &description[0], descriptionLength, NULL, NULL) == 0)
+            {
+                const DWORD err = GetLastError();
+                NetWorkError::handle_wlan_enum_interfaces_failed_error(line_num, result_text, buffer, err);
+
+                WlanFreeMemory(pList);
+                WlanCloseHandle(hClient, NULL);
+                return 1;
+            }
+            description.resize(descriptionLength - 1);
+
+            oss << " Interfaces: " << description
+                << "\nState: " << info.isState
+                << "\n";
         }
     }
     else
