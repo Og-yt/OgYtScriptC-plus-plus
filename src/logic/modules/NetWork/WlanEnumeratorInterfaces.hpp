@@ -12,8 +12,16 @@ inline bool handle_wlan_enumerator_interfaces_sub_func(LINE line_num,
                                                        BUFFER buffer)
 {
     HANDLE handle = NULL;
-    PWLAN_INTERFACE_INFO_LIST infoList;
+    PWLAN_INTERFACE_INFO_LIST infoList = NULL;
+
     NETWORK status = WlanEnumInterfaces(handle, NULL, &infoList);
+    if (status == ERROR_SUCCESS || infoList != NULL)
+    {
+        for (NETINFOLIST i = 0; i < infoList->dwNumberOfItems; ++i)
+        {
+            const WLAN_INTERFACE_INFO& info = infoList->InterfaceInfo[i];
+        }
+    }
 }
 
 #endif // WLANENUMERATORINTERFACES_HPP
