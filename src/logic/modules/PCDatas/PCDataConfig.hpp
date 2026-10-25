@@ -366,6 +366,120 @@ namespace msInfo32Control
             return false;
         }
 
+        /* GetProductKey */
+        inline bool handle_get_product_key(const std::string &line,
+                                           int line_num,
+                                           std::string &result_text,
+                                           Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                           bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_pc_data_imported(line_num, result_text, buffer, is_imported, "GetProductKey()");
+                return false;
+            }
+
+            static const std::regex get_product_key_re("GetProductKey\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, get_product_key_re))
+            {
+                try
+                {
+                    return RegistryStructure(2, 0, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DefaultProductKey", L"ProductId", "ProductKey", line_num, result_text, buffer);
+                }
+                catch (EX_IA ia)
+                {
+                    msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (EX_E e)
+                {
+                    msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetProductKey");
+                    return false;
+                }
+            }
+
+            msInfo32Error::handle_ms_info_32_call_error(line_num, result_text, buffer, "GetProductKey");
+            return false;
+        }
+
+        /* OSProductContentID */
+        inline bool handle_os_product_content_id(const std::string &line,
+                                                int line_num,
+                                                std::string &result_text,
+                                                Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_pc_data_imported(line_num, result_text, buffer, is_imported, "GetOSProdConID()");
+                return false;
+            }
+
+            static const std::regex os_product_content_id_re("GetOSProdConID\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, os_product_content_id_re))
+            {
+                try
+                {
+                    return RegistryStructure(2, 0, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DefaultProductKey2", L"OSProductContentId", "OSProductContentID", line_num, result_text, buffer);
+                }
+                catch(EX_IA ia)
+                {
+                    msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (EX_E e)
+                {
+                    msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetOSProdConID");
+                    return false;
+                }
+            }
+
+            msInfo32Error::handle_ms_info_32_call_error(line_num, result_text, buffer, "GetOSProdConID");
+            return false;
+        }
+
+        /* OSProductPFN */
+        inline bool handle_get_os_product_pfn(const std::string &line,
+                                              int line_num,
+                                              std::string &result_text,
+                                              Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                              bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_pc_data_imported(line_num, result_text, buffer, is_imported, "GetOSProductPFN()");
+                return false;
+            }
+
+            static const std::regex get_os_product_pfn_re("GetOSProductPFN\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, get_os_product_pfn_re))
+            {
+                try
+                {
+                    return RegistryStructure(2, 0, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DefaultProductKey2", L"OSProductPfn", "OSProductPfn", line_num, result_text, buffer);
+                }
+                catch (EX_IA ia)
+                {
+                    msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (EX_E e)
+                {
+                    msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetOSProductPFN");
+                    return false;
+                }
+            }
+
+            msInfo32Error::handle_ms_info_32_call_error(line_num, result_text, buffer, "GetOSProductPFN");
+            return false;
+        }
+
         /* DisplayVersionを取得 */
         inline bool handle_get_display_version(const std::string &line,
                                                int line_num,
@@ -518,6 +632,43 @@ namespace msInfo32Control
             }
 
             msInfo32Error::handle_ms_info_32_call_error(line_num, result_text, buffer, "GetBuildLabEx");
+            return false;
+        }
+
+        inline bool handle_get_shell(const std::string &line,
+                                     int line_num,
+                                     std::string &result_text,
+                                     Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                     bool is_imported)
+        {
+            if (!is_imported)
+            {
+                ImportError::is_pc_data_imported(line_num, result_text, buffer, is_imported, "GetShell()");
+                return false;
+            }
+
+            static const std::regex get_shell_re("GetShell\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, get_shell_re))
+            {
+                try
+                {
+                    return RegistryStructure(2, 0, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon", L"Shell", "Shell", line_num, result_text, buffer);
+                }
+                catch (EX_IA ia)
+                {
+                    msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (EX_E e)
+                {
+                    msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetShell");
+                    return false;
+                }
+            }
+
+            msInfo32Error::handle_ms_info_32_call_error(line_num, result_text, buffer, "GetShell");
             return false;
         }
     }

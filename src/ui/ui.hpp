@@ -179,7 +179,7 @@ private:
         std::regex windows_re("\\b(RegCreateKeyExA|RegOpenKeyExA|RegCloseKey|RegDeleteKeyExA|RegSetValueExA|RegQueryValueExA|WinCreateMsgBox|GTKCreateMsgBox|HWGetMemoryInfo|HWGetCPUCoreInfo|PBGetDiskInfo|PBGetLogicalDriveInfo|NetGetIPAddress|GetGlobalMemoryInfo|GetMemoryUsageInfo|GetTotalRAMInfo|GetAvailabelRAMInfo|GetTotalPageFileInfo|GetAvailabelPageFileInfo|GetAvailabelVirtualMemorySizeInfo|GetTotalVirtualMemorySizeInfo|GetAvailabelExtendedVirtualMemorySizeInfo|GetMemoryInformationCode|GetOgYtScriptMemoryUsageInfo|OpenServiceManager|GetServiceInfo|OpenCommand|CreateMsgBox|VolPysDiskMitigationIO|CreateORGetObjectID|CreateUSNJournalData|GetCSVLocalNodeControl|FSCTLDeleteObjectId|FSCTLDeleteUSNJournal|SetCursorPosition|GetCurrentCursorPosition|ExSetCursorPosition|CtrlKeyControl|Command|GetCPUName|GetCerealNumber|GetSystemProductName|GetProductName|GetSystemRoot)\\b");
 
         // PCData
-        std::regex pc_data_re("\\b(GetCPUName|GetCerealNumber|GetSystemProductName|GetProductName|GetSystemRoot|GetProductID|GetDisplayVersion|GetBuildLab|GetBuildLabEx|GetComposEditID|GetCMDTrueTypeFont)\\b");
+        std::regex pc_data_re("\\b(GetCPUName|GetCerealNumber|GetSystemProductName|GetProductName|GetSystemRoot|GetProductID|GetDisplayVersion|GetBuildLab|GetBuildLabEx|GetComposEditID|GetCMDTrueTypeFont|GetProductKey|GetOSProdConID|GetOSProductPFN|GetShell)\\b");
 
         // AutoScript関連
         std::regex auto_script_re("\\b(CtrlKeyControl|ShiftKeyControl|WindowsKey|AltKeyControl|EscapeKeyControl|MouseControlSetCursorPositionN|OpenCMD)\\b");
@@ -1677,6 +1677,34 @@ private:
             else if (line.find("GetCMDTrueTypeFont") == 0)
             {
                 if (!msInfo32Control::Application::handle_cmd_true_type_font(line, lineCount, resultText, buffer, pc_data_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("GetProductKey") == 0)
+            {
+                if (!msInfo32Control::Numbers::handle_get_product_key(line, lineCount, resultText, buffer, pc_data_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("GetOSProdConID") == 0)
+            {
+                if (!msInfo32Control::Numbers::handle_os_product_content_id(line, lineCount, resultText, buffer, pc_data_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("GetOSProductPFN") == 0)
+            {
+                if (!msInfo32Control::Numbers::handle_get_os_product_pfn(line, lineCount, resultText, buffer, pc_data_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("GetShell") == 0)
+            {
+                if (!msInfo32Control::Build::handle_get_shell(line, lineCount, resultText, buffer, pc_data_imported))
                 {
                     break;
                 }
