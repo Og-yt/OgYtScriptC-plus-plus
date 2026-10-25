@@ -179,7 +179,7 @@ private:
         std::regex windows_re("\\b(RegCreateKeyExA|RegOpenKeyExA|RegCloseKey|RegDeleteKeyExA|RegSetValueExA|RegQueryValueExA|WinCreateMsgBox|GTKCreateMsgBox|HWGetMemoryInfo|HWGetCPUCoreInfo|PBGetDiskInfo|PBGetLogicalDriveInfo|NetGetIPAddress|GetGlobalMemoryInfo|GetMemoryUsageInfo|GetTotalRAMInfo|GetAvailabelRAMInfo|GetTotalPageFileInfo|GetAvailabelPageFileInfo|GetAvailabelVirtualMemorySizeInfo|GetTotalVirtualMemorySizeInfo|GetAvailabelExtendedVirtualMemorySizeInfo|GetMemoryInformationCode|GetOgYtScriptMemoryUsageInfo|OpenServiceManager|GetServiceInfo|OpenCommand|CreateMsgBox|VolPysDiskMitigationIO|CreateORGetObjectID|CreateUSNJournalData|GetCSVLocalNodeControl|FSCTLDeleteObjectId|FSCTLDeleteUSNJournal|SetCursorPosition|GetCurrentCursorPosition|ExSetCursorPosition|CtrlKeyControl|Command|GetCPUName|GetCerealNumber|GetSystemProductName|GetProductName|GetSystemRoot)\\b");
 
         // PCData
-        std::regex pc_data_re("\\b(GetCPUName|GetCerealNumber|GetSystemProductName|GetProductName|GetSystemRoot|GetProductID|GetDisplayVersion|GetBuildLab|GetBuildLabEx|GetComposEditID|GetCMDTrueTypeFont|GetProductKey|GetOSProdConID|GetOSProductPFN|GetShell)\\b");
+        std::regex pc_data_re("\\b(GetCPUName|GetCerealNumber|GetSystemProductName|GetProductName|GetSystemRoot|GetProductID|GetDisplayVersion|GetBuildLab|GetBuildLabEx|GetComposEditID|GetCMDTrueTypeFont|GetProductKey|GetOSProdConID|GetOSProductPFN|GetShell|GetLastHeartBeat)\\b");
 
         // AutoScript関連
         std::regex auto_script_re("\\b(CtrlKeyControl|ShiftKeyControl|WindowsKey|AltKeyControl|EscapeKeyControl|MouseControlSetCursorPositionN|OpenCMD)\\b");
@@ -1705,6 +1705,13 @@ private:
             else if (line.find("GetShell") == 0)
             {
                 if (!msInfo32Control::Build::handle_get_shell(line, lineCount, resultText, buffer, pc_data_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("GetLastHeartBeat") == 0)
+            {
+                if (!msInfo32Control::Build::handle_get_last_heart_beat(line, lineCount, resultText, buffer, pc_data_imported))
                 {
                     break;
                 }

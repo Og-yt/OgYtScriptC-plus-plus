@@ -60,26 +60,6 @@ namespace msInfo32Control
         }
     }
 
-    namespace RAM
-    {
-        //
-    }
-
-    namespace HardWare
-    {
-        //
-    }
-
-    namespace GPU
-    {
-        //
-    }
-
-    namespace NPU
-    {
-        //
-    }
-
     namespace Application
     {
         namespace RunMRU
@@ -635,6 +615,7 @@ namespace msInfo32Control
             return false;
         }
 
+        /* winlogon in SHELL */
         inline bool handle_get_shell(const std::string &line,
                                      int line_num,
                                      std::string &result_text,
@@ -671,20 +652,43 @@ namespace msInfo32Control
             msInfo32Error::handle_ms_info_32_call_error(line_num, result_text, buffer, "GetShell");
             return false;
         }
-    }
 
-    namespace Change
-    {
-        namespace Application
-        {
-            inline bool handle_cmd_font_change(const std::string &line,
+        /* LastHeartBeat */
+        inline bool handle_get_last_heart_beat(const std::string &line,
                                                int line_num,
                                                std::string &result_text,
                                                Glib::RefPtr<Gtk::TextBuffer> buffer,
                                                bool is_imported)
+        {
+            if (!is_imported)
             {
-                //
+                ImportError::is_pc_data_imported(line_num, result_text, buffer, is_imported, "GetLastHeartBeat()");
+                return false;
             }
+
+            static const std::regex get_last_heart_beat_re("GetLastHeartBeat\\(\\);");
+            std::smatch match;
+
+            if (std::regex_search(line, match, get_last_heart_beat_re))
+            {
+                try
+                {
+                    return RegistryStructure(2, 2, L"SOFTWARE\\Microsoft\\Windows Security Health", L"LastHeartBeat", "LastHeartBeat", line_num, result_text, buffer);
+                }
+                catch (EX_IA ia)
+                {
+                    msInfo32Error::handle_ms_info_32_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+                catch (EX_E e)
+                {
+                    msInfo32Error::handle_ms_info_32_exception(line_num, result_text, buffer, "GetLastheartBeat");
+                    return false;
+                }
+            }
+
+            msInfo32Error::handle_ms_info_32_call_error(line_num, result_text, buffer, "GetLastHeartBeat");
+            return false;
         }
     }
 }
