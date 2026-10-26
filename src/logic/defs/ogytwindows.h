@@ -1,6 +1,7 @@
 #ifndef OGYTWINDOWS_H
 #define OGYTWINDOWS_H
 
+#include <vector>
 #include <string>
 
 #define MAX_CRIENT_VERSION 2
@@ -17,6 +18,8 @@ typedef WERROR HWERROR;
 typedef WERROR REGERROR;
 
 typedef void CLIENT;
+typedef unsigned char DATA, NETDATA, *PNETDATA;
+typedef std::vector<DATA> STORAGE;
 
 /* windows */
 typedef const std::string &FWINMEM;

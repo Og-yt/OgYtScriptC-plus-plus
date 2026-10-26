@@ -118,7 +118,14 @@ namespace NetWorkControl
         {
             try
             {
-                //
+                std::unique_ptr<wchar_t[]> format(string_to_lpwstr(match[1].str()));
+                if (!format)
+                {
+                    NetWorkError::handle_net_work_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+
+                return handle_wlan_set_psd_ie_data_list_sub_func(format.get(), line_num, result_text, buffer);
             }
             catch (EX_IA ia)
             {

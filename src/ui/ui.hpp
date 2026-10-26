@@ -185,7 +185,7 @@ private:
         std::regex auto_script_re("\\b(CtrlKeyControl|ShiftKeyControl|WindowsKey|AltKeyControl|EscapeKeyControl|MouseControlSetCursorPositionN|OpenCMD)\\b");
 
         // NET
-        std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList)\\b");
+        std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList|WlanSetPsdIEDataList)\\b");
 
         /* time関連 & 国コード(3桁)  */
         std::regex time_re("\\b(CurrentTime|CurrentWorldTime)\\b");
@@ -1793,6 +1793,13 @@ private:
             else if (line.find("WlanExtractPsdIEDataList") == 0)
             {
                 if (!NetWorkControl::handle_wlan_extract_psd_ied_data_list(line, lineCount, resultText, buffer, net_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("WlanSetPsdIEDataList") == 0)
+            {
+                if (!NetWorkControl::handle_wlan_set_psd_ie_data_list(line, lineCount, resultText, buffer, net_imported))
                 {
                     break;
                 }
