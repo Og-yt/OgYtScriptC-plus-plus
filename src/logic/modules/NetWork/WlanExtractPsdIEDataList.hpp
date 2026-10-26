@@ -99,7 +99,7 @@ inline bool handle_wlan_extract_psd_ie_data_list_sub_func(STRFORMAT strFormat,
             {
                 NetWorkError::handle_wlan_extract_psd_ie_data_list_invalid_error(line_num, result_text, buffer, result);
                 release_wlan_resources();
-                
+
                 return false;
             }
             else if (result == ERROR_ACCESS_DENIED)

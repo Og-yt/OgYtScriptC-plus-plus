@@ -34,6 +34,7 @@ typedef const std::string &FWINNET;
 typedef unsigned long NETWORK;
 typedef NETWORK NETINFOLIST;
 typedef NETWORK NETRESULT;
+typedef NETWORK NEGOVER;
 
 typedef const wchar_t *NETURL;
 typedef NETURL *PNETURL;

@@ -3,5 +3,6 @@
 
 #include "WlanEnumeratorInterfaces.hpp"
 #include "WlanExtractPsdIEDataList.hpp"
+#include "WlanSetPsdIEDataList.hpp"
 
 #endif // NETWORKCONFIG_HPP
