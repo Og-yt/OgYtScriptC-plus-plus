@@ -20,7 +20,8 @@ typedef Glib::RefPtr<Gtk::TextBuffer> BUFFER;
 typedef BUFFER TXBUF;
 
 /* 文字列ストリーム */
-typedef std::ostringstream OSTERR;
+typedef std::ostringstream OSTREAM;
+typedef OSTREAM OSTERR;
 
 typedef const std::string &FUNCNAME;
 typedef bool IMPORT;

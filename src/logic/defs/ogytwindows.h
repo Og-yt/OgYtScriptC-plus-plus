@@ -3,6 +3,9 @@
 
 #include <string>
 
+#define MAX_CRIENT_VERSION 2
+#define MAX_WLAN_V MAX_CRIENT_VERSION
+
 /* ASCII コード */
 typedef const std::string &ASCIICODE;
 typedef std::istringstream ASCIISTREAM;
