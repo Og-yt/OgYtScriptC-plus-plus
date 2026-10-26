@@ -11,10 +11,7 @@
 #include "../../ErrorLogic.hpp"
 #include "../../ErrorMessages/Messages.hpp"
 
-inline bool handle_wlan_extract_psd_ie_data_list_sub_func(STRFORMAT strFormat,
-                                                          LINE line_num,
-                                                          MESSAGE result_text,
-                                                          BUFFER buffer)
+inline bool handle_wlan_extract_psd_ie_data_list_sub_func(STRFORMAT strFormat, LINE line_num, MESSAGE result_text, BUFFER buffer)
 {
     HANDLE hClient = NULL;
     DWORD negotiatedVersion = 0;

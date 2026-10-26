@@ -28,9 +28,9 @@ inline bool handle_wlan_set_psd_ie_data_list_sub_func(SENDDATA a1, SENDDATA a2, 
     STORAGE storage(totalSize, 0);
 
     auto* dataList = reinterpret_cast<PWLAN_RAW_DATA_LIST>(storage.data());
-    dataList->dwTotalSize = static_cast<DWORD>(totalSize);
+    dataList->dwTotalSize = static_cast<DATALIST>(totalSize);
     dataList->dwNumberOfItems = 1;
-    dataList->DataList[0].dwDataOffset = static_cast<DWORD>(descriptorSize);
+    dataList->DataList[0].dwDataOffset = static_cast<DATALIST>(descriptorSize);
     dataList->DataList[0].dwDataSize = sizeof(payLoad);
 
     NETDATA* data = reinterpret_cast<NETDATA*>(&dataList->DataList[0]) + dataList->DataList[0].dwDataOffset;

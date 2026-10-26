@@ -154,6 +154,44 @@ namespace NetWorkControl
         NetWorkError::handle_net_work_call_error(line_num, result_text, buffer, "WlanSetPsdIEDataList");
         return false;
     }
+
+    /* WlanGetAvailableNetworkList */
+    inline bool handle_wlan_get_available_net_work_list(const std::string &line,
+                                                        int line_num,
+                                                        std::string &result_text,
+                                                        Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                        bool is_imported)
+    {
+        if (!is_imported)
+        {
+            ImportError::is_net_imported(line_num, result_text, buffer, is_imported, "WlanGetAvailableNetworkList()");
+            return false;
+        }
+        
+        static const std::regex wlan_get_available_net_work_list_re("WlanGetAvailableNetworkList\\(\\);");
+        std::smatch match;
+
+        if (std::regex_search(line, match, wlan_get_available_net_work_list_re))
+        {
+            try
+            {
+                //
+            }
+            catch (EX_IA ia)
+            {
+                NetWorkError::handle_net_work_invalid_argument(line_num, result_text, buffer);
+                return false;
+            }
+            catch (EX_E e)
+            {
+                NetWorkError::handle_net_work_exception(line_num, result_text, buffer, "WlanGetAvailableNetworkList");
+                return false;
+            }
+        }
+
+        NetWorkError::handle_net_work_call_error(line_num, result_text, buffer, "WlanGetAvailableNetworkList");
+        return false;
+    }
 }
 
 #endif // NETWORK_HPP
