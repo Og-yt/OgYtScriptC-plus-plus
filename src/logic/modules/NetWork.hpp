@@ -6,6 +6,7 @@
 
 #include <string>
 #include <regex>
+#include <memory>
 
 #include "../ErrorLogic.hpp"
 #include "../ErrorMessages/Messages.hpp"
@@ -73,9 +74,14 @@ namespace NetWorkControl
         {
             try
             {
-                LPCWSTR url = string_to_lpwstr(match[1].str());
+                std::unique_ptr<wchar_t[]> format(string_to_lpwstr(match[1].str()));
+                if (!format)
+                {
+                    NetWorkError::handle_net_work_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
 
-                return handle_wlan_extract_psd_ie_data_list_sub_func(line_num, result_text, buffer);
+                return handle_wlan_extract_psd_ie_data_list_sub_func(format.get(), line_num, result_text, buffer);
             }
             catch (EX_IA ia)
             {

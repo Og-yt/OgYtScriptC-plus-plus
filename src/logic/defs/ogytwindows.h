@@ -16,6 +16,8 @@ typedef WERROR WSERROR;
 typedef WERROR HWERROR;
 typedef WERROR REGERROR;
 
+typedef void CLIENT;
+
 /* windows */
 typedef const std::string &FWINMEM;
 typedef const std::string &FWINREG;
@@ -37,8 +39,18 @@ typedef const wchar_t *NETURL;
 typedef NETURL *PNETURL;
 typedef NETURL STRFORMAT;
 
+typedef CLIENT *HCLIENT;
+
 /* ハードウェア制御 */
 typedef const std::string &FWINHW;
+
+/* メモリ */
+typedef long LMEMORYRAM;
+typedef unsigned long ULMEMORYRAM;
+
+/* 物理ボード */
+typedef long LPHYSBORAD, *PPHYSBOARD;
+typedef unsigned long ULPHYSBOARD;
 
 /* レジストリ */
 typedef long REGISTRY;

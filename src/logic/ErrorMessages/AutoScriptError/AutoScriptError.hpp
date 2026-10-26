@@ -8,11 +8,6 @@
 #include "../../ErrorLogic.hpp"
 #include "../../ErrorMessages/Messages.hpp"
 
-typedef enum
-{
-    //
-} Error;
-
 typedef Glib::RefPtr<Gtk::TextBuffer> BUFFER;
 
 typedef std::string &MESSAGE;
