@@ -9,7 +9,7 @@
 
 #pragma comment(lib, "wlanapi.lib")
 
-inline bool handle_wlan_set_psd_ie_data_list_sub_func(NETURL strFormat, LINE line_num, MESSAGE result_text, BUFFER buffer)
+inline bool handle_wlan_set_psd_ie_data_list_sub_func(SENDDATA a1, SENDDATA a2, SENDDATA a3, NETURL strFormat, LINE line_num, MESSAGE result_text, BUFFER buffer)
 {
     HANDLE hClient = NULL;
     DWORD negotiatedVersion = 0;
@@ -21,7 +21,7 @@ inline bool handle_wlan_set_psd_ie_data_list_sub_func(NETURL strFormat, LINE lin
         return true;
     }
 
-    const BYTE payLoad[] = {0x01, 0x02, 0x03};
+    const BYTE payLoad[] = {a1, a2, a3};
     const size_t descriptorOffset = offsetof(WLAN_RAW_DATA_LIST, DataList);
     const size_t descriptorSize = sizeof(((PWLAN_RAW_DATA_LIST)NULL)->DataList[0]);
     const size_t totalSize = descriptorOffset + descriptorSize + sizeof(payLoad);

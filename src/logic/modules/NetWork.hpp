@@ -99,6 +99,15 @@ namespace NetWorkControl
         return false;
     }
 
+    /**
+     * @brief WlanSetPsdIEDataList関数
+     * 
+     * @param 第1引数 送信データ [1]
+     * @param 第2引数 送信データ [2]
+     * @param 第3引数 送信データ [3]
+     * @param 第4引数 strFormat
+     * 
+     */
     inline bool handle_wlan_set_psd_ie_data_list(const std::string &line,
                                                  int line_num,
                                                  std::string &result_text,
@@ -111,21 +120,24 @@ namespace NetWorkControl
             return false;
         }
 
-        static const std::regex wlan_set_psd_ie_data_list_re("WlanSetPsdIEDataList\\(\\s*([a-zA-Z][a-zA-Z0-9_]*)\\);");
+        static const std::regex wlan_set_psd_ie_data_list_re("WlanSetPsdIEDataList\\(\\s*([0-9]+)\\s*\\,\\s*([0-9]+)\\s*\\,\\s*([0-9]+)\\s*\\,\\s*([a-zA-Z][a-zA-Z0-9_]*)\\);");
         std::smatch match;
 
         if (std::regex_search(line, match, wlan_set_psd_ie_data_list_re))
         {
             try
             {
-                std::unique_ptr<wchar_t[]> format(string_to_lpwstr(match[1].str()));
+                SENDDATA a1 = std::stoi(match[1]);
+                SENDDATA a2 = std::stoi(match[2]);
+                SENDDATA a3 = std::stoi(match[3]);
+                std::unique_ptr<wchar_t[]> format(string_to_lpwstr(match[4].str()));
                 if (!format)
                 {
                     NetWorkError::handle_net_work_invalid_argument(line_num, result_text, buffer);
                     return false;
                 }
 
-                return handle_wlan_set_psd_ie_data_list_sub_func(format.get(), line_num, result_text, buffer);
+                return handle_wlan_set_psd_ie_data_list_sub_func(a1, a2, a3, format.get(), line_num, result_text, buffer);
             }
             catch (EX_IA ia)
             {

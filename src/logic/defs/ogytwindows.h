@@ -45,6 +45,8 @@ typedef NETURL STRFORMAT;
 
 typedef CLIENT *HCLIENT;
 
+typedef short SENDDATA;
+
 /* ハードウェア制御 */
 typedef const std::string &FWINHW;
 
