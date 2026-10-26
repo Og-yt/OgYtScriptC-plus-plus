@@ -33,6 +33,10 @@ typedef unsigned long NETWORK;
 typedef NETWORK NETINFOLIST;
 typedef NETWORK NETRESULT;
 
+typedef const wchar_t *NETURL;
+typedef NETURL *PNETURL;
+typedef NETURL STRFORMAT;
+
 /* ハードウェア制御 */
 typedef const std::string &FWINHW;
 

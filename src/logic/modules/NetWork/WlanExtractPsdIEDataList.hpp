@@ -9,12 +9,11 @@
 #include "../../ErrorLogic.hpp"
 #include "../../ErrorMessages/Messages.hpp"
 
-inline bool handle_wlan_extract_psd_ie_data_list_sub_func(LINE line_num,
+inline bool handle_wlan_extract_psd_ie_data_list_sub_func(STRFORMAT strFormat,
+                                                          LINE line_num,
                                                           MESSAGE result_text,
                                                           BUFFER buffer)
 {
-    std::ostringstream oss;
-
     HANDLE hClient = NULL;
     DWORD negotiatedVersion = 0;
 
@@ -49,6 +48,14 @@ inline bool handle_wlan_extract_psd_ie_data_list_sub_func(LINE line_num,
             }
         }
     }
+
+    WlanCloseHandle(hClient, NULL);
+    if (pBssList != NULL)
+    {
+        WlanFreeMemory(pBssList);
+    }
+
+    return false;
 }
 
 #endif // WLANEXTRACTPSDIEDATALIST_HPP

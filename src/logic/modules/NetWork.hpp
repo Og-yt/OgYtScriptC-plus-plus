@@ -12,6 +12,8 @@
 
 #include "NetWork/NetWorkConfig.hpp"
 
+#include "WindowsAPIs/LPCWSTRToString.hpp"
+
 namespace NetWorkControl
 {
     inline bool handle_wlan_enumerator_interfaces(const std::string &line,
@@ -64,14 +66,16 @@ namespace NetWorkControl
             return false;
         }
 
-        static const std::regex wlan_extract_psd_ied_data_list_re("WlanExtractPsdIEDataList\\(\\);");
+        static const std::regex wlan_extract_psd_ied_data_list_re("WlanExtractPsdIEDataList\\(\\s*([a-zA-Z][a-zA-Z0-9_]*)\\);");
         std::smatch match;
 
         if (std::regex_search(line, match, wlan_extract_psd_ied_data_list_re))
         {
             try
             {
-                //
+                LPCWSTR url = string_to_lpwstr(match[1].str());
+
+                return handle_wlan_extract_psd_ie_data_list_sub_func(line_num, result_text, buffer);
             }
             catch (EX_IA ia)
             {
