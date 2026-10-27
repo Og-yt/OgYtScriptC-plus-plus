@@ -47,6 +47,22 @@ namespace NetWorkError
         return false;
     }
 
+    inline bool handle_wireless_interface_found_on_this_system(LINE line_num, MESSAGE result_text, BUFFER buffer)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "No wireless interfaces found on this system.\n");
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
+    inline bool handle_wlan_get_available_net_work_list_invalid_error(LINE line_num, MESSAGE result_text, BUFFER buffer, NETRESULT result)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "WlanGetAvailableNetworkList failed with error: " + std::to_string(result) + '\n');
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
     inline bool handle_net_work_invalid_argument(LINE line_num, MESSAGE result_text, BUFFER buffer)
     {
         result_text += ErrorLogic::build_msg(line_num, "Invalid argument.\n");

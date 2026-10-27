@@ -40,6 +40,9 @@ typedef NETWORK NETRESULT;
 typedef NETWORK NEGOVER;
 typedef NETWORK DATALIST;
 
+typedef const char NCSTR;
+typedef NCSTR *NSECURITY, *NCONNECTAB;
+
 typedef const wchar_t *NETURL;
 typedef NETURL *PNETURL;
 typedef NETURL STRFORMAT;

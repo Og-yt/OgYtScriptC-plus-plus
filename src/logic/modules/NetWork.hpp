@@ -175,7 +175,7 @@ namespace NetWorkControl
         {
             try
             {
-                //
+                return handle_wlan_get_available_net_work_list_sub_func(line_num, result_text, buffer);
             }
             catch (EX_IA ia)
             {

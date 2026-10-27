@@ -2829,6 +2829,14 @@ namespace Math
 
         return true;
     }
+
+    /**
+     * 
+     * 
+     * @bug Mathematics
+     * 
+     * 
+     */
 }
 
 #endif // MATHEMATICS_HPP
