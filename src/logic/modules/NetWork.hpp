@@ -192,6 +192,44 @@ namespace NetWorkControl
         NetWorkError::handle_net_work_call_error(line_num, result_text, buffer, "WlanGetAvailableNetworkList");
         return false;
     }
+
+    /* WlanGetInterfaceCapability */
+    inline bool handle_wlan_get_interface_capability(const std::string &line,
+                                                     int line_num,
+                                                     std::string &result_text,
+                                                     Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                     bool is_imported)
+    {
+        if (!is_imported)
+        {
+            ImportError::is_net_imported(line_num, result_text, buffer, is_imported, "WlanGetInterfaceCapability()");
+            return false;
+        }
+
+        static const std::regex wlan_get_interface_capability_re("WlanGetInterfaceCapability\\(\\);");
+        std::smatch match;
+
+        if (std::regex_search(line, match, wlan_get_interface_capability_re))
+        {
+            try
+            {
+                return handle_wlan_get_interface_capability_sub_func(line_num, result_text, buffer);
+            }
+            catch (EX_IA ia)
+            {
+                NetWorkError::handle_net_work_invalid_argument(line_num, result_text, buffer);
+                return false;
+            }
+            catch (EX_E e)
+            {
+                NetWorkError::handle_net_work_exception(line_num, result_text, buffer, "WlanGetInterfaceCapability");
+                return false;
+            }
+        }
+
+        NetWorkError::handle_net_work_call_error(line_num, result_text, buffer, "WlanGetInterfaceCapability");
+        return false;
+    }
 }
 
 #endif // NETWORK_HPP

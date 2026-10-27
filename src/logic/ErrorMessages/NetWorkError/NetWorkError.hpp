@@ -63,6 +63,14 @@ namespace NetWorkError
         return false;
     }
 
+    inline bool handle_wlan_get_interface_capability_invalid_error(LINE line_num, MESSAGE result_text, BUFFER buffer, NETRESULT result)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "WlanGetInterfaceCapability failed with error: " + std::to_string(result) + '\n');
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
     inline bool handle_net_work_invalid_argument(LINE line_num, MESSAGE result_text, BUFFER buffer)
     {
         result_text += ErrorLogic::build_msg(line_num, "Invalid argument.\n");

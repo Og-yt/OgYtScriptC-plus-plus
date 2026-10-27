@@ -28,25 +28,6 @@ inline bool handle_wlan_get_available_net_work_list_sub_func(LINE line_num, MESS
 
     PWLAN_AVAILABLE_NETWORK_LIST pAvailList = {};
     PWLAN_INTERFACE_INFO_LIST pNetInfoList = {};
-    const auto wlan_resource = [&]()
-    {
-        if (pAvailList != NULL)
-        {
-            WlanFreeMemory(pAvailList);
-        }
-
-        if (pNetInfoList != NULL)
-        {
-            WlanFreeMemory(pNetInfoList);
-        }
-
-        if (pNetInfoList->dwNumberOfItems == 0)
-        {
-            WlanFreeMemory(pNetInfoList);
-        }
-
-        WlanCloseHandle(hClient, NULL);
-    };
 
     result = WlanEnumInterfaces(hClient, NULL, &pNetInfoList);
     if (result != ERROR_SUCCESS)
@@ -58,14 +39,14 @@ inline bool handle_wlan_get_available_net_work_list_sub_func(LINE line_num, MESS
     if (pNetInfoList->dwNumberOfItems == 0)
     {
         NetWorkError::handle_wireless_interface_found_on_this_system(line_num, result_text, buffer);
-        wlan_resource();
+        WlanFreeMemory(pNetInfoList);
         return true;
     }
 
     GUID interfactGuidValue = PCGUIDtoGUID(&pNetInfoList->InterfaceInfo[0].InterfaceGuid);
     const GUID *interfaceGuid = &interfactGuidValue;
 
-    wlan_resource();
+    WlanFreeMemory(pNetInfoList);
     pNetInfoList == NULL;
 #if _WIN32_WINNT <= 0x0A01
     DWORD flags = 0;
@@ -77,7 +58,7 @@ inline bool handle_wlan_get_available_net_work_list_sub_func(LINE line_num, MESS
     if (result != ERROR_SUCCESS)
     {
         NetWorkError::handle_wlan_get_available_net_work_list_invalid_error(line_num, result_text, buffer, result);
-        wlan_resource();
+        WlanFreeMemory(pAvailList);
         return false;
     }
 
@@ -100,7 +81,6 @@ inline bool handle_wlan_get_available_net_work_list_sub_func(LINE line_num, MESS
         NCONNECTAB connectableStr = pNet->bNetworkConnectable ? "Yes" : "No";
     }
 
-    wlan_resource();
     result = WlanCloseHandle(hClient, NULL);
     if (result == ERROR_SUCCESS)
     {
