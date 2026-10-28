@@ -138,6 +138,9 @@ private:
         auto tag_default = buffer->create_tag("default");
         tag_default->property_foreground() = "#ffffff";
 
+        auto x86_64_asm = buffer->create_tag("asmv");
+        x86_64_asm->property_foreground() = "#ff00e6";
+
         // エラー背景用のタグ (暗めの赤)
         auto tag_error = buffer->create_tag("error_bg");
         tag_error->property_background() = "#4b1818";
@@ -187,6 +190,9 @@ private:
         // NET
         std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList|WlanSetPsdIEDataList|WlanGetAvailableNetworkList|WlanGetInterfaceCapability|WlanGetProfile)\\b");
 
+        // x86-64 Assembly
+        std::regex x86_64_asm_code_re("\\b(x86_64MathSin)\\b");
+
         /* time関連 & 国コード(3桁)  */
         std::regex time_re("\\b(CurrentTime|CurrentWorldTime)\\b");
         std::regex country_code_re("\\b(MID|NIU|ASM|USA_HL|COK_RAR|PYF|USA_ANC|GMD|USA_LOS|PCN|USA_CAM|USA_CHI|ECW|USA_NEW|EASTER|USA_CAR|BMU|ARG|SGS|CPV|CIV|GBR|ITA|GRC|KEN|RUS_MOS|IRQ|UAE|PAK|BGD|IDN|CHN|JPN|GUM|RUS_SAK|NRU)\\b");
@@ -223,6 +229,7 @@ private:
         apply_style(country_code_re, "keyword");
         apply_style(pc_data_re, "special");
         apply_style(net_re, "special");
+        apply_style(x86_64_asm_code_re, "asmv");
 
         // 型の後に続く変数名をハイライト (キャプチャグループ 2 を使用)
         auto decl_begin = std::sregex_iterator(raw_text.begin(), raw_text.end(), var_decl_re);
@@ -892,14 +899,14 @@ private:
              */
             else if (line.find("MathSin") != std::string::npos)
             {
-                if (line.find("x86_64MathSin") != std::string::npos)
+                if (!Math::handle_sin(line, double_vars, vars, lineCount, resultText, buffer, math_imported))
                 {
-                    if (!Math::handle_x86_64_sin(line, double_vars, vars, lineCount, resultText, buffer, math_imported))
-                    {
-                        break;
-                    }
+                    break;
                 }
-                else if (!Math::handle_sin(line, double_vars, vars, lineCount, resultText, buffer, math_imported))
+            }
+            else if (line.find("x86_64MathSin") != std::string::npos)
+            {
+                if (!Math::handle_x86_64_sin(line, double_vars, vars, lineCount, resultText, buffer, math_imported))
                 {
                     break;
                 }
