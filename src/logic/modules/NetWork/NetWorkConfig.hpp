@@ -5,5 +5,6 @@
 #include "WlanExtractPsdIEDataList.hpp"
 #include "WlanSetPsdIEDataList.hpp"
 #include "WlanGetAvailableNetworkList.hpp"
+#include "WlanGetProfile.hpp"
 
 #endif // NETWORKCONFIG_HPP

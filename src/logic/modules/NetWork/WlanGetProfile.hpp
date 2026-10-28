@@ -14,7 +14,7 @@
 #pragma comment(lib, "wlanapi.lib")
 #pragma comment(lib, "ole32.lib")
 
-inline bool handle_wlan_get_profile_sub_func(LPCWSTR ProfileName, LINE line_num, MESSAGE result_text, BUFFER buffer)
+inline bool handle_wlan_get_profile_sub_func(LINE line_num, MESSAGE result_text, BUFFER buffer)
 {
     HANDLE hClient = NULL;
     DWORD negotiatedVersion = 0;

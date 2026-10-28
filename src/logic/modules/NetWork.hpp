@@ -212,7 +212,7 @@ namespace NetWorkControl
         {
             try
             {
-                //
+                return handle_wlan_get_profile_sub_func(line_num, result_text, buffer);
             }
             catch (EX_IA ia)
             {
