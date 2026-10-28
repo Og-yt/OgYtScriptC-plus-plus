@@ -892,7 +892,14 @@ private:
              */
             else if (line.find("MathSin") != std::string::npos)
             {
-                if (!Math::handle_sin(line, double_vars, vars, lineCount, resultText, buffer, math_imported))
+                if (line.find("x86_64MathSin") != std::string::npos)
+                {
+                    if (!Math::handle_x86_64_sin(line, double_vars, vars, lineCount, resultText, buffer, math_imported))
+                    {
+                        break;
+                    }
+                }
+                else if (!Math::handle_sin(line, double_vars, vars, lineCount, resultText, buffer, math_imported))
                 {
                     break;
                 }
@@ -1807,6 +1814,13 @@ private:
             else if (line.find("WlanGetAvailableNetworkList") == 0)
             {
                 if (!NetWorkControl::handle_wlan_get_available_net_work_list(line, lineCount, resultText, buffer, net_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("WlanGetProfile") == 0)
+            {
+                if (!NetWorkControl::handle_wlan_get_profile(line, lineCount, resultText, buffer, net_imported))
                 {
                     break;
                 }

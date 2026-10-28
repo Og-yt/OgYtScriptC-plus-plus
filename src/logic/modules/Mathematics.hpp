@@ -32,6 +32,49 @@ namespace Math
 {
     const std::string math_re;
 
+    extern "C" double x86_64MathSin(double value);
+
+    // x86_64sin関数
+    inline bool handle_x86_64_sin(CTEXT &line,
+                                  DOUBLEV &double_vars,
+                                  INTV &int_vars,
+                                  int line_num,
+                                  STEXT &result_text,
+                                  GTEXTBUF buffer,
+                                  bool is_imported)
+    {
+        if (!ImportError::is_math_imported(line_num, result_text, buffer, is_imported, "MathSin"))
+        {
+            return false;
+        }
+
+        static const std::regex sin_re("double\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*=\\s*x86_64MathSin\\s*\\(\\s*([^;]+)\\s*\\);");
+        std::smatch match;
+
+        if (std::regex_search(line, match, sin_re))
+        {
+            std::string var_name = match[1].str();
+            std::string arg1_str = trim(match[2]);
+            double arg1_val;
+
+            if (!math_arg_1_double(double_vars, int_vars,
+                                   arg1_str, arg1_val,
+                                   line_num, result_text, buffer,
+                                   "x86_64MathSin", "'x'"))
+            {
+                return false;
+            }
+
+            double result = x86_64MathSin(arg1_val);
+
+            double_vars[var_name] = result;
+
+            return true;
+        }
+
+        return true;
+    }
+
     // sin関数
     inline bool handle_sin(CTEXT &line,
                            DOUBLEV &double_vars,

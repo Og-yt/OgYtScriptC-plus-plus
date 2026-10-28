@@ -12,8 +12,10 @@ TARGET = MyLang.exe
 SRCS = main.cpp \
 	   src/ui/ui.cpp \
 
+ASM_SRCS = src/logic/modules/Mathematics/x86-64.ASM
+
 # オブジェクトファイル名のリバース生成
-OBJS = $(SRCS:.cpp=.o)
+OBJS = $(SRCS:.cpp=.o) $(ASM_SRCS:.ASM=.o)
 
 ifeq ($(OS),Windows_NT)
 RM = cmd /C del /Q /F
@@ -29,6 +31,9 @@ $(TARGET): $(OBJS)
 # 個別のコンパイルルール
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+%.o: %.ASM
+	$(CXX) -x assembler -c $< -o $@
 
 clean:
 	$(RM) $(OBJS) $(TARGET)
