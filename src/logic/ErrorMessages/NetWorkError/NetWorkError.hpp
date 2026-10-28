@@ -71,6 +71,30 @@ namespace NetWorkError
         return false;
     }
 
+    inline bool handle_wlan_get_profile_list_invalid_error(LINE line_num, MESSAGE result_text, BUFFER buffer, NETRESULT result)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "WlanGetProfileList invalid with error: " + std::to_string(result) + '\n');
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
+    inline bool handle_wlan_get_profile_invalid_error(LINE line_num, MESSAGE result_text, BUFFER buffer, NETRESULT result)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "WlanGetProfile failed with error: " + std::to_string(result) + '\n');
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
+    inline bool handle_wlan_get_profile_error_access_denied(LINE line_num, MESSAGE result_text, BUFFER buffer)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "Note: ERROR_ACCESS_DENIED often occurs if you request plaintext keys without Administrator privileges.\n");
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
     inline bool handle_net_work_invalid_argument(LINE line_num, MESSAGE result_text, BUFFER buffer)
     {
         result_text += ErrorLogic::build_msg(line_num, "Invalid argument.\n");

@@ -1811,13 +1811,6 @@ private:
                     break;
                 }
             }
-            else if (line.find("WlanGetInterfaceCapability") == 0)
-            {
-                if (!NetWorkControl::handle_wlan_get_interface_capability(line, lineCount, resultText, buffer, net_imported))
-                {
-                    break;
-                }
-            }
 
             /**
              *

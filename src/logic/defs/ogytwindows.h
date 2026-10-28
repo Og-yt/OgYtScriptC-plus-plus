@@ -43,9 +43,12 @@ typedef NETWORK DATALIST;
 typedef const char NCSTR;
 typedef NCSTR *NSECURITY, *NCONNECTAB;
 
-typedef const wchar_t *NETURL;
-typedef NETURL *PNETURL;
-typedef NETURL STRFORMAT;
+typedef const wchar_t *NETCURL;
+typedef wchar_t *NETURL;
+typedef NETCURL *PNETURL;
+typedef NETCURL STRFORMAT;
+typedef NETCURL PROFILENAME;
+typedef NETURL PROFILEXML;
 
 typedef CLIENT *HCLIENT;
 

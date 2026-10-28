@@ -193,27 +193,26 @@ namespace NetWorkControl
         return false;
     }
 
-    /* WlanGetInterfaceCapability */
-    inline bool handle_wlan_get_interface_capability(const std::string &line,
-                                                     int line_num,
-                                                     std::string &result_text,
-                                                     Glib::RefPtr<Gtk::TextBuffer> buffer,
-                                                     bool is_imported)
+    inline bool handle_wlan_get_profile(const std::string &line,
+                                        int line_num,
+                                        std::string &result_text,
+                                        Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                        bool is_imported)
     {
         if (!is_imported)
         {
-            ImportError::is_net_imported(line_num, result_text, buffer, is_imported, "WlanGetInterfaceCapability()");
+            ImportError::is_net_imported(line_num, result_text, buffer, is_imported, "WlanGetProfile()");
             return false;
         }
 
-        static const std::regex wlan_get_interface_capability_re("WlanGetInterfaceCapability\\(\\);");
+        static const std::regex wlan_get_profile_re("WlanGetProfile\\(\\);");
         std::smatch match;
 
-        if (std::regex_search(line, match, wlan_get_interface_capability_re))
+        if (std::regex_search(line, match, wlan_get_profile_re))
         {
             try
             {
-                return handle_wlan_get_interface_capability_sub_func(line_num, result_text, buffer);
+                //
             }
             catch (EX_IA ia)
             {
@@ -222,12 +221,12 @@ namespace NetWorkControl
             }
             catch (EX_E e)
             {
-                NetWorkError::handle_net_work_exception(line_num, result_text, buffer, "WlanGetInterfaceCapability");
+                NetWorkError::handle_net_work_exception(line_num, result_text, buffer, "WlanGetProfile");
                 return false;
             }
         }
 
-        NetWorkError::handle_net_work_call_error(line_num, result_text, buffer, "WlanGetInterfaceCapability");
+        NetWorkError::handle_net_work_call_error(line_num, result_text, buffer, "WlanGetProfile");
         return false;
     }
 }

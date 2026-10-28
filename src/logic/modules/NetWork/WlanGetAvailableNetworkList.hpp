@@ -43,8 +43,8 @@ inline bool handle_wlan_get_available_net_work_list_sub_func(LINE line_num, MESS
         return true;
     }
 
-    GUID interfactGuidValue = PCGUIDtoGUID(&pNetInfoList->InterfaceInfo[0].InterfaceGuid);
-    const GUID *interfaceGuid = &interfactGuidValue;
+    GUID interfaceGuidValue = PCGUIDtoGUID(&pNetInfoList->InterfaceInfo[0].InterfaceGuid);
+    const GUID *interfaceGuid = &interfaceGuidValue;
 
     WlanFreeMemory(pNetInfoList);
     pNetInfoList == NULL;
