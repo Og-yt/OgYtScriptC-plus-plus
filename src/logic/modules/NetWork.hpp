@@ -101,12 +101,12 @@ namespace NetWorkControl
 
     /**
      * @brief WlanSetPsdIEDataList関数
-     * 
+     *
      * @param 第1引数 送信データ [1]
      * @param 第2引数 送信データ [2]
      * @param 第3引数 送信データ [3]
      * @param 第4引数 strFormat
-     * 
+     *
      */
     inline bool handle_wlan_set_psd_ie_data_list(const std::string &line,
                                                  int line_num,
@@ -167,7 +167,7 @@ namespace NetWorkControl
             ImportError::is_net_imported(line_num, result_text, buffer, is_imported, "WlanGetAvailableNetworkList()");
             return false;
         }
-        
+
         static const std::regex wlan_get_available_net_work_list_re("WlanGetAvailableNetworkList\\(\\);");
         std::smatch match;
 
@@ -227,6 +227,127 @@ namespace NetWorkControl
         }
 
         NetWorkError::handle_net_work_call_error(line_num, result_text, buffer, "WlanGetProfile");
+        return false;
+    }
+
+    /* WlanGetProfileCustomUserData */
+    inline bool handle_wlan_get_profile_custom_user_data(const std::string &line,
+                                                         int line_num,
+                                                         std::string &result_text,
+                                                         Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                         bool is_imported)
+    {
+        if (!is_imported)
+        {
+            ImportError::is_windows_imported(line_num, result_text, buffer, is_imported, "WlanGetProfileCustomUserData()");
+            return false;
+        }
+
+        static const std::regex wlan_get_profile_custom_user_data_re("WlanGetProfileCustomUserData\\(\\);");
+        std::smatch match;
+
+        if (std::regex_search(line, match, wlan_get_profile_custom_user_data_re))
+        {
+            try
+            {
+                return handle_wlan_get_profile_custom_user_data_sub_func(line_num, result_text, buffer);
+            }
+            catch (EX_IA ia)
+            {
+                NetWorkError::handle_net_work_invalid_argument(line_num, result_text, buffer);
+                return false;
+            }
+            catch (EX_E e)
+            {
+                NetWorkError::handle_net_work_exception(line_num, result_text, buffer, "WlanGetProfileCustomUserData");
+                return false;
+            }
+        }
+
+        NetWorkError::handle_net_work_call_error(line_num, result_text, buffer, "WlanGetProfileCustomUserData");
+        return false;
+    }
+
+    inline bool handle_wlan_get_profile_list(const std::string &line,
+                                             int line_num,
+                                             std::string &result_text,
+                                             Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                             bool is_imported)
+    {
+        if (!is_imported)
+        {
+            ImportError::is_net_imported(line_num, result_text, buffer, is_imported, "WlanGetProfileList()");
+            return false;
+        }
+
+        static const std::regex wlan_get_profile_list_re("WlanGetProfileList\\(\\);");
+        std::smatch match;
+
+        if (std::regex_search(line, match, wlan_get_profile_list_re))
+        {
+            try
+            {
+                return handle_wlan_get_profile_list_sub_func(line_num, result_text, buffer);
+            }
+            catch (EX_IA ia)
+            {
+                NetWorkError::handle_net_work_invalid_argument(line_num, result_text, buffer);
+                return false;
+            }
+            catch (EX_E e)
+            {
+                NetWorkError::handle_net_work_exception(line_num, result_text, buffer, "WlanGetProfileList");
+                return false;
+            }
+        }
+
+        NetWorkError::handle_net_work_call_error(line_num, result_text, buffer, "WlanGetProfileList");
+        return false;
+    }
+
+    /* WlanGetSecuritySettings */
+    inline bool handle_wlan_get_security_settings(const std::string &line,
+                                                  int line_num,
+                                                  std::string &result_text,
+                                                  Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                  bool is_imported)
+    {
+        if (!is_imported)
+        {
+            ImportError::is_net_imported(line_num, result_text, buffer, is_imported, "WlanGetSecuritySettings()");
+            return false;
+        }
+
+        static const std::regex wlan_get_security_settings_re("WlanGetSecuritySettings\\(\\s*([0-9]+)\\s*\\);");
+        std::smatch match;
+
+        if (std::regex_search(line, match, wlan_get_security_settings_re))
+        {
+            try
+            {
+                const unsigned long value = std::stoul(match[1]);
+                if (value > MAXDWORD || !WlanSecurableObjectEnum(static_cast<DWORD>(value)))
+                {
+                    NetWorkError::handle_net_work_invalid_argument(line_num, result_text, buffer);
+                    return false;
+                }
+
+                const WLAN_SECURABLE_OBJECT secObject = static_cast<WLAN_SECURABLE_OBJECT>(value);
+                return handle_wlan_get_security_settings_sub_func(secObject, line_num, result_text, buffer);
+            }
+            catch (EX_IA ia)
+            {
+                NetWorkError::handle_net_work_invalid_argument(line_num, result_text, buffer);
+                return false;
+            }
+            catch (EX_E e)
+            {
+                NetWorkError::handle_net_work_exception(line_num, result_text, buffer, "WlanGetSecuritySettings");
+                return false;
+            }
+        }
+
+        NetWorkError::handle_net_work_call_error(line_num, result_text, buffer, "WlanGetSecuritySettings");
         return false;
     }
 }

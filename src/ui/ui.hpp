@@ -188,7 +188,7 @@ private:
         std::regex auto_script_re("\\b(CtrlKeyControl|ShiftKeyControl|WindowsKey|AltKeyControl|EscapeKeyControl|MouseControlSetCursorPositionN|OpenCMD)\\b");
 
         // NET
-        std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList|WlanSetPsdIEDataList|WlanGetAvailableNetworkList|WlanGetInterfaceCapability|WlanGetProfile)\\b");
+        std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList|WlanSetPsdIEDataList|WlanGetAvailableNetworkList|WlanGetInterfaceCapability|WlanGetProfile|WlanGetProfileCustomUserData|WlanGetProfileList)\\b");
 
         // x86-64 Assembly
         std::regex x86_64_asm_code_re("\\b(x86_64MathSin)\\b");
@@ -1821,6 +1821,20 @@ private:
             else if (line.find("WlanGetAvailableNetworkList") == 0)
             {
                 if (!NetWorkControl::handle_wlan_get_available_net_work_list(line, lineCount, resultText, buffer, net_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("WlanGetProfileCustomUserData") == 0)
+            {
+                if (!NetWorkControl::handle_wlan_get_profile_custom_user_data(line, lineCount, resultText, buffer, net_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("WlanGetProfileList") == 0)
+            {
+                if (!NetWorkControl::handle_wlan_get_profile_list(line, lineCount, resultText, buffer, net_imported))
                 {
                     break;
                 }

@@ -87,9 +87,33 @@ namespace NetWorkError
         return false;
     }
 
+    inline bool handle_wlan_get_security_settings_failed_error(LINE line_num, MESSAGE result_text, BUFFER buffer, NETRESULT result)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "WlanGetSecuritySettings failed with error: " + std::to_string(result) + '\n');
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
     inline bool handle_wlan_get_profile_error_access_denied(LINE line_num, MESSAGE result_text, BUFFER buffer)
     {
         result_text += ErrorLogic::build_msg(line_num, "Note: ERROR_ACCESS_DENIED often occurs if you request plaintext keys without Administrator privileges.\n");
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
+    inline bool handle_wlan_get_profile_custom_user_data_currently_associated_with_tihs_profile_error(LINE line_num, MESSAGE result_text, BUFFER buffer)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "[!] Note: No custom user data is currently associated with this profile (ERROR_NOT_FOUND).\n");
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
+    inline bool handle_wlan_get_profile_custom_user_data_failed_with_error(LINE line_num, MESSAGE result_text, BUFFER buffer, NETRESULT result)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "WlanGetProfileCustomUserData failed with error: " + std::to_string(result) + '\n');
         ErrorLogic::highlight_line(buffer, line_num);
 
         return false;

@@ -1,6 +1,9 @@
 #ifndef OGYTWINDOWS_H
 #define OGYTWINDOWS_H
 
+#include <windows.h>
+#include <wlanapi.h>
+
 #include <vector>
 #include <string>
 
@@ -39,9 +42,12 @@ typedef NETWORK NETINFOLIST;
 typedef NETWORK NETRESULT;
 typedef NETWORK NEGOVER;
 typedef NETWORK DATALIST;
+typedef NETWORK NDATASIZE;
+typedef NETWORK SECOBJTYPE;
 
 typedef const char NCSTR;
 typedef NCSTR *NSECURITY, *NCONNECTAB;
+typedef NCSTR *BYTEDATA, *PBYTEDATA;
 
 typedef const wchar_t *NETCURL;
 typedef wchar_t *NETURL;
@@ -53,6 +59,8 @@ typedef NETURL PROFILEXML;
 typedef CLIENT *HCLIENT;
 
 typedef short SENDDATA;
+
+typedef PWLAN_INTERFACE_INFO_LIST NETWORKINFOLIST;
 
 /* ハードウェア制御 */
 typedef const std::string &FWINHW;
