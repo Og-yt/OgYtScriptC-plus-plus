@@ -10,12 +10,19 @@
 #pragma comment(lib, "wlanapi.lib")
 #pragma comment(lib, "ole32.lib")
 
+DWORD WINAPI WlanOpenHandleAsm(
+    DWORD clientVersion,
+    PVOID reserved,
+    PDWORD negotiatedVersion,
+    PHANDLE clientHandle
+);
+
 inline bool handle_wlan_get_supported_device_services_def(LINE line_num, MESSAGE result_text, BUFFER buffer)
 {
     std::ostringstream oss;
     HCLIENT hClient = NULL;
     DWORD negotiatedVersion = 0;
-    NETWORK result = WlanOpenHandle(MAX_WLAN_V, NULL, &negotiatedVersion, &hClient);
+    NETWORK result = WlanOpenHandleAsm(MAX_WLAN_V, NULL, &negotiatedVersion, &hClient);
 
     if (result != ERROR_SUCCESS)
     {

@@ -191,7 +191,7 @@ private:
         std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList|WlanSetPsdIEDataList|WlanGetAvailableNetworkList|WlanGetInterfaceCapability|WlanGetProfile|WlanGetProfileCustomUserData|WlanGetProfileList|WlanGetSecuritySettings|WlanGetSupportedDeviceServices)\\b");
 
         // x86-64 Assembly
-        std::regex x86_64_asm_code_re("\\b(x86_64MathSin)\\b");
+        std::regex x86_64_asm_code_re("\\b(x86_64MathSin|x86_64WlanGetProfile)\\b");
 
         /* time関連 & 国コード(3桁)  */
         std::regex time_re("\\b(CurrentTime|CurrentWorldTime)\\b");
