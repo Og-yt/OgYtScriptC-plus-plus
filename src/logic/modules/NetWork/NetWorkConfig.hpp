@@ -10,5 +10,6 @@
 #include "WlanGetProfileList.hpp"
 #include "WlanSecurableObjectEnum.hpp"
 #include "WlanGetSecuritySettings.hpp"
+#include "WlanGetSupportedDeviceServices.hpp"
 
 #endif // NETWORKCONFIG_HPP

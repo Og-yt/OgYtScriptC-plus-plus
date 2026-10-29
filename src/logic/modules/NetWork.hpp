@@ -371,7 +371,7 @@ namespace NetWorkControl
         {
             try
             {
-                //
+                return handle_wlan_get_supported_device_services_sub_func(line_num, result_text, buffer);
             }
             catch (EX_IA ia)
             {
@@ -386,6 +386,44 @@ namespace NetWorkControl
         }
 
         NetWorkError::handle_net_work_call_error(line_num, result_text, buffer, "WlanGetSupportedDeviceServices");
+        return false;
+    }
+
+    /* WlanHostedNetworkQueryProperty */
+    inline bool handle_wlan_hosted_netwrok_query_property(const std::string &line,
+                                                          int line_num,
+                                                          std::string &result_text,
+                                                          Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                          bool is_imported)
+    {
+        if (!is_imported)
+        {
+            ImportError::is_net_imported(line_num, result_text, buffer, is_imported, "WlanHostedNetworkQueryProperty()");
+            return false;
+        }
+
+        static const std::regex wlan_hosted_network_query_property_re("WlanHostedNetworkQueryProperty\\(\\);");
+        std::smatch match;
+
+        if (std::regex_search(line, match, wlan_hosted_network_query_property_re))
+        {
+            try
+            {
+                //
+            }
+            catch (EX_IA ia)
+            {
+                NetWorkError::handle_net_work_invalid_argument(line_num, result_text, buffer);
+                return false;
+            }
+            catch (EX_E e)
+            {
+                NetWorkError::handle_net_work_exception(line_num, result_text, buffer, "WlanHostedNetworkQueryProperty");
+                return false;
+            }
+        }
+
+        NetWorkError::handle_net_work_call_error(line_num, result_text, buffer, "WlanHostedNetworkQueryProperty");
         return false;
     }
 }
