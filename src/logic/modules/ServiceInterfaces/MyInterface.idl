@@ -1,0 +1,8 @@
+[
+    uuid(48B95695-EE4A-47C4-9E2D-1C982D3D7C6A),
+    version(1.0)
+]
+interface MyInterface
+{
+    void Ping(void);
+}

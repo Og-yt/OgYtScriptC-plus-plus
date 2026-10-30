@@ -35,6 +35,11 @@ typedef const std::string &FWINSECU;
 /* msinfo32 */
 typedef const std::string &FMSINF32;
 
+/* サービスインターフェイス */
+typedef const std::string &FWINSVCINFC;
+typedef unsigned long SVCINTER;
+typedef SVCINTER SVCRESULT;
+
 /* ネットワーク */
 typedef const std::string &FWINNET;
 typedef unsigned long NETWORK;

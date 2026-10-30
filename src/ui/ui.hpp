@@ -190,6 +190,9 @@ private:
         // NET
         std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList|WlanSetPsdIEDataList|WlanGetAvailableNetworkList|WlanGetInterfaceCapability|WlanGetProfile|WlanGetProfileCustomUserData|WlanGetProfileList|WlanGetSecuritySettings|WlanGetSupportedDeviceServices|WlanQueryAutoConfigParameter|WlanReasonCodeToString)\\b");
 
+        // RPC
+        std::regex rpc_re("\\b(RpcNsBuidingExportA)\\b");
+
         // x86-64 Assembly
         std::regex x86_64_asm_code_re("\\b(x86_64MathSin|x86_64WlanGetProfile)\\b");
 
@@ -375,6 +378,7 @@ private:
         bool python_imported = false;
         bool pc_data_imported = false;
         bool net_imported = false;
+        bool rpc_imported = false;
         std::map<std::string, std::string> auto_scripts;
 
         ErrorLogic::clear_highlights(buffer);
@@ -460,6 +464,10 @@ private:
                 else if (line.find("\"NET\"") != std::string::npos)
                 {
                     net_imported = true;
+                }
+                else if (line.find("\"RPC\"") != std::string::npos)
+                {
+                    rpc_imported = true;
                 }
                 continue;
             }
@@ -1870,6 +1878,19 @@ private:
             else if (line.find("WlanReasonCodeToString") == 0)
             {
                 if (!NetWorkControl::handle_wlan_reason_code_to_string(line, lineCount, resultText, buffer, net_imported))
+                {
+                    break;
+                }
+            }
+
+            /**
+             *
+             * @brief RPC
+             *
+             */
+            else if (line.find("RpcNsBuidingExportA") == 0)
+            {
+                if (!ServiceInterfaceControl::handle_rpc_ns_binding_export_a(line, lineCount, resultText, buffer, rpc_imported))
                 {
                     break;
                 }

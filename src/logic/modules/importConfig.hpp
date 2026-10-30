@@ -16,6 +16,7 @@
 #include "Python.hpp"                      // Pythonプログラム
 #include "PCData.hpp"                      // PCDataを取得する
 #include "NetWork.hpp"                     // ネットワーク処理
+#include "ServiceInterface.hpp"            // サービスインターフェイス
 
 #include "ErrorMessageAndWarningBox/ErrorMessageAndWarningBox.hpp"
 
