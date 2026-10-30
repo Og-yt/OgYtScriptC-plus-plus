@@ -429,6 +429,44 @@ namespace NetWorkControl
         NetWorkError::handle_net_work_call_error(line_num, result_text, buffer, "WlanQueryAutoConfigParameter");
         return false;
     }
+
+    /* WlanReasonCodeToString */
+    inline bool handle_wlan_reason_code_to_string(const std::string &line,
+                                                  int line_num,
+                                                  std::string &result_text,
+                                                  Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                  bool is_imported)
+    {
+        if (!is_imported)
+        {
+            ImportError::is_net_imported(line_num, result_text, buffer, is_imported, "WlanReasonCodeToString()");
+            return false;
+        }
+
+        static const std::regex wlan_reason_code_to_string_re("WlanReasonCodeToString\\(\\);");
+        std::smatch match;
+
+        if (std::regex_search(line, match, wlan_reason_code_to_string_re))
+        {
+            try
+            {
+                return handle_wlan_reason_code_to_string_sub_func(line_num, result_text, buffer);
+            }
+            catch (EX_IA ia)
+            {
+                NetWorkError::handle_net_work_invalid_argument(line_num, result_text, buffer);
+                return false;
+            }
+            catch (EX_E e)
+            {
+                NetWorkError::handle_net_work_exception(line_num, result_text, buffer, "WlanReasonCodeToString");
+                return false;
+            }
+        }
+
+        NetWorkError::handle_net_work_call_error(line_num, result_text, buffer, "WlanReasonCodeToString");
+        return false;
+    }
 }
 
 #endif // NETWORK_HPP

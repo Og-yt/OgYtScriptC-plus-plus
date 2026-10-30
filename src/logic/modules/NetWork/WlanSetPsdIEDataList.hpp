@@ -9,7 +9,7 @@
 
 #pragma comment(lib, "wlanapi.lib")
 
-inline bool handle_wlan_set_psd_ie_data_list_sub_func(SENDDATA a1, SENDDATA a2, SENDDATA a3, NETURL strFormat, LINE line_num, MESSAGE result_text, BUFFER buffer)
+inline bool handle_wlan_set_psd_ie_data_list_sub_func(SENDDATA a1, SENDDATA a2, SENDDATA a3, PNETURL strFormat, LINE line_num, MESSAGE result_text, BUFFER buffer)
 {
     HANDLE hClient = NULL;
     DWORD negotiatedVersion = 0;

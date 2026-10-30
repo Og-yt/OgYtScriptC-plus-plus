@@ -12,5 +12,6 @@
 #include "WlanGetSecuritySettings.hpp"
 #include "WlanGetSupportedDeviceServices.hpp"
 #include "WlanQueryAutoConfigParameter.hpp"
+#include "WlanReasonCodeToString.hpp"
 
 #endif // NETWORKCONFIG_HPP

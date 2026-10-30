@@ -188,7 +188,7 @@ private:
         std::regex auto_script_re("\\b(CtrlKeyControl|ShiftKeyControl|WindowsKey|AltKeyControl|EscapeKeyControl|MouseControlSetCursorPositionN|OpenCMD)\\b");
 
         // NET
-        std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList|WlanSetPsdIEDataList|WlanGetAvailableNetworkList|WlanGetInterfaceCapability|WlanGetProfile|WlanGetProfileCustomUserData|WlanGetProfileList|WlanGetSecuritySettings|WlanGetSupportedDeviceServices)\\b");
+        std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList|WlanSetPsdIEDataList|WlanGetAvailableNetworkList|WlanGetInterfaceCapability|WlanGetProfile|WlanGetProfileCustomUserData|WlanGetProfileList|WlanGetSecuritySettings|WlanGetSupportedDeviceServices|WlanQueryAutoConfigParameter|WlanReasonCodeToString)\\b");
 
         // x86-64 Assembly
         std::regex x86_64_asm_code_re("\\b(x86_64MathSin|x86_64WlanGetProfile)\\b");
@@ -1856,6 +1856,20 @@ private:
             else if (line.find("WlanGetSupportedDeviceServices") == 0)
             {
                 if (!NetWorkControl::handle_wlan_get_supported_device_services(line, lineCount, resultText, buffer, net_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("WlanQueryAutoConfigParameter") == 0)
+            {
+                if (!NetWorkControl::handle_wlan_query_auto_config_parameter(line, lineCount, resultText, buffer, net_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("WlanReasonCodeToString") == 0)
+            {
+                if (!NetWorkControl::handle_wlan_reason_code_to_string(line, lineCount, resultText, buffer, net_imported))
                 {
                     break;
                 }
