@@ -11,5 +11,6 @@
 #include "WlanSecurableObjectEnum.hpp"
 #include "WlanGetSecuritySettings.hpp"
 #include "WlanGetSupportedDeviceServices.hpp"
+#include "WlanQueryAutoConfigParameter.hpp"
 
 #endif // NETWORKCONFIG_HPP

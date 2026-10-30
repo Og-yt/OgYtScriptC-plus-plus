@@ -143,6 +143,38 @@ namespace NetWorkError
         return false;
     }
 
+    inline bool handle_wlan_auto_config_option_code_enumerator_error(LINE line_num, MESSAGE result_text, BUFFER buffer)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "WlanAutoConfigOptionCOdeEnum out of range... [0 - 7].\n");
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
+    inline bool handle_wlan_option_code_value_type_enumerator_error(LINE line_num, MESSAGE result_text, BUFFER buffer)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "WlanOptionCodeValueType out of range... [0 - 3].\n");
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
+    inline bool handle_wlan_query_auto_config_parameter_invalid_error(LINE line_num, MESSAGE result_text, BUFFER buffer, NETRESULT result)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "WlanQueryAutoConfigParameter failed with error: " + std::to_string(result) + '\n');
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
+    inline bool handle_wlan_close_handle_invalid_error(LINE line_num, MESSAGE result_text, BUFFER buffer, NETRESULT result)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "WlanOpenHandle failed with error: " + std::to_string(result) + '\n');
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
     inline bool handle_net_work_invalid_argument(LINE line_num, MESSAGE result_text, BUFFER buffer)
     {
         result_text += ErrorLogic::build_msg(line_num, "Invalid argument.\n");

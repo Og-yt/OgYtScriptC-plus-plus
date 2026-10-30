@@ -389,27 +389,30 @@ namespace NetWorkControl
         return false;
     }
 
-    /* WlanHostedNetworkQueryProperty */
-    inline bool handle_wlan_hosted_netwrok_query_property(const std::string &line,
-                                                          int line_num,
-                                                          std::string &result_text,
-                                                          Glib::RefPtr<Gtk::TextBuffer> buffer,
-                                                          bool is_imported)
+    /* WlanQueryAutoConfigParameter */
+    inline bool handle_wlan_query_auto_config_parameter(const std::string &line,
+                                                        int line_num,
+                                                        std::string &result_text,
+                                                        Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                        bool is_imported)
     {
         if (!is_imported)
         {
-            ImportError::is_net_imported(line_num, result_text, buffer, is_imported, "WlanHostedNetworkQueryProperty()");
+            ImportError::is_net_imported(line_num, result_text, buffer, is_imported, "WlanQueryAutoConfigParameter()");
             return false;
         }
 
-        static const std::regex wlan_hosted_network_query_property_re("WlanHostedNetworkQueryProperty\\(\\);");
+        static const std::regex wlan_query_auto_config_parameter_re("WlanQueryAutoConfigParameter\\(\\s*([0-9]+)\\s*\\,\\s*([0-9]+)\\s*\\);");
         std::smatch match;
 
-        if (std::regex_search(line, match, wlan_hosted_network_query_property_re))
+        if (std::regex_search(line, match, wlan_query_auto_config_parameter_re))
         {
             try
             {
-                //
+                DWORD wlanAutoConfCode = std::stoul(match[1]);
+                DWORD wlanOpCodeValueType = std::stoul(match[2]);
+
+                return handle_wlan_query_auto_config_parameter_sub_func(wlanAutoConfCode, wlanOpCodeValueType, line_num, result_text, buffer);
             }
             catch (EX_IA ia)
             {
@@ -418,12 +421,12 @@ namespace NetWorkControl
             }
             catch (EX_E e)
             {
-                NetWorkError::handle_net_work_exception(line_num, result_text, buffer, "WlanHostedNetworkQueryProperty");
+                NetWorkError::handle_net_work_exception(line_num, result_text, buffer, "WlanQueryAutoConfigParameter");
                 return false;
             }
         }
 
-        NetWorkError::handle_net_work_call_error(line_num, result_text, buffer, "WlanHostedNetworkQueryProperty");
+        NetWorkError::handle_net_work_call_error(line_num, result_text, buffer, "WlanQueryAutoConfigParameter");
         return false;
     }
 }
