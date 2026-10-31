@@ -4,8 +4,8 @@
 #include <windows.h>
 #include <rpcnsi.h>
 
-#include "../../ErrorLogic.hpp"
-#include "../../ErrorMessages/Messages.hpp"
+#include "../../../ErrorLogic.hpp"
+#include "../../../ErrorMessages/Messages.hpp"
 #include "MyInterface.h"
 #include "RpcServer.hpp"
 
