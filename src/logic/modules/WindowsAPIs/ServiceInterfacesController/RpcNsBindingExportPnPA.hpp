@@ -9,7 +9,9 @@
 
 inline bool handle_rpc_ns_binding_export_pn_pa_sub_func(LINE line_num, MESSAGE result_text, BUFFER buffer)
 {
-    //
+    // SVCINTER result = RpcNsBindingExportPnPA();
+
+
 }
 
 #endif // RPCNSBINDINGEXPORTPNPA_HPP
