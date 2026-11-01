@@ -71,7 +71,7 @@ namespace ServiceInterfaceControl
         {
             try
             {
-                //
+                return handle_rpc_ns_binding_export_pn_pa_sub_func(line_num, result_text, buffer);
             }
             catch (EX_IA ia)
             {

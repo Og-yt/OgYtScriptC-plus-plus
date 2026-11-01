@@ -191,7 +191,7 @@ private:
         std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList|WlanSetPsdIEDataList|WlanGetAvailableNetworkList|WlanGetInterfaceCapability|WlanGetProfile|WlanGetProfileCustomUserData|WlanGetProfileList|WlanGetSecuritySettings|WlanGetSupportedDeviceServices|WlanQueryAutoConfigParameter|WlanReasonCodeToString)\\b");
 
         // RPC
-        std::regex rpc_re("\\b(RpcNsBuidingExportA)\\b");
+        std::regex rpc_re("\\b(RpcNsBuidingExportA|RpcNsBindingExportPnPA)\\b");
 
         // x86-64 Assembly
         std::regex x86_64_asm_code_re("\\b(x86_64MathSin|x86_64WlanGetProfile)\\b");
@@ -1891,6 +1891,13 @@ private:
             else if (line.find("RpcNsBuidingExportA") == 0)
             {
                 if (!ServiceInterfaceControl::handle_rpc_ns_binding_export_a(line, lineCount, resultText, buffer, rpc_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("RpcNsBindingExportPnPA") == 0)
+            {
+                if (!ServiceInterfaceControl::handle_rpc_ns_binding_export_pn_pa(line, lineCount, resultText, buffer, rpc_imported))
                 {
                     break;
                 }

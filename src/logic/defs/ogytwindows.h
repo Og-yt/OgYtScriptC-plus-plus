@@ -37,8 +37,20 @@ typedef const std::string &FMSINF32;
 
 /* サービスインターフェイス */
 typedef const std::string &FWINSVCINFC;
-typedef unsigned long SVCINTER;
-typedef SVCINTER SVCRESULT;
+typedef const unsigned char CUCSVCINTER;
+typedef unsigned long ULSVCINTER;
+typedef unsigned char UCSVCINTER;
+typedef long LSVCINTER;
+typedef ULSVCINTER SVCINTER;
+typedef ULSVCINTER SVCRESULT;
+
+typedef LSVCINTER RPCSTATUS;
+typedef LSVCINTER SVCINTERS;
+typedef UCSVCINTER *PUCSVCINTER;
+typedef CUCSVCINTER *PCUCSVCINTER;
+
+typedef PUCSVCINTER RPCENTRYNAME;
+typedef PCUCSVCINTER RCUCSVCINTER;
 
 /* ネットワーク */
 typedef const std::string &FWINNET;

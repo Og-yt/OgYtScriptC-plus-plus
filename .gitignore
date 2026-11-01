@@ -3,6 +3,7 @@
 *.exe
 /build/
 src/logic/modules/ServiceInterfaces/MyInterface.h
+src/logic/modules/WindowsAPIs/ServiceInterfacesController/MyInterface_s.c
 
 # IDE and OS files
 .vscode/

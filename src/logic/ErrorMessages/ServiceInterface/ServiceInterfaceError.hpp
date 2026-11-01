@@ -31,6 +31,22 @@ namespace ServiceInterfaceError
         return false;
     }
 
+    inline bool handle_rpc_ns_binding_export_pn_pa_invalid_error(LINE line_num, MESSAGE result_text, BUFFER buffer, SVCRESULT result)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "RpcNsBindingExportPnPa failed with error: " + std::to_string(result) + '\n');
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
+    inline bool handle_rpc_ns_binding_unexport_pn_pa_invalid_error(LINE line_num, MESSAGE result_text, BUFFER buffer, SVCRESULT result)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "RpcNsBindingUnexportPnPA failed with error: " + std::to_string(result) + '\n');
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
     inline bool handle_service_interface_invalid_argument(LINE line_num, MESSAGE result_text, BUFFER buffer)
     {
         result_text += ErrorLogic::build_msg(line_num, "Invalid argument.\n");

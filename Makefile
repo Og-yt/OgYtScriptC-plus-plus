@@ -11,14 +11,14 @@ WIDL ?= widl
 TARGET = MyLang.exe
 
 # RPCインターフェース
-RPC_IDL = src/logic/modules/ServiceInterfaces/MyInterface.idl
-RPC_HEADER = src/logic/modules/ServiceInterfaces/MyInterface.h
-RPC_SERVER_STUB = build/ServiceInterfaces/MyInterface_s.c
-RPC_SERVER_STUB_OBJ = build/ServiceInterfaces/MyInterface_s.o
+RPC_IDL = src/logic/modules/WindowsAPIs/ServiceInterfacesController/MyInterface.idl
+RPC_HEADER = src/logic/modules/WindowsAPIs/ServiceInterfacesController/MyInterface.h
+RPC_SERVER_STUB = src/logic/modules/WindowsAPIs/ServiceInterfacesController/MyInterface_s.c
+RPC_SERVER_STUB_OBJ = src/logic/modules/WindowsAPIs/ServiceInterfacesController/MyInterface_s.o
 
 # ソースファイルのリスト
 SRCS = main.cpp \
-	   src/logic/modules/ServiceInterfaces/RpcServer.cpp \
+	   src/logic/modules/WindowsAPIs/ServiceInterfacesController/RpcServer.cpp \
 
 ASM_SRCS = src/logic/modules/Mathematics/x86-64.ASM
 
@@ -41,13 +41,12 @@ $(RPC_HEADER): $(RPC_IDL)
 	$(WIDL) --win64 -h -o $@ $<
 
 $(RPC_SERVER_STUB): $(RPC_IDL) $(RPC_HEADER)
-	mkdir -p $(dir $@)
 	$(WIDL) --win64 -s -o $@ $<
 
-main.o src/logic/modules/ServiceInterfaces/RpcServer.o: $(RPC_HEADER)
+main.o src/logic/modules/WindowsAPIs/ServiceInterfacesController/RpcServer.o: $(RPC_HEADER)
 
 $(RPC_SERVER_STUB_OBJ): $(RPC_SERVER_STUB) $(RPC_HEADER)
-	$(CC) -Isrc/logic/modules/ServiceInterfaces -c $< -o $@
+	$(CC) -Isrc/logic/modules/WindowsAPIs/ServiceInterfacesController -c $< -o $@
 
 # 個別のコンパイルルール
 %.o: %.cpp
