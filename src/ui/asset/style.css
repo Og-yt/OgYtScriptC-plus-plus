@@ -18,6 +18,7 @@
 .text-box-container {
     color: white;
     font-weight: bold;
+    font-size: 20px;
 }
 
 textview text {

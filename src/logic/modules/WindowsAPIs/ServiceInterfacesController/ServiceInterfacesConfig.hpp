@@ -3,5 +3,6 @@
 
 #include "RpcNsBuidingExportA.hpp"
 #include "RpcNsBindingExportPnPA.hpp"
+#include "RpcNsBindingExportW.hpp"
 
 #endif // SERVICEINTERFACESCONFIG_HPP

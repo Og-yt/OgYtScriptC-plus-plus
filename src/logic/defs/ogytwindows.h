@@ -4,6 +4,10 @@
 #include <windows.h>
 #include <wlanapi.h>
 
+#include "ogytwindows/ogytnetdef.h"
+#include "ogytwindows/ogytrpcdef.h"
+#include "ogytwindows/ogythwdef.h"
+
 #include <vector>
 #include <string>
 
@@ -34,58 +38,6 @@ typedef const std::string &FWINSECU;
 
 /* msinfo32 */
 typedef const std::string &FMSINF32;
-
-/* サービスインターフェイス */
-typedef const std::string &FWINSVCINFC;
-typedef const unsigned char CUCSVCINTER;
-typedef unsigned long ULSVCINTER;
-typedef unsigned char UCSVCINTER;
-typedef long LSVCINTER;
-typedef ULSVCINTER SVCINTER;
-typedef ULSVCINTER SVCRESULT;
-
-typedef LSVCINTER RPCSTATUS;
-typedef LSVCINTER SVCINTERS;
-typedef UCSVCINTER *PUCSVCINTER;
-typedef CUCSVCINTER *PCUCSVCINTER;
-
-typedef PUCSVCINTER RPCENTRYNAME;
-typedef PCUCSVCINTER RCUCSVCINTER;
-
-/* ネットワーク */
-typedef const std::string &FWINNET;
-typedef unsigned long NETWORK;
-typedef const unsigned long CNETWORK, *PCNETWORK;
-typedef NETWORK NETINFOLIST;
-typedef NETWORK NETRESULT;
-typedef NETWORK NEGOVER;
-typedef NETWORK DATALIST;
-typedef NETWORK NDATASIZE;
-typedef NETWORK SECOBJTYPE;
-
-typedef CNETWORK RSBUFSIZE;
-
-typedef const char NCSTR;
-typedef NCSTR *NSECURITY, *NCONNECTAB;
-typedef NCSTR *BYTEDATA, *PBYTEDATA;
-
-typedef const wchar_t *NETCURL;
-typedef wchar_t NETURL, *PNETURL;
-typedef NETCURL *PPNETURL;
-typedef NETCURL STRFORMAT;
-typedef NETCURL PROFILENAME;
-typedef PNETURL PROFILEXML;
-
-typedef NETURL RSSTRBUF;
-
-typedef CLIENT *HCLIENT;
-
-typedef short SENDDATA;
-
-typedef PWLAN_INTERFACE_INFO_LIST NETWORKINFOLIST;
-
-/* ハードウェア制御 */
-typedef const std::string &FWINHW;
 
 /* メモリ */
 typedef long LMEMORYRAM;
