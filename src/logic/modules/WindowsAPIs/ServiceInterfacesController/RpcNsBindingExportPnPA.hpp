@@ -18,14 +18,14 @@ inline bool handle_rpc_ns_binding_export_pn_pa_sub_func(LINE line_num, MESSAGE r
     status = RpcNsBindingExportPnPA(entryNameSyntax, entryName, MyInterface_v1_0_s_ifspec, NULL);
     if (status != RPC_S_OK)
     {
-        ServiceInterfaceError::handle_rpc_ns_binding_export_pn_pa_invalid_error(line_num, result_text, buffer, status);
+        ServiceInterfaceError::handle_invalid_error(line_num, result_text, buffer, status, "RpcNsBindingExportPnPA");
         return false;
     }
 
     SVCINTERS unexportStatus = RpcNsBindingUnexportPnPA(entryNameSyntax, entryName, MyInterface_v1_0_s_ifspec, NULL);
     if (unexportStatus != RPC_S_OK)
     {
-        ServiceInterfaceError::handle_rpc_ns_binding_unexport_pn_pa_invalid_error(line_num, result_text, buffer, unexportStatus);
+        ServiceInterfaceError::handle_invalid_error(line_num, result_text, buffer, unexportStatus, "RpcNsBindingUnexportPnPA");
     }
     else
     {

@@ -24,7 +24,7 @@ inline bool handle_rpc_ns_binding_export_a_sub_func(LINE line_num, MESSAGE resul
     result = RpcServerInqBindings(&bindingVector);
     if (result != RPC_S_OK)
     {
-        ServiceInterfaceError::handle_rpc_server_inq_bindings_failed_error(line_num, result_text, buffer, result);
+        ServiceInterfaceError::handle_invalid_error(line_num, result_text, buffer, result, "RpcServerInqBindings");
         return false;
     }
 
@@ -40,7 +40,7 @@ inline bool handle_rpc_ns_binding_export_a_sub_func(LINE line_num, MESSAGE resul
 
     if (result != RPC_S_OK)
     {
-        ServiceInterfaceError::handle_rpc_ns_binding_export_a_failed_error(line_num, result_text, buffer, result);
+        ServiceInterfaceError::handle_invalid_error(line_num, result_text, buffer, result, "RpcNsBindingExportA");
     }
     else
     {

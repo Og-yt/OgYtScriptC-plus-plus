@@ -1,0 +1,4 @@
+#ifndef OGYTHTMLDEF_H
+#define OGYTHTMLDEF_H
+
+#endif // OGYTHTMLDEF_H

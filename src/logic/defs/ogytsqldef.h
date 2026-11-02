@@ -1,0 +1,4 @@
+#ifndef OGYTSQLDEF_H
+#define OGYTSQLDEF_H
+
+#endif // OGYTSQLDEF_H
