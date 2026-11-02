@@ -191,7 +191,7 @@ private:
         std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList|WlanSetPsdIEDataList|WlanGetAvailableNetworkList|WlanGetInterfaceCapability|WlanGetProfile|WlanGetProfileCustomUserData|WlanGetProfileList|WlanGetSecuritySettings|WlanGetSupportedDeviceServices|WlanQueryAutoConfigParameter|WlanReasonCodeToString)\\b");
 
         // RPC
-        std::regex rpc_re("\\b(RpcNsBuidingExportA|RpcNsBindingExportPnPA)\\b");
+        std::regex rpc_re("\\b(RpcNsBuidingExportA|RpcNsBindingExportPnPA|RpcNsBindingExportW)\\b");
 
         // x86-64 Assembly
         std::regex x86_64_asm_code_re("\\b(x86_64MathSin|x86_64WlanGetProfile)\\b");
@@ -233,6 +233,7 @@ private:
         apply_style(pc_data_re, "special");
         apply_style(net_re, "special");
         apply_style(x86_64_asm_code_re, "asmv");
+        apply_style(rpc_re, "special");
 
         // 型の後に続く変数名をハイライト (キャプチャグループ 2 を使用)
         auto decl_begin = std::sregex_iterator(raw_text.begin(), raw_text.end(), var_decl_re);
@@ -1898,6 +1899,13 @@ private:
             else if (line.find("RpcNsBindingExportPnPA") == 0)
             {
                 if (!ServiceInterfaceControl::handle_rpc_ns_binding_export_pn_pa(line, lineCount, resultText, buffer, rpc_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("RpcNsBindingExportW") == 0)
+            {
+                if (!ServiceInterfaceControl::handle_rpc_ns_binding_export_w(line, lineCount, resultText, buffer, rpc_imported))
                 {
                     break;
                 }
