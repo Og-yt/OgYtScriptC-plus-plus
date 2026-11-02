@@ -15,41 +15,9 @@ namespace ServiceInterfaceError
         return false;
     }
 
-    inline bool handle_rpc_ns_binding_export_a_failed_error(LINE line_num, MESSAGE result_text, BUFFER buffer, SVCRESULT result)
+    inline bool handle_finished_searching_no_more_bindings_found_error(LINE line_num, MESSAGE result_text, BUFFER buffer)
     {
-        result_text += ErrorLogic::build_msg(line_num, "RpcNsBindingExportA failed with error: " + std::to_string(result) + '\n');
-        ErrorLogic::highlight_line(buffer, line_num);
-
-        return false;
-    }
-    
-    inline bool handle_rpc_server_inq_bindings_failed_error(LINE line_num, MESSAGE result_text, BUFFER buffer, SVCRESULT result)
-    {
-        result_text += ErrorLogic::build_msg(line_num, "RpcServerInqBindings failed with error: " + std::to_string(result) + '\n');
-        ErrorLogic::highlight_line(buffer, line_num);
-
-        return false;
-    }
-
-    inline bool handle_rpc_ns_binding_export_pn_pa_invalid_error(LINE line_num, MESSAGE result_text, BUFFER buffer, SVCRESULT result)
-    {
-        result_text += ErrorLogic::build_msg(line_num, "RpcNsBindingExportPnPa failed with error: " + std::to_string(result) + '\n');
-        ErrorLogic::highlight_line(buffer, line_num);
-
-        return false;
-    }
-
-    inline bool handle_rpc_ns_binding_unexport_pn_pa_invalid_error(LINE line_num, MESSAGE result_text, BUFFER buffer, SVCRESULT result)
-    {
-        result_text += ErrorLogic::build_msg(line_num, "RpcNsBindingUnexportPnPA failed with error: " + std::to_string(result) + '\n');
-        ErrorLogic::highlight_line(buffer, line_num);
-
-        return false;
-    }
-
-    inline bool handle_rpc_server_use_protseq_ep_w_invalid_error(LINE line_num, MESSAGE result_text, BUFFER buffer, SVCRESULT result)
-    {
-        result_text += ErrorLogic::build_msg(line_num, "RpcServerUseProtseqEpW failed with error: " + std::to_string(result) + '\n');
+        result_text += ErrorLogic::build_msg(line_num, "Finished searching: No more bindings found.\n");
         ErrorLogic::highlight_line(buffer, line_num);
 
         return false;
