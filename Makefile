@@ -20,10 +20,13 @@ RPC_SERVER_STUB_OBJ = src/logic/modules/WindowsAPIs/ServiceInterfacesController/
 SRCS = main.cpp \
 	   src/logic/modules/WindowsAPIs/ServiceInterfacesController/RpcServer.cpp \
 
-ASM_SRCS = src/logic/modules/Mathematics/x86-64.ASM
+ASM_SRCS = src/logic/modules/Mathematics/x86-64.ASM \
+	   src/logic/modules/Assemblys/Print/AsmPrint.asm
 
 # オブジェクトファイル名のリバース生成
-OBJS = $(SRCS:.cpp=.o) $(ASM_SRCS:.ASM=.o) $(RPC_SERVER_STUB_OBJ)
+ASM_OBJS = $(patsubst %.ASM,%.o,$(filter %.ASM,$(ASM_SRCS))) \
+	   $(patsubst %.asm,%.o,$(filter %.asm,$(ASM_SRCS)))
+OBJS = $(SRCS:.cpp=.o) $(ASM_OBJS) $(RPC_SERVER_STUB_OBJ)
 
 ifeq ($(OS),Windows_NT)
 RM = cmd /C del /Q /F
@@ -53,6 +56,9 @@ $(RPC_SERVER_STUB_OBJ): $(RPC_SERVER_STUB) $(RPC_HEADER)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 %.o: %.ASM
+	$(CXX) -x assembler -c $< -o $@
+
+%.o: %.asm
 	$(CXX) -x assembler -c $< -o $@
 
 clean:

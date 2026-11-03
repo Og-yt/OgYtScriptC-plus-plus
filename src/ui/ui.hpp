@@ -11,6 +11,7 @@
 #include "../logic/Interpreter/InterpreterLogic.hpp"
 #include "../logic/Interpreter/ControlSyntaxLogic.hpp"
 #include "../logic/modules/importConfig.hpp"
+#include "../logic/modules/Assembly.h"
 #include "../logic/Integration/pythonBridge.hpp"
 // #include "../logic/onClick.hpp"
 
@@ -380,6 +381,7 @@ private:
         bool pc_data_imported = false;
         bool net_imported = false;
         bool rpc_imported = false;
+        bool asm_imported = false;
         std::map<std::string, std::string> auto_scripts;
 
         ErrorLogic::clear_highlights(buffer);
@@ -469,6 +471,10 @@ private:
                 else if (line.find("\"RPC\"") != std::string::npos)
                 {
                     rpc_imported = true;
+                }
+                else if (line.find("\"Assembly\"") != std::string::npos)
+                {
+                    asm_imported = true;
                 }
                 continue;
             }
@@ -693,6 +699,77 @@ private:
                 }
 
                 auto_scripts[script_name] = script_body;
+            }
+            else if (line.find("Assembly") == 0)
+            {
+                if (!asm_imported)
+                {
+                    ImportError::is_assembly_imported(
+                        lineCount, resultText, buffer, asm_imported, "Assembly");
+                    break;
+                }
+
+                static const std::regex assembly_re(R"(^Assembly\s*\(\s*$)");
+
+                if (!std::regex_match(line, assembly_re))
+                {
+                    resultText += ErrorLogic::build_msg(
+                        lineCount, "Invalid Assembly block. Expected 'Assembly ('", true);
+                    ErrorLogic::highlight_line(buffer, lineCount);
+                    break;
+                }
+
+                std::string body_line;
+                bool closed = false;
+                bool failed = false;
+
+                while (std::getline(ss, body_line))
+                {
+                    lineCount++;
+
+                    const size_t body_start =
+                        body_line.find_first_not_of(" \t\r\n");
+                    if (body_start == std::string::npos)
+                    {
+                        continue;
+                    }
+
+                    body_line = body_line.substr(body_start);
+                    const size_t body_end =
+                        body_line.find_last_not_of(" \t\r\n");
+                    body_line.erase(body_end + 1);
+
+                    if (body_line == ");")
+                    {
+                        closed = true;
+                        break;
+                    }
+
+                    if (body_line.rfind("//", 0) == 0)
+                    {
+                        continue;
+                    }
+
+                    if (!AssemblyControl::handle_asm_print(
+                            body_line, lineCount, resultText, buffer, asm_imported))
+                    {
+                        failed = true;
+                        break;
+                    }
+                }
+
+                if (failed)
+                {
+                    break;
+                }
+
+                if (!closed)
+                {
+                    resultText += ErrorLogic::build_msg(
+                        lineCount, "Expected ');' to close Assembly block.", true);
+                    ErrorLogic::highlight_line(buffer, lineCount);
+                    break;
+                }
             }
             else if (line.find("Python") == 0)
             {

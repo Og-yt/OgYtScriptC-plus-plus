@@ -141,6 +141,18 @@ namespace ImportError
 
         return false;
     }
+
+    inline bool is_assembly_imported(LINE line_num, MESSAGE result_text, BUFFER buffer, IMPORT is_asm_imported, FUNCNAME asm_func_name)
+    {
+        if (!is_asm_imported)
+        {
+            result_text += ErrorLogic::build_msg(line_num, "The 'Assembly' library is required to use '" + asm_func_name + "'. Please add 'import \"Assembly\"';");
+            ErrorLogic::highlight_line(buffer, line_num);
+            return false;
+        }
+
+        return true;
+    }
 }
 
 #endif // IMPORTERROR_HPP
