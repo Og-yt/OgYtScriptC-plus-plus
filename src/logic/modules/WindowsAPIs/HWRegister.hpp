@@ -10,7 +10,7 @@
 #include "../../ErrorLogic.hpp"
 #include "../../ErrorMessages/Messages.hpp"
 
-#include "HWRegisterController/HWRegisterControllerConfig.hpp"
+#include "HWRegisterController/HWResisterControlConfig.h"
 
 namespace HWRegister
 {
