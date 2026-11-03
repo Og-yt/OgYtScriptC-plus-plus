@@ -1,0 +1,37 @@
+#ifndef COMPLEXINTEGRAL_HPP
+#define COMPLEXINTEGRAL_HPP
+
+#include <complex>
+
+using COMPLEX = std::complex<double>;
+
+constexpr double COMP_INTEGRAL_NODES[8] = {
+    0.0, 0.2077849550078985, 0.4058451513773972, 0.5860872354676911,
+    0.7415311855934443, 0.8648644233597691, 0.9491079123427585, 0.9914553711208126};
+
+constexpr double COMP_INTEGRAL_WEIGHTS[8] = {
+    0.2094821410847278, 0.2044329400752989, 0.1903505780647854, 0.1690047266392679,
+    0.1406532597155259, 0.1047900103222502, 0.0630920926299786, 0.0229353220105292};
+
+#define __R_COMPLEX_INTEGRAL_FUNCTION__(F, A, B)[&]() {\
+    COMPLEX INTEGRAL(0.0, 0.0);\
+    COMPLEX CENTER = 0.5 * (A + B);\
+    COMPLEX HALF_LENGTH = 0.5 * (B - A);\
+    for (size_t I = 0; I < 8; ++I)\
+    {\
+        double NODE = COMP_INTEGRAL_NODES[I];\
+        double WEIGHT = COMP_INTEGRAL_WEIGHTS[I];\
+        if (I == 0)\
+        {\
+            INTEGRAL += WEIGHT * F(CENTER);\
+        }\
+        else\
+        {\
+            COMPLEX Z1 = CENTER + NODE * HALF_LENGTH;\
+            COMPLEX Z2 = CENTER - NODE * HALF_LENGTH;\
+            INTEGRAL += WEIGHT * (F(Z1) + F(Z2));\
+        }\
+    }\
+    return INTEGRAL * HALF_LENGTH; }()
+
+#endif // COMPLEXINTEGRAL_HPP
