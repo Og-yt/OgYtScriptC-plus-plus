@@ -19,7 +19,7 @@ inline bool handle_rpc_ns_binding_import_begin_w_sub_func(LINE line_num, MESSAGE
 
     RPCHANDLE importContext = NULL;
 
-    status = RpcNsBindingImportBeginW(entryNameSyntax, entryName, MyInterface_v1_0_c_ifspec, NULL, &importContext);
+    status = RpcNsBindingImportBeginW(entryNameSyntax, entryName, MyInterface_v1_0_s_ifspec, NULL, &importContext);
 
     if (status != RPC_S_OK)
     {
