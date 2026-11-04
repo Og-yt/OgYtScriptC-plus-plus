@@ -29,6 +29,14 @@ namespace BluetoothError
         return false;
     }
 
+    inline bool handle_bluetooth_all_target_devices_are_already_authnticated(LINE line_num, MESSAGE result_text, BUFFER buffer)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "All target device are already authenticated.\n");
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
     inline bool handle_bluetooth_invalid_error(LINE line_num, MESSAGE result_text, BUFFER buffer, BLUERESULT result, BLUEFUNC func_name)
     {
         OSTERR oss;
