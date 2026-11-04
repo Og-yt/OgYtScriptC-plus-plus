@@ -64,7 +64,7 @@ namespace BluetoothError
         return false;
     }
 
-    inline bool handle_bluetooth_invalud_argument(LINE line_num, MESSAGE result_text, BUFFER buffer)
+    inline bool handle_bluetooth_invalid_argument(LINE line_num, MESSAGE result_text, BUFFER buffer)
     {
         result_text += ErrorLogic::build_msg(line_num, "Invalid argument.\n");
         ErrorLogic::highlight_line(buffer, line_num);
