@@ -7,6 +7,7 @@
 #include "ogytwindows/ogytnetdef.h"
 #include "ogytwindows/ogytrpcdef.h"
 #include "ogytwindows/ogythwdef.h"
+#include "ogytwindows/ogytbluedef.h"
 
 #include <vector>
 #include <string>

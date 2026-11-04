@@ -13,5 +13,6 @@
 #include "MouseError/MouseError.hpp"
 #include "SecurityError/SecurityError.hpp"
 #include "msInfo32Error/msInfo32Error.hpp"
+#include "BluetoothError/BluetoothError.hpp"
 
 #endif // WINAPIERROR_HPP

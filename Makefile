@@ -4,7 +4,7 @@ export PKG_CONFIG_PATH := C:\msys64\mingw64\lib\pkgconfig;C:\msys64\mingw64\shar
 CXX = g++
 CC = gcc
 CXXFLAGS = -Wall -Wextra -O2 -std=c++17 -Iinclude $(shell pkg-config --cflags gtkmm-4.0)
-LIBS = $(shell pkg-config --libs gtkmm-4.0) -lole32 -loleaut32 -lpdh -lwlanapi -lrpcns4 -lrpcrt4
+LIBS = $(shell pkg-config --libs gtkmm-4.0) -lole32 -loleaut32 -lpdh -lwlanapi -lbthprops -lws2_32 -lrpcns4 -lrpcrt4
 WIDL ?= widl
 
 # 実行ファイル名
@@ -36,7 +36,7 @@ endif
 
 all: $(TARGET)
 
-$(TARGET): $(OBJS)
+$(TARGET): $(OBJS) Makefile
 	$(CXX) $(OBJS) -o $(TARGET) $(LIBS)
 
 # RPCスタブをIDLから生成

@@ -1,0 +1,6 @@
+#ifndef BLUETOOTHCONTROLLERCONFIG_HPP
+#define BLUETOOTHCONTROLLERCONFIG_HPP
+
+#include "BluetoothAuthenticateDevice.hpp"
+
+#endif // BLUETOOTHCONTROLLERCONFIG_HPP

@@ -20,5 +20,6 @@
 #include "WindowsAPIs/TaskSchedulerControls.hpp" // タスクスケジューラサービスの使用
 #include "WindowsAPIs/Security.hpp"              // セキュリティ操作
 #include "WindowsAPIs/ServiceInterfaceControls.hpp"
+#include "WindowsAPIs/BluetoothControls.hpp"
 
 #endif // WINDOWSAPI_HPP

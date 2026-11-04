@@ -189,7 +189,7 @@ private:
         std::regex auto_script_re("\\b(CtrlKeyControl|ShiftKeyControl|WindowsKey|AltKeyControl|EscapeKeyControl|MouseControlSetCursorPositionN|OpenCMD)\\b");
 
         // NET
-        std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList|WlanSetPsdIEDataList|WlanGetAvailableNetworkList|WlanGetInterfaceCapability|WlanGetProfile|WlanGetProfileCustomUserData|WlanGetProfileList|WlanGetSecuritySettings|WlanGetSupportedDeviceServices|WlanQueryAutoConfigParameter|WlanReasonCodeToString)\\b");
+        std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList|WlanSetPsdIEDataList|WlanGetAvailableNetworkList|WlanGetInterfaceCapability|WlanGetProfile|WlanGetProfileCustomUserData|WlanGetProfileList|WlanGetSecuritySettings|WlanGetSupportedDeviceServices|WlanQueryAutoConfigParameter|WlanReasonCodeToString|BluetoothAuthenticateDevice)\\b");
 
         // RPC
         std::regex rpc_re("\\b(RpcNsBuidingExportA|RpcNsBindingExportPnPA|RpcNsBindingExportW|RpcNsBindingImportBeginW)\\b");
@@ -1958,6 +1958,14 @@ private:
             else if (line.find("WlanReasonCodeToString") == 0)
             {
                 if (!NetWorkControl::handle_wlan_reason_code_to_string(line, lineCount, resultText, buffer, net_imported))
+                {
+                    break;
+                }
+            }
+            
+            else if (line.find("BluetoothAuthenticateDevice") == 0)
+            {
+                if (!BluetoothControl::handle_bluetooth_authenticate_device(line, lineCount, resultText, buffer, net_imported))
                 {
                     break;
                 }
