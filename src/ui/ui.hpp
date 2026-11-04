@@ -189,7 +189,7 @@ private:
         std::regex auto_script_re("\\b(CtrlKeyControl|ShiftKeyControl|WindowsKey|AltKeyControl|EscapeKeyControl|MouseControlSetCursorPositionN|OpenCMD)\\b");
 
         // NET
-        std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList|WlanSetPsdIEDataList|WlanGetAvailableNetworkList|WlanGetInterfaceCapability|WlanGetProfile|WlanGetProfileCustomUserData|WlanGetProfileList|WlanGetSecuritySettings|WlanGetSupportedDeviceServices|WlanQueryAutoConfigParameter|WlanReasonCodeToString|BluetoothAuthenticateDevice)\\b");
+        std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList|WlanSetPsdIEDataList|WlanGetAvailableNetworkList|WlanGetInterfaceCapability|WlanGetProfile|WlanGetProfileCustomUserData|WlanGetProfileList|WlanGetSecuritySettings|WlanGetSupportedDeviceServices|WlanQueryAutoConfigParameter|WlanReasonCodeToString|BluetoothAuthenticateDevice|BluetoothAuthenticateMultipleDevices|BluetoothDisplayDeviceProperties)\\b");
 
         // RPC
         std::regex rpc_re("\\b(RpcNsBuidingExportA|RpcNsBindingExportPnPA|RpcNsBindingExportW|RpcNsBindingImportBeginW)\\b");
@@ -1970,6 +1970,20 @@ private:
                     break;
                 }
             }
+            else if (line.find("BluetoothAuthenticateMultipleDevices") == 0)
+            {
+                if (!BluetoothControl::handle_bluetooth_authenticate_multiple_devices(line, lineCount, resultText, buffer, net_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("BluetoothDisplayDeviceProperties") == 0)
+            {
+                if (!BluetoothControl::handle_bluetooth_display_device_properties(line, lineCount, resultText, buffer, net_imported))
+                {
+                    break;
+                }
+            }
 
             /**
              *
@@ -2067,7 +2081,7 @@ private:
         }
         catch (const Gtk::CssParserError &ex)
         {
-            g_warning("CSS 構文エラー: %s", ex.what());
+            g_warning("CSS syntax error: %s", ex.what());
         }
         catch (const Glib::Error &ex)
         {
