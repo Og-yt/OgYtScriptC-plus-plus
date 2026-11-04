@@ -871,6 +871,16 @@ private:
             {
                 //
             }
+
+            /* x86-64 Assembly */
+            else if (line.find("x86_64MathSin") != std::string::npos)
+            {
+                if (!Math::handle_x86_64_sin(line, double_vars, vars, lineCount, resultText, buffer, math_imported))
+                {
+                    break;
+                }
+            }
+
             else if (line.find("int") == 0)
             {
                 if (!InterpreterLogic::INT::handle_int_decl(line, vars, lineCount, resultText, buffer, windows_api_imported))
@@ -979,20 +989,13 @@ private:
             }
 
             /**
-             * 
+             *
              * @brief 数学ライブラリ
-             * 
+             *
              */
             else if (line.find("MathSin") != std::string::npos)
             {
                 if (!Math::handle_sin(line, double_vars, vars, lineCount, resultText, buffer, math_imported))
-                {
-                    break;
-                }
-            }
-            else if (line.find("x86_64MathSin") != std::string::npos)
-            {
-                if (!Math::handle_x86_64_sin(line, double_vars, vars, lineCount, resultText, buffer, math_imported))
                 {
                     break;
                 }
@@ -1827,7 +1830,6 @@ private:
             }
             /* END PCData */
 
-
             else if (line.find("Command") == 0)
             {
                 if (!System::handle_executing_command(line, lineCount, resultText, buffer, windows_api_imported))
@@ -1876,9 +1878,9 @@ private:
             }
 
             /**
-             * 
+             *
              * @brief security functions
-             * 
+             *
              */
             // else if (line.find("") == 0){}
 

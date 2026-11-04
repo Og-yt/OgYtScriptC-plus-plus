@@ -28,10 +28,7 @@ namespace AssemblyControl
 
         if (!std::regex_match(line, match, asm_print_re))
         {
-            result_text += ErrorLogic::build_msg(
-                line_num,
-                "Invalid AsmPrint call. Expected AsmPrint(\"text\")",
-                true);
+            result_text += ErrorLogic::build_msg(line_num, "Invalid AsmPrint call. Expected AsmPrint(\"text\")", true);
             ErrorLogic::highlight_line(buffer, line_num);
             return false;
         }

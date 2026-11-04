@@ -4,10 +4,10 @@
 #include <cstddef>
 #include <string>
 
+#include "../outputCallback.h"
+
 namespace AssemblyPrint
 {
-    using OutputCallback = void (*)(const char *, std::size_t, void *);
-
     extern "C" void asm_print_execute(const char *text,
                                       std::size_t length,
                                       OutputCallback output,
