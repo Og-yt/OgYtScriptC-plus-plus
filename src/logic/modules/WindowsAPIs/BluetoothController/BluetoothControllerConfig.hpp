@@ -4,5 +4,6 @@
 #include "BluetoothAuthenticateDevice.hpp"
 #include "BluetoothAuthenticateMultipleDevices.hpp"
 #include "BluetoothDisplayDeviceProperties.hpp"
+#include "BluetoothFindFirstDevice.hpp"
 
 #endif // BLUETOOTHCONTROLLERCONFIG_HPP

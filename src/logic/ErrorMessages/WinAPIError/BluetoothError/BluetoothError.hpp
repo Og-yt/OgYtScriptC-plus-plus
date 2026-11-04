@@ -37,6 +37,14 @@ namespace BluetoothError
         return false;
     }
 
+    inline bool handle_bluetooth_no_blutooth_device_found(LINE line_num, MESSAGE result_text, BUFFER buffer)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "No bluetooth device found.\n");
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
     inline bool handle_bluetooth_failed_to_display_device_properties_error(LINE line_num, MESSAGE result_text, BUFFER buffer, BLUERESULT result)
     {
         result_text += ErrorLogic::build_msg(line_num, "Failed to display device properties. Error code: " + result + '\n');
