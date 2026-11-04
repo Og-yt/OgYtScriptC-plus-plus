@@ -189,7 +189,7 @@ private:
         std::regex auto_script_re("\\b(CtrlKeyControl|ShiftKeyControl|WindowsKey|AltKeyControl|EscapeKeyControl|MouseControlSetCursorPositionN|OpenCMD)\\b");
 
         // NET
-        std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList|WlanSetPsdIEDataList|WlanGetAvailableNetworkList|WlanGetInterfaceCapability|WlanGetProfile|WlanGetProfileCustomUserData|WlanGetProfileList|WlanGetSecuritySettings|WlanGetSupportedDeviceServices|WlanQueryAutoConfigParameter|WlanReasonCodeToString|BluetoothAuthenticateDevice|BluetoothAuthenticateMultipleDevices|BluetoothDisplayDeviceProperties|BluetoothFindFirstDevice|BluetoothFindFirstRadio|BluetoothFindNextDevice)\\b");
+        std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList|WlanSetPsdIEDataList|WlanGetAvailableNetworkList|WlanGetInterfaceCapability|WlanGetProfile|WlanGetProfileCustomUserData|WlanGetProfileList|WlanGetSecuritySettings|WlanGetSupportedDeviceServices|WlanQueryAutoConfigParameter|WlanReasonCodeToString|BluetoothAuthenticateDevice|BluetoothAuthenticateMultipleDevices|BluetoothDisplayDeviceProperties|BluetoothFindFirstDevice|BluetoothFindFirstRadio|BluetoothFindNextDevice|BluetoothFindNextRadio)\\b");
 
         // RPC
         std::regex rpc_re("\\b(RpcNsBuidingExportA|RpcNsBindingExportPnPA|RpcNsBindingExportW|RpcNsBindingImportBeginW)\\b");
@@ -2001,6 +2001,13 @@ private:
             else if (line.find("BluetoothFindNextDevice") == 0)
             {
                 if (!BluetoothControl::handle_bluetooth_find_next_device(line, lineCount, resultText, buffer, net_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("BluetoothFindNextRadio") == 0)
+            {
+                if (!BluetoothControl::handle_bluetooth_find_next_radio(line, lineCount, resultText, buffer, net_imported))
                 {
                     break;
                 }
