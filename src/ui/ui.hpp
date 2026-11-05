@@ -189,7 +189,7 @@ private:
         std::regex auto_script_re("\\b(CtrlKeyControl|ShiftKeyControl|WindowsKey|AltKeyControl|EscapeKeyControl|MouseControlSetCursorPositionN|OpenCMD)\\b");
 
         // NET
-        std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList|WlanSetPsdIEDataList|WlanGetAvailableNetworkList|WlanGetInterfaceCapability|WlanGetProfile|WlanGetProfileCustomUserData|WlanGetProfileList|WlanGetSecuritySettings|WlanGetSupportedDeviceServices|WlanQueryAutoConfigParameter|WlanReasonCodeToString|BluetoothAuthenticateDevice|BluetoothAuthenticateMultipleDevices|BluetoothDisplayDeviceProperties|BluetoothFindFirstDevice|BluetoothFindFirstRadio|BluetoothFindNextDevice|BluetoothFindNextRadio|BluetoothGetDeviceInfo)\\b");
+        std::regex net_re("\\b(WlanEnumeratorInterfaces|WlanExtractPsdIEDataList|WlanSetPsdIEDataList|WlanGetAvailableNetworkList|WlanGetInterfaceCapability|WlanGetProfile|WlanGetProfileCustomUserData|WlanGetProfileList|WlanGetSecuritySettings|WlanGetSupportedDeviceServices|WlanQueryAutoConfigParameter|WlanReasonCodeToString|BluetoothAuthenticateDevice|BluetoothAuthenticateMultipleDevices|BluetoothDisplayDeviceProperties|BluetoothFindFirstDevice|BluetoothFindFirstRadio|BluetoothFindNextDevice|BluetoothFindNextRadio|BluetoothGetDeviceInfo|BluetoothGetRadioInfo)\\b");
 
         // RPC
         std::regex rpc_re("\\b(RpcNsBuidingExportA|RpcNsBindingExportPnPA|RpcNsBindingExportW|RpcNsBindingImportBeginW)\\b");
@@ -2015,6 +2015,13 @@ private:
             else if (line.find("BluetoothGetDeviceInfo") == 0)
             {
                 if (!BluetoothControl::handle_bluetooth_get_device_info(line, lineCount, resultText, buffer, net_imported))
+                {
+                    break;
+                }
+            }
+            else if (line.find("BluetoothGetRadioInfo") == 0)
+            {
+                if (!BluetoothControl::handle_bluetooth_get_radio_info(line, lineCount, resultText, buffer, net_imported))
                 {
                     break;
                 }

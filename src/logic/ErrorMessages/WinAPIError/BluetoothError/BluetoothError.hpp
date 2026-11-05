@@ -72,6 +72,14 @@ namespace BluetoothError
         return false;
     }
 
+    inline bool handle_no_bluetooth_radios_found_or_bluetooth_is_turned_off_error(LINE line_num, MESSAGE result_text, BUFFER buffer)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "No Bluetooth radios found or Bluetooth is turned off. Error: " + std::to_string(GetLastError()) + '\n');
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
     inline bool handle_bluetooth_invalid_argument(LINE line_num, MESSAGE result_text, BUFFER buffer)
     {
         result_text += ErrorLogic::build_msg(line_num, "Invalid argument.\n");
