@@ -64,6 +64,14 @@ namespace BluetoothError
         return false;
     }
 
+    inline bool handle_the_specified_device_address_was_not_found_in_the_system_cache(LINE line_num, MESSAGE result_text, BUFFER buffer)
+    {
+        result_text += ErrorLogic::build_msg(line_num, "The specified device address was not found in the system cache.\n");
+        ErrorLogic::highlight_line(buffer, line_num);
+
+        return false;
+    }
+
     inline bool handle_bluetooth_invalid_argument(LINE line_num, MESSAGE result_text, BUFFER buffer)
     {
         result_text += ErrorLogic::build_msg(line_num, "Invalid argument.\n");

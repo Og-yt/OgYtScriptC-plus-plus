@@ -8,5 +8,6 @@
 #include "BluetoothFindFirstRadio.hpp"
 #include "BluetoothFindNExtDevice.hpp"
 #include "BluetoothFindNextRadio.hpp"
+#include "BluetoothGetDeviceInfo.hpp"
 
 #endif // BLUETOOTHCONTROLLERCONFIG_HPP

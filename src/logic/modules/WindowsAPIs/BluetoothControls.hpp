@@ -290,14 +290,16 @@ namespace BluetoothControl
             return false;
         }
 
-        static const std::regex bluetooth_get_device_info_re("BluetoothGetDeviceInfo\\(\\);");
+        static const std::regex bluetooth_get_device_info_re("BluetoothGetDeviceInfo\\(\\s*([0-9]+)\\s*\\);");
         std::smatch match;
 
         if (std::regex_search(line, match, bluetooth_get_device_info_re))
         {
             try
             {
-                //
+                DEVICEADDRESS targetDeviceAddress = std::stoull(match[1]);
+
+                return handle_bluetooth_get_device_info_sub_func(targetDeviceAddress, line_num, result_text, buffer);
             }
             catch (EX_IA ia)
             {
