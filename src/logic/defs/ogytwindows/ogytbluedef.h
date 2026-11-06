@@ -17,6 +17,8 @@ typedef unsigned long BLUETOOTH;
 typedef unsigned long long BLUETOOTH64;
 
 typedef BLUEBOOL BLUETOOTH8;
+typedef BLUEBOOL *PBLUEBOOL;
+// typedef PBLUEBOOL BLUETOOTH8;
 
 typedef BLUEVOID *PBLUEVOID;
 typedef PBLUEVOID BLUERADIO;

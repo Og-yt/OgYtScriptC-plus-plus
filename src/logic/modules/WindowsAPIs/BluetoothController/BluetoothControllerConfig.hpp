@@ -11,5 +11,6 @@
 #include "BluetoothGetDeviceInfo.hpp"
 #include "BluetoothGetRadioInfo.hpp"
 #include "BluetoothIsConnectable.hpp"
+#include "BluetoothIsDiscoverable.hpp"
 
 #endif // BLUETOOTHCONTROLLERCONFIG_HPP
