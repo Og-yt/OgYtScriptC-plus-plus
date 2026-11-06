@@ -354,6 +354,44 @@ namespace BluetoothControl
         BluetoothError::handle_bluetooth_call_error(line_num, result_text, buffer, "BluetoothGetRadioInfo");
         return false;
     }
+
+    /* BluetoothIsConnectable */
+    inline bool handle_bluetooth_is_connectable(const std::string &line,
+                                                int line_num,
+                                                std::string &result_text,
+                                                Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                bool is_imported)
+    {
+        if (!is_imported)
+        {
+            ImportError::is_net_imported(line_num, result_text, buffer, is_imported, "BluetoothIsConnectable()");
+            return false;
+        }
+
+        static const std::regex bluetooth_is_connectable_re("BluetoothIsConnectable\\(\\);");
+        std::smatch match;
+
+        if (std::regex_search(line, match, bluetooth_is_connectable_re))
+        {
+            try
+            {
+                return handle_bluetooth_is_connectable_sub_func(line_num, result_text, buffer);
+            }
+            catch (EX_IA ia)
+            {
+                BluetoothError::handle_bluetooth_invalid_argument(line_num, result_text, buffer);
+                return false;
+            }
+            catch (EX_E e)
+            {
+                BluetoothError::handle_bluetooth_exception(line_num, result_text, buffer, "BluetoothIsConnectable");
+                return false;
+            }
+        }
+
+        BluetoothError::handle_bluetooth_call_error(line_num, result_text, buffer, "BluetoothIsConnectable");
+        return false;
+    }
 }
 
 #endif // BLUETOOTHCONTROLS_HPP

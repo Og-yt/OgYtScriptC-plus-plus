@@ -8,12 +8,15 @@
 
 typedef const std::string &BLUEFUNC;
 
+typedef int BLUEBOOL;
 typedef void BLUEVOID;
 typedef wchar_t WBLUESTR;
 typedef const int DEVICECOUNT;
 typedef const wchar_t BLUECWSTR;
 typedef unsigned long BLUETOOTH;
 typedef unsigned long long BLUETOOTH64;
+
+typedef BLUEBOOL BLUETOOTH8;
 
 typedef BLUEVOID *PBLUEVOID;
 typedef PBLUEVOID BLUERADIO;
