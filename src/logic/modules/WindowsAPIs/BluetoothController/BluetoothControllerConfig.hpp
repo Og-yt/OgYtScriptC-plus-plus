@@ -12,5 +12,7 @@
 #include "BluetoothGetRadioInfo.hpp"
 #include "BluetoothIsConnectable.hpp"
 #include "BluetoothIsDiscoverable.hpp"
+#include "BluetoothIsVersionAvailable.hpp"
+#include "BluetoothSdpEnumAttributes.hpp"
 
 #endif // BLUETOOTHCONTROLLERCONFIG_HPP

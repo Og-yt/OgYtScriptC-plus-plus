@@ -13,6 +13,7 @@ typedef void BLUEVOID;
 typedef wchar_t WBLUESTR;
 typedef const int DEVICECOUNT;
 typedef const wchar_t BLUECWSTR;
+typedef unsigned char UBLUECHAR;
 typedef unsigned long BLUETOOTH;
 typedef unsigned long long BLUETOOTH64;
 
@@ -30,6 +31,9 @@ typedef PWBLUESTR PASSKEY;
 
 typedef BLUECWSTR *PBLUECWSTR;
 typedef PBLUECWSTR PINCODE;
+
+typedef UBLUECHAR BLUEMAJVER;
+typedef UBLUECHAR BLUEMINVER;
 
 typedef BLUETOOTH64 DEVICEADDRESS;
 typedef BLUETOOTH64 ADDRESS;

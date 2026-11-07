@@ -430,6 +430,82 @@ namespace BluetoothControl
         BluetoothError::handle_bluetooth_call_error(line_num, result_text, buffer, "BluetoothIsDiscoverable");
         return false;
     }
+
+    /* BluetoothIsVersionAvailable */
+    inline bool handle_bluetooth_is_version_available(const std::string &line,
+                                                      int line_num,
+                                                      std::string &result_text,
+                                                      Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                      bool is_imported)
+    {
+        if (!is_imported)
+        {
+            ImportError::is_net_imported(line_num, result_text, buffer, is_imported, "BluetoothIsVersionAvailable()");
+            return false;
+        }
+
+        static const std::regex bluetooth_is_version_available_re("BluetoothIsVersionAvailable\\(\\);");
+        std::smatch match;
+
+        if (std::regex_search(line, match, bluetooth_is_version_available_re))
+        {
+            try
+            {
+                return handle_bluetooth_is_version_available_sub_func(result_text);
+            }
+            catch (EX_IA ia)
+            {
+                BluetoothError::handle_bluetooth_invalid_argument(line_num, result_text, buffer);
+                return false;
+            }
+            catch (EX_E e)
+            {
+                BluetoothError::handle_bluetooth_exception(line_num, result_text, buffer, "BluetoothIsVersionAvailable");
+                return false;
+            }
+        }
+
+        BluetoothError::handle_bluetooth_call_error(line_num, result_text, buffer, "BluetoothIsVersionAvailable");
+        return false;
+    }
+
+    /* BluetoothSdpEnumAttributes */
+    inline bool handle_bluetooth_sdp_enum_attributes(const std::string &line,
+                                                     int line_num,
+                                                     std::string &result_text,
+                                                     Glib::RefPtr<Gtk::TextBuffer> buffer,
+                                                     bool is_imported)
+    {
+        if (!is_imported)
+        {
+            ImportError::is_net_imported(line_num, result_text, buffer, is_imported, "BluetoothSdpEnumAttributes()");
+            return false;
+        }
+
+        static const std::regex bluetooth_sdp_enum_attributes_re("BluetoothSdpEnumAttributes\\(\\);");
+        std::smatch match;
+
+        if (std::regex_search(line, match, bluetooth_sdp_enum_attributes_re))
+        {
+            try
+            {
+                return handle_bluetooth_sdp_enum_attributes_sub_func(line_num, result_text, buffer);
+            }
+            catch (EX_IA ia)
+            {
+                BluetoothError::handle_bluetooth_invalid_argument(line_num, result_text, buffer);
+                return false;
+            }
+            catch (EX_E e)
+            {
+                BluetoothError::handle_bluetooth_exception(line_num, result_text, buffer, "BluetoothSdpEnumAttributes");
+                return false;
+            }
+        }
+
+        BluetoothError::handle_bluetooth_call_error(line_num, result_text, buffer, "BluetoothSdpEnumAttributes");
+        return false;
+    }
 }
 
 #endif // BLUETOOTHCONTROLS_HPP
